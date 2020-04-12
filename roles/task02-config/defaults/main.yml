@@ -1,2 +1,11 @@
 ---
-# defaults file for task02-config
+awsregion1: "{{ lookup('env','awsRegion1') }}"
+awsregion3: "{{ lookup('env','awsRegion2') }}"
+awsregion2: "{{ lookup('env','awsRegion3') }}"
+dirartifacts: "{{ lookup('env','dirArtifacts') }}"
+namevpc: "{{ lookup('env','nameVpc') }}"
+namedomain: "{{ lookup('env','nameDomain') }}"
+dirbase: "{{ lookup('env','dirBase') }}"
+clusterdomain: "{{ lookup('env','clusterDomain') }}"
+versocp: "{{ lookup('env','versOCP') }}"
+namecluster: "{{ lookup('env','nameCluster') }}"

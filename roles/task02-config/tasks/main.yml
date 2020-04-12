@@ -1,2 +1,49 @@
 ---
-# tasks file for task02-config
+- name: Source environmental variables
+  shell: "source /root/PlatformOne/*/environment"
+
+- name: Create manifest
+  shell: "openshift-install create manifests --dir={{ dirartifacts }}/data"
+
+- name: Get cluster random name
+  shell: "awk -F'[-]' '/infrastructureName/{print $2}' {{ dirartifacts }}/data/manifests/cluster-infrastructure-02-config.yml"
+  register: idrand
+
+- name: debug
+  debug:
+    var: idrand.stdout
+
+- name: Replace random name with vpc name
+  replace:
+    path: "{{ dirartifacts }}/data/manifests/cluster-infrastructure-02-config.yml"
+    regexp: "infrastructureName: {{ namecluster}}-{{ idrand.stdout }}"
+    replace: "infrastructureName: {{ namevpc }}"
+
+- name: Find all manifest files
+  find:
+    path: "{{ dirartifacts }}/data"
+    recurse: yes
+    age: 1s
+  register: manifests
+
+- name: Replace infrastructureName for all files
+  replace:
+    path: "{{ item.path }}"
+    regexp: "{{ namecluster }}-{{ idrand.stdout }}"
+    replace: "{{ namevpc }}"
+  loop: "{{ manifests.files }}"
+
+- name: Replace region for all files
+  replace:
+    path: "{{ item.path }}"
+    regexp: "us-east-1"
+    replace: "{{ awsregion1 }}"
+  loop: "{{ manifests.files }}"
+
+- name: Remove default ingress config & non-applicable cloud cred configs
+  file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+    - "{{ dirartifacts }}/data/openshift/99_cloud-creds-secret.yaml"
+    - "{{ dirartifacts }}/data/openshift/99_role-cloud-creds-secret-reader.yaml"

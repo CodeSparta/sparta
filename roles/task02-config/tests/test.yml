@@ -2,4 +2,4 @@
 - hosts: localhost
   remote_user: root
   roles:
-    - task02-config
+    - ocp-manifest
