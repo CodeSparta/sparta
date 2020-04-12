@@ -1,4 +1,12 @@
 ---
+- name: Clone Git repositories
+  git:
+    clone: yes
+    dest: "{{ item.dest }}"
+    repo: "{{ item.repo }}"
+  with_items:
+    - "{{ gitrepos }}"
+
 - name: Source environmental variables
   shell: "source /root/PlatformOne/*/environment"
 
