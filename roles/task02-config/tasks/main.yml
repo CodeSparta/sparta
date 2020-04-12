@@ -9,10 +9,6 @@
   shell: "awk -F'[-]' '/infrastructureName/{print $2}' {{ dirartifacts }}/data/manifests/cluster-infrastructure-02-config.yml"
   register: idrand
 
-- name: debug
-  debug:
-    var: idrand.stdout
-
 - name: Replace random name with vpc name
   replace:
     path: "{{ dirartifacts }}/data/manifests/cluster-infrastructure-02-config.yml"
