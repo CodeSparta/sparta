@@ -1,5 +1,5 @@
 ---
 - name: ocp4-deploy | Install and Configure OCP4
   connection: local
-  roles: .
+  roles: 
     - task03-deploy
