@@ -51,3 +51,25 @@
   loop:
     - "{{ dirartifacts }}/data/openshift/99_cloud-creds-secret.yaml"
     - "{{ dirartifacts }}/data/openshift/99_role-cloud-creds-secret-reader.yaml"
+    
+- name: Copy Machine API Operator credentials
+  copy:
+    src: "{{ dirartifacts }}/bak/openshift/"
+    dest: "{{ dirartifacts }}/data/openshift/"
+
+- name: Backup ignition config directory
+  copy:
+    src: "{{ dirartifacts }}/data/"
+    dest: "{{ dirartifacts }}/bak/data-$(date '+%Y%m%d%H%M')/"
+
+- name: Generate ignition config files
+  shell: "openshift-install create ignition-configs --dir={{ dirartifacts }}/data"
+
+- name: Move auth directory out of future nginx web root path
+  shell: "mv {{ dirartifacts }}/data/auth {{ dirartifacts }}/bak/auth"
+
+- name: Copy kubeconfig
+  copy:
+    src: "{{ dirartifacts }}/bak/auth/kubeconfig"
+    dest: ~/.kube/config
+
