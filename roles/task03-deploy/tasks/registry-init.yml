@@ -1,12 +1,36 @@
 ---
-- name: OCP4 Registry | registry-init | Tar registry and nginx containers from local dir
-  find:
-    paths: 
+#- name: ocp4-deploy | Task03-deploy | Offload archive to ansible control node
+#  fetch:
+#    src: "{{ lookup('ENV', 'HOME') }}-mirror.tar"
+#    dest: "{{ inventory_hostname }}-mirror.tar"
 
-- name: OCP4 Registry | registry-init | Copy registry content to registry node
+- name: OCP4-Deploy | Task03-Deploy | Tar registry and nginx containers from local dir
+  find:
+    paths: "{{ lookup('ENV', 'HOME') }}/PlatformOne/images/"
+    patterns: '*.tar'
+  register: images
+
+- name: OCP4-Deploy | Task03-Deploy | Tar Deployment Artifacts
+  command:
+    "tar -cvzf /tmp/{{ lookup('ENV', 'clusterDomain') }}.tar.gz \
+     -C {{ lookup('ENV','dirBase') }} {{ lookup('env','clusterDomain') }}" 
+  args:
+    creates: /tmp/{{ lookup('ENV', 'clusterDomain') }}.tar.gz
+
+- name: OCP4-Deploy | Task03-Deploy | Copy registry content to registry node
+  command: 
+    "tar -cvzf /tmp/images.tar -C {{ lookup('ENV', 'baseDir') }} images"
+  args:
+    create: /tmp/images.tar
+
+- name: OCP4-Deploy | Task03-Deploy | Copy the tarballs to the registry node
   copy:
     src: "{{ nameVpc }}-bastion-node.tar"
-    dest: /tmp
+    dest: "{{ lookup('ENV', 'HOME') }}/"
+  with_items:
+    - "{{ nameVpc }}-bastion-node.tar"
+    - /tmp/images.tar
+    - /tmp/{{ lookup('ENV', 'clusterDomain') }}.tar.gz
 
 - name: OCP4 Registry | registry-init | Unarchive the tarball
   unarchive:

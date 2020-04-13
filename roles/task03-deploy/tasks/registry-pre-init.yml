@@ -1,63 +1,64 @@
 ---
-- name: OCP4-registry | registry-pre-init | Download
+- name: ocp4-deploy | Task03-deploy | Download openshift images for registry
   block:
-    - name: OCP4-registry | registry-pre-init | Check for file existence
+    - name: ocp4-deploy | Task03-deploy | Check for file existence
       find:
         file_type: directory
-        paths: "{{ remote_home }}/{{ cluster_domain }}"
+        paths: "{{ lookup('ENV', 'HOME') }}/{{ clusterDomain }}"
       register: files
 
-    - name: OCP4-registry | registry-pre-init | Remove any existing directories (if they exist)
+    - name: ocp4-deploy | Task03-deploy | Remove any existing directories (if they exist)
       file:
-        path: "{{ remote_home }}/{{ cluster_domain }}"
+        path: "{{ lookup('ENV', 'HOME') }}/{{ clusterDomain }}"
         state: absent
       when: files.examined > 0 
 
-    - name: OCP4-registry | registry-pre-init | Create registry-pre-init mirror directories
+    - name: ocp4-deploy | Task03-deploy | Create Task03-deploy mirror directories
       file:
         path: "{{ item }}"
         state: directory
         mode: 0755
       loop:
-        - "{{ remote_home }}/{{ cluster_domain }}/mirror"
-        - "{{ remote_home }}/.docker"
+        - "{{ lookup('ENV', 'HOME') }}/{{ clusterDomain }}/mirror"
+        - "{{ lookup('ENV', 'HOME') }}/.docker"
 
-    - name: OCP4-registry | registry-pre-init | Sync content from quay.io
+    - name: ocp4-deploy | Task03-deploy | Sync content from quay.io
       shell: |
         oc adm release mirror \
         --from=quay.io/openshift-release-dev/ocp-release:{{ ocp_version }}-x86_64 \
-        --to-dir={{ remote_home }}/{{ cluster_domain }}/mirror
+        --to-dir={{ lookup('ENV', 'HOME') }}/{{ clusterDomain }}/mirror
 
 # Rescue block if there are any failures in the above block
   rescue:
-    - name: OCP4-registry | registry-pre-init | Remove any existing directories (if they exist)
+    - name: ocp4-deploy | Task03-deploy | Remove any existing directories (if they exist)
       file:
-        path: "{{ remote_home }}/{{ cluster_domain }}"
+        path: "{{ lookup('ENV', 'HOME') }}/{{ clusterDomain }}"
         state: absent
 
-    - name: OCP4-registry | registry-pre-init | Create registry mirror directory
+    - name: ocp4-deploy | Task03-deploy | Create registry mirror directory
       file:
-        path: "{{ remote_home }}/{{ cluster_domain }}/mirror"
+        path: "{{ lookup('ENV', 'HOME') }}/{{ clusterDomain }}/mirror"
 
-    - name: OCP4-registry | registry-pre-init | Sync content from quay.io
+    - name: ocp4-deploy | Task03-deploy | Sync content from quay.io
       shell: |
         oc adm release mirror \
         --from=quay.io/openshift-release-dev/ocp-release:{{ ocp_version }}-x86_64 \
-        --to-dir={{ remote_home }}/{{ cluster_domain }}/mirror
+        --to-dir={{ lookup('ENV', 'HOME') }}/{{ clusterDomain }}/mirror
 
-- name: "OCP4-registry | registry-pre-init | Check for content in {{ remote_home }}/{{ cluster_home  }}/mirror"
+- name: "ocp4-deploy | Task03-deploy | Check for content in {{ remote_home }}/{{ cluster_home  }}/mirror"
   find:
-    paths: "{{ remote_home }}/{{ cluster_home  }}/mirror"
+    paths: "{{ lookup('ENV', 'HOME') }}/{{ cluster_home  }}/mirror"
   register: contents
 
-- name: OCP4-registry | registry-pre-init | Archive the content from quay.io
-  archive:
-    path: "{{ remote_home }}/{{ cluster_domain }}/mirror"
-    dest: "{{ remote_home }}mirror.tar"
-    format: tar
+- name: ocp4-deploy | Task03-deploy | Tar up the mirrored content
+  command:
+    "tar cvf {{ lookup('ENV', 'HOME') }}/mirror.tar -C \
+     {{ lookup('ENV', 'HOME') }}/{{ lookup('ENV', 'clusterDomain') }} mirror"
+  args:
+    creates: {{ lookup('ENV', 'HOME') }}/mirror.tar
   when: contents.examined > 0
 
-- name: OCP4-registry | registry-pre-init | Offload archive to ansible control node
-  fetch:
-    src: "{{ remote_home }}mirror.tar"
-    dest: "{{ inventory_hostname }}-mirror.tar"
+#- name: ocp4-deploy | Task03-deploy | Offload archive to ansible control node
+#  fetch:
+#    src: "{{ lookup('ENV', 'HOME') }}-mirror.tar"
+#    dest: "{{ inventory_hostname }}-mirror.tar"
