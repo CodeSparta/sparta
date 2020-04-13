@@ -1,5 +1,8 @@
 ---
 # tasks file for task03-deploy
+- name: ocp4-deploy | registry | create-ssh-config
+  include_tasks: create-ssh-config.yml
+
 - name: ocp4-deploy | registry | registry-pre-init
   include_tasks: registry-pre-init.yml
   tags:
