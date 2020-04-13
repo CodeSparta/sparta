@@ -44,6 +44,12 @@
     replace: "{{ awsregion1 }}"
   loop: "{{ manifests.files }}"
 
+- name: Workaround region find replace
+  replace:
+    path: "{{ dirartifacts }}/data/manifests/cluster-infrastructure-02-config.yml"
+    regexp: "us-east-1"
+    replace: "{{ awsregion1 }}"
+
 - name: Remove default ingress config & non-applicable cloud cred configs
   file:
     path: '{{ item }}'
