@@ -1,8 +1,4 @@
 ---
-- name: ocp4-deploy | task03-deploy | Append config.json
-  shell: |
-    jq -e ".auths += {\"registry.${cluster_domain}\": {\"auth\": \"$(echo -n ${vpc_name}:${vpc_name} | base64 -w0)\", \"email\": "env.emailAdmin"}}" ${directory_artifacts}/bak/.docker/config.json | jq -c > ${directory_artifacts}/.docker/config.json
-    
 - name: ocp4-deploy | task03-deploy | Copy credentials to directory
   file:
     path: "{{ home_directory }}/.docker"
@@ -10,7 +6,7 @@
 
 - name: ocp4-deploy | task03-deploy | Copy credentials to directory
   copy:
-    src: "{{ artifact_directory }}/.docker/config.json"
+    src: "{{ artifact_directory }}/.docker/master.json"
     dest: "{{ home_directory }}/.docker/config.json"
     
 #- name: ocp4-deploy | task03-deploy | Stash deployment docker images
