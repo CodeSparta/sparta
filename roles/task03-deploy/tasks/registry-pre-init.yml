@@ -63,7 +63,7 @@
         oc adm release mirror \
         --from=quay.io/openshift-release-dev/ocp-release:{{ ocp_version }}-x86_64 \
         --to-dir={{ base_directory }}/mirror
-  register: mirror
+      register: mirror
 
 - name: ocp4-deploy | task03-deploy | Additional rescue block run for mirror sync
   block:
