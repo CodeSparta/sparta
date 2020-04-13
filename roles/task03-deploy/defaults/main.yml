@@ -1,2 +1,12 @@
 ---
 # defaults file for task03-deploy
+awsRegion1="{{ lookup('ENV', 'awsRegion1') }}"
+awsRegion3="{{ lookup('ENV', 'awsRegion2') }}"
+awsRegion2="{{ lookup('ENV', 'awsRegion3') }}"
+dirArtifacts="{{ lookup('ENV', 'dirArtifacts') }}"
+nameVpc="{{ lookup('ENV', 'nameVpc') }}"
+nameDomain="{{ lookup('ENV', 'nameDomain') }}"
+dirBase="{{ lookup('ENV', 'dirBase') }}"
+clusterDomain="{{ lookup('ENV', 'clusterDomain') }}"
+versOCP="{{ lookup('ENV', 'versOCP') }}"
+nameCluster="{{ lookup('ENV', 'nameCluster') }}"
