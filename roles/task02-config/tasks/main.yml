@@ -60,7 +60,7 @@
 - name: Backup ignition config directory
   copy:
     src: "{{ dirartifacts }}/data/"
-    dest: "{{ dirartifacts }}/bak/data-$(date '+%Y%m%d%H%M')/"
+    dest: "{{ dirartifacts }}/bak/data-ignition/"
 
 - name: Generate ignition config files
   shell: "openshift-install create ignition-configs --dir={{ dirartifacts }}/data"
