@@ -44,6 +44,28 @@
     replace: "{{ awsregion1 }}"
   loop: "{{ manifests.files }}"
 
+- block:
+    - name: Replace region for cluster-infrastructure-02-config.yml
+      replace:
+        path: "{{ dirartifacts }}/data/manifests/cluster-infrastructure-02-config.yml"
+        regexp: "us-east-1"
+        replace: "{{ awsregion1 }}"
+  always:
+    - name: Check to see if the content still exists
+      lineinfile:
+        path: "{{ dirartifacts }}/data/manifests/cluster-infrastructure-02-config.yml"
+        line: us-east-1
+        state: present
+      check_mode: true
+      register: presence
+
+    - name: Replace region for cluster-infrastructure-02-config.yml
+      replace:
+        path: "{{ dirartifacts }}/data/manifests/cluster-infrastructure-02-config.yml"
+        regexp: "us-east-1"
+        replace: "{{ awsregion1 }}"
+      when: "{{ presence.changed }} == False"
+
 - name: Remove default ingress config & non-applicable cloud cred configs
   file:
     path: '{{ item }}'
@@ -51,3 +73,25 @@
   loop:
     - "{{ dirartifacts }}/data/openshift/99_cloud-creds-secret.yaml"
     - "{{ dirartifacts }}/data/openshift/99_role-cloud-creds-secret-reader.yaml"
+    
+- name: Copy Machine API Operator credentials
+  copy:
+    src: "{{ dirartifacts }}/bak/openshift/"
+    dest: "{{ dirartifacts }}/data/openshift/"
+
+- name: Backup ignition config directory
+  copy:
+    src: "{{ dirartifacts }}/data/"
+    dest: "{{ dirartifacts }}/bak/data-ignition/"
+
+- name: Generate ignition config files
+  shell: "openshift-install create ignition-configs --dir={{ dirartifacts }}/data"
+
+- name: Move auth directory out of future nginx web root path
+  shell: "mv {{ dirartifacts }}/data/auth {{ dirartifacts }}/bak/auth"
+
+- name: Copy kubeconfig
+  copy:
+    src: "{{ dirartifacts }}/bak/auth/kubeconfig"
+    dest: ~/.kube/config
+
