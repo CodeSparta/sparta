@@ -1,12 +1,23 @@
 ---
+- name: ocp4-deploy | task03-deploy | Copy credentials to directory
+  file:
+    path: "{{ home_directory }}/.docker"
+    state: present
+
+- name: ocp4-deploy | task03-deploy | Copy credentials to directory
+  copy:
+    src: "{{ artifact_directory }}/.docker/config.json"
+    dest: "{{ home_directory }}/.docker/config.json"
+
 - name: ocp4-deploy | task03-deploy | Stash deployment docker images
   command: "{{ item }}"
   with_items:
     - podman pull docker.io/library/registry:2
     - podman pull docker.io/library/nginx:latest
-    - podman pull docker.io/library/containercraft/one:4.3.8
+    - podman pull docker.io/containercraft/one:4.3.8
   register: images
-  when: "'Image is up to date' not in images.stdout"
+# ToDo: Make this idempotent
+#  when: "'Image is up to date' not in images.stdout"
 
 # ToDO: This is not idempotent - will report "changed" every run
 - name: ocp4-deploy | task03-deploy | Export images
