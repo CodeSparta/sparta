@@ -52,7 +52,7 @@
         replace: "{{ awsregion1 }}"
   always:
     - name: Check to see if the content still exists
-      lineinefile:
+      lineinfile:
         path: "{{ dirartifacts }}/data/manifests/cluster-infrastructure-02-config.yml"
         line: us-east-1
         state: present
