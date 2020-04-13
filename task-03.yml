@@ -1,6 +1,12 @@
 ---
-- name: ocp4-deploy | Install and Configure OCP4
+- name: ocp4-deploy | Install registry artifacts on Platform0ne
   hosts: localhost
   connection: local
-  roles: 
+  roles:
+    - task03-deploy
+
+- name: ocp4-deploy | Install registry on registry node
+  hosts: registry
+  become: true
+  roles:
     - task03-deploy
