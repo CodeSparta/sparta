@@ -1,33 +1,37 @@
 ---
+- name: ocp4-deploy | task03-deploy | Append config.json
+  shell: |
+    jq -e ".auths += {\"registry.${cluster_domain}\": {\"auth\": \"$(echo -n ${vpc_name}:${vpc_name} | base64 -w0)\", \"email\": "env.emailAdmin"}}" ${directory_artifacts}/bak/.docker/config.json | jq -c > ${directory_artifacts}/.docker/config.json
+    
 - name: ocp4-deploy | task03-deploy | Copy credentials to directory
   file:
     path: "{{ home_directory }}/.docker"
-    state: present
+    state: directory
 
 - name: ocp4-deploy | task03-deploy | Copy credentials to directory
   copy:
     src: "{{ artifact_directory }}/.docker/config.json"
     dest: "{{ home_directory }}/.docker/config.json"
-
-- name: ocp4-deploy | task03-deploy | Stash deployment docker images
-  command: "{{ item }}"
-  with_items:
-    - podman pull docker.io/library/registry:2
-    - podman pull docker.io/library/nginx:latest
-    - podman pull docker.io/containercraft/one:4.3.8
-  register: images
+    
+#- name: ocp4-deploy | task03-deploy | Stash deployment docker images
+#  command: "{{ item }}"
+#  with_items:
+#    - podman pull docker.io/library/registry:2
+#    - podman pull docker.io/library/nginx:latest
+#    - podman pull docker.io/containercraft/one:4.3.8
+#  register: images
 # ToDo: Make this idempotent
 #  when: "'Image is up to date' not in images.stdout"
 
 # ToDO: This is not idempotent - will report "changed" every run
-- name: ocp4-deploy | task03-deploy | Export images
-  command: "{{ item }}"
-  with_items:
-    - podman save -o docker-registry2-image.tar registry:2
-    - podman save -o docker-nginxlatest-image.tar nginx:latest
-    - podman save -o docker-containerone-image.tar containercraft/one:4.3.8
-  args:
-    chdir: "{{ home_directory }}/PlatformOne/images/"
+#- name: ocp4-deploy | task03-deploy | Export images
+#  command: "{{ item }}"
+#  with_items:
+#    - podman save -o docker-registry2-image.tar registry:2
+#    - podman save -o docker-nginxlatest-image.tar nginx:latest
+#    - podman save -o docker-containerone-image.tar containercraft/one:4.3.8
+#  args:
+#    chdir: "{{ home_directory }}/PlatformOne/images/"
 
 - name: ocp4-deploy | task03-deploy | Download openshift images for registry
   block:
@@ -74,7 +78,7 @@
         oc adm release mirror \
         --from=quay.io/openshift-release-dev/ocp-release:{{ ocp_version }}-x86_64 \
         --to-dir={{ base_directory }}/mirror
-  register: mirror
+      register: mirror
 
 - name: ocp4-deploy | task03-deploy | Additional rescue block run for mirror sync
   block:
