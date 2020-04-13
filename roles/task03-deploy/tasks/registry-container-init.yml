@@ -3,12 +3,24 @@
 - name: ocp4-deploy | task03-deploy | Copy artifact tarball to the registry
   become: false
   copy:
-    src: "{{ home_dir }}/PlatformOne.tar.gz"
+    src: "{{ home_directory }}/PlatformOne.tar.gz"
     dest: "/tmp/PlatformOne.tar.gz"
+
+- name: ocp4-deploy | task03-deploy | Make dockerconfig directory
+  file:
+    state: directory
+    path: "/root/.docker"
+    mode: 0755
+
+- name: ocp4-deploy | task03-deploy | Copy Credentials to directory
+  copy:
+    src: "{{ artifact_directory }}/.docker/master.json"
+    dest: "/root/.docker/config.json"
+
 
 - name: ocp4-deploy | task03-deploy | Extract tarballs
   command:
-    "tar xvzf /tmp/PlatformOne.tar.gz -C {{ home_dir }}"
+    "tar xvzf /tmp/PlatformOne.tar.gz -C {{ home_directory }}"
   args:
     creates: "{{ base_directory }}"
 
@@ -86,11 +98,7 @@
 
 # ToDO: Need to make this idempotent - This will always report 'changed'
 - name: ocp4-deploy | task03-deploy | load ocp4 images into mirrored registry
-  shell: |
-    oc image mirror                                     \
-    -a ~/.docker/config.json                            \
-    --dir=/root/{{ cluster_domain }}/mirror             \
-    file://openshift/release:{{ ocp_version }}*         \
-    registry.{{ cluster_domain }}/ocp-{{ ocp_version }}
+  shell: "oc image mirror -a ~/.docker/config.json --dir={{ base_directory }}/mirror file://openshift/release:{{ ocp_version }}* registry.{{ cluster_domain }}/ocp-{{ ocp_version }}"
   #register: mirror_up
   #failed_when: Stuff happens
+

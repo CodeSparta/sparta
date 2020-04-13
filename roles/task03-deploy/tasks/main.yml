@@ -2,10 +2,8 @@
 # tasks file for task03-deploy
 - name: ocp4-deploy | registry | registry-pre-init
   include_tasks: registry-pre-init.yml
-  tags:
-    - step1_artifacts
+  when: inventory_hostname == localhost
 
 - name: ocp4-deploy | registry | registry-container-init
   include_tasks: registry-container-init.yml
-  tags:
-    - step2_registry
+  when: inventory_hostname in groups['registry']

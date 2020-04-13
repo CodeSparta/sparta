@@ -76,23 +76,23 @@
         --to-dir={{ base_directory }}/mirror
       register: mirror
 
-- name: ocp4-deploy | task03-deploy | Additional rescue block run for mirror sync
-  block:
-    - name: ocp4-deploy | task03-deploy - extra rescue | Remove any existing directories (if they exist)
-      file:
-        path: "{{ base_directory }}/mirror"
-        state: absent
-
-    - name: ocp4-deploy | task03-deploy - extra rescue | Create registry mirror directory
-      file:
-        path: "{{ base_directory }}/mirror"
-
-    - name: ocp4-deploy | task03-deploy - extra rescue | Sync content from quay.io
-      shell: |
-        oc adm release mirror \
-        --from=quay.io/openshift-release-dev/ocp-release:{{ ocp_version }}-x86_64 \
-        --to-dir={{ base_directory }}/mirror
-  when: "'Error' in mirror.stdout or 'error' in mirror.stdout  or 'ERROR' in mirror.stdout"
+#- name: ocp4-deploy | task03-deploy | Additional rescue block run for mirror sync
+#  block:
+#    - name: ocp4-deploy | task03-deploy - extra rescue | Remove any existing directories (if they exist)
+#      file:
+#        path: "{{ base_directory }}/mirror"
+#        state: absent
+#
+#    - name: ocp4-deploy | task03-deploy - extra rescue | Create registry mirror directory
+#      file:
+#        path: "{{ base_directory }}/mirror"
+#
+#    - name: ocp4-deploy | task03-deploy - extra rescue | Sync content from quay.io
+#      shell: |
+#        oc adm release mirror \
+#        --from=quay.io/openshift-release-dev/ocp-release:{{ ocp_version }}-x86_64 \
+#        --to-dir={{ base_directory }}/mirror
+#  when: "'Error' in mirror.stdout or 'error' in mirror.stdout  or 'ERROR' in mirror.stdout"
 
 #This tarball is used in the next task for uploading images to container registry
 - name: ocp4-deploy | task03-deploy | Archive images and artifacts
