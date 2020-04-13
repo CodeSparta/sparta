@@ -1,12 +1,15 @@
 ---
 # defaults file for task03-deploy
-awsRegion1="{{ lookup('ENV', 'awsRegion1') }}"
-awsRegion3="{{ lookup('ENV', 'awsRegion2') }}"
-awsRegion2="{{ lookup('ENV', 'awsRegion3') }}"
-dirArtifacts="{{ lookup('ENV', 'dirArtifacts') }}"
-nameVpc="{{ lookup('ENV', 'nameVpc') }}"
-nameDomain="{{ lookup('ENV', 'nameDomain') }}"
-dirBase="{{ lookup('ENV', 'dirBase') }}"
-clusterDomain="{{ lookup('ENV', 'clusterDomain') }}"
-versOCP="{{ lookup('ENV', 'versOCP') }}"
-nameCluster="{{ lookup('ENV', 'nameCluster') }}"
+artifact_directory: "{{ lookup('env','dirArtifacts') }}"
+base_directory: "{{ lookup('env','dirBase') }}"
+cluster_domain: "{{ lookup('env','clusterDomain') }}"
+ec2_region: "{{ lookup('env', 'awsRegion') }}"
+home_dir: "{{ lookup('env','HOME') }}"
+ocp_version: "{{ lookup('env','versOCP') }}"
+remote_home: "{{ ansible_env.HOME }}"
+vpc_name: "{{ lookup('env','nameVpc') }}"
+
+# Setting vars for future region support
+#ec2_region1: "{{ lookup('env', 'awsRegion1') }}"
+#ec2_region2: "{{ lookup('env', 'awsRegion2') }}"
+#ec2_region3: "{{ lookup('env', 'awsRegion3') }}"
