@@ -4,10 +4,3 @@
   connection: local
   roles:
     - task03-deploy
-
-- name: ocp4-deploy | Install registry on registry node
-  hosts: registry
-  become: true
-  roles:
-    - task03-deploy
-  
