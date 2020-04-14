@@ -98,8 +98,8 @@
 - name: Source Terraform variables
   shell: "{{ base_directory }}/terraform/aws-platform-base/tfsetup.sh"
 
-- name: initilize terraform modules
-  shell: " cd {{ item }} && terraform init"
+- name: Initilize terraform modules
+  shell: "cd {{ item }} && terraform init"
   with_items:
     - "{{ base_directory }}/terraform/aws-platform-base/"
     - "{{ base_directory }}/terraform/aws-platform-openshift4-registry/"
