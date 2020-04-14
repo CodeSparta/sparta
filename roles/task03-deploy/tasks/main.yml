@@ -12,7 +12,7 @@
 
 - name: ocp4-deploy | registry | registry-pre-init
   include_tasks: registry-pre-init.yml
-  delegate_to: localhost
+  when: inventory_hostname not in groups['registry']
 
 - name: ocp4-deploy | registry | registry-container-init
   include_tasks: registry-container-init.yml
