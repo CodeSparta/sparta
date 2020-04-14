@@ -1,7 +1,7 @@
-Role Name
+OCP4 Deploy
 =========
 
-ocp4-deploy: This role will be used to configure components for ocp4
+This role configures the local system in order to launch containerONE; a container image used for provisioning, bootstrapping and configuration OpenShift 4 node types to support a full deployment. 
 
 Requirements
 ------------
@@ -17,21 +17,20 @@ The following table outlines the software requirements and versions used to run 
 Role Variables
 --------------
 
-| variable | default value |
-| -------- | ------------- |
-| awsRegion1 | "{{ lookup('ENV', 'awsRegion1') }}"
-| awsRegion3 | "{{ lookup('ENV', 'awsRegion2') }}"
-| awsRegion2 | "{{ lookup('ENV', 'awsRegion3') }}"
-| dirArtifacts |"{{ lookup('ENV', 'dirArtifacts') }}"
-| nameVpc |"{{ lookup('ENV', 'nameVpc') }}"
-| nameDomain |"{{ lookup('ENV', 'nameDomain') }}"
-| dirBase | "{{ lookup('ENV', 'dirBase') }}"
-| clusterDomain |"{{ lookup('ENV', 'clusterDomain') }}"
-| versOCP |"{{ lookup('ENV', 'versOCP') }}"
-| nameCluster |"{{ lookup('ENV', 'nameCluster') }}"
-| asset_directories | ${HOME}/PlatformOne/{mirror,images,repos,secrets,ansible,terraform |
-| gitrepos | repo: `<`web url to http repo`>` dest: `<`path on filesystem where to place repo `>` |
-
+| variable | mapped_value | default value |
+| -------- | ------------- | ------------ |
+| awsRegion1 | reserved_for_future_regions | "{{ lookup('ENV', 'awsRegion1') }}" |
+| awsRegion3 | reserved_for_future_region  | "{{ lookup('ENV', 'awsRegion2') }}" |
+| awsRegion2 | reserved_for_future_regions | "{{ lookup('ENV', 'awsRegion3') }}" |
+| dirArtifacts | artifact_directory | "{{ lookup('ENV', 'dirArtifacts') }}" |
+| nameVpc | vpc_name | "{{ lookup('ENV', 'nameVpc') }}" |
+| nameDomain | domain_name | "{{ lookup('ENV', 'nameDomain') }}" |
+| dirBase | base_directory | "{{ lookup('ENV', 'dirBase') }}" |
+| clusterDomain | cluster_domain | "{{ lookup('ENV', 'clusterDomain') }}" |
+| versOCP | ocp_version | "{{ lookup('ENV', 'versOCP') }}"|
+| nameCluster | cluster_name | "{{ lookup('ENV', 'nameCluster') }}" |
+| home_directory | no mapping | "{{ lookup('ENV', 'HOME') }}" |
+| tf_base_dir | no mapping | "{{ lookup('ENV', 'dirBase') }}/terraform/aws-platform-{base,openshift4-registry,openshift4-bootsrap,openshift4-master}"
 
 Example Playbook
 ----------------
@@ -64,4 +63,13 @@ BSD
 
 Author Information
 ------------------
+platformONE@redhat.com 
+Specifically the following people:
 jonny@redhat.com
+mholmes@redhat.com
+jhultz@redhat.com
+dino@redhat.com
+kmorgan@redhat.com
+dlystra@redhat.com
+mradecker@redhat.com
+
