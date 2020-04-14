@@ -1,5 +1,8 @@
 ---
-- name: ocp4-deploy | task03-deploy | deploy infrastructure resources
+- name: ocp4-deploy | tf-deploy-vpc | Source Terraform variables
+  shell: "{{ base_directory }}/terraform/aws-platform-base/tfsetup.sh"
+
+- name: ocp4-deploy | tf-deploy-vpc | Deploy infrastructure resources
   terraform:
     project_path: "{{ tf_base_dir }}"
     state: present
