@@ -1,10 +1,14 @@
 ---
 # tasks file for task03-deploy
-- name: ocp4-deploy | task03-deploy | Create ssh config
-  include_tasks: create-ssh-config.yml
-
 - name: ocp4-deploy | task03-deploy | Create Resources with Terraform
   include_tasks: tf_deploy.yml
+
+- name: ocp4-deploy | task03-deploy | Wait for registry to come up
+  pause:
+    minutes: 2
+
+- name: ocp4-deploy | task03-deploy | Create ssh config
+  include_tasks: create-ssh-config.yml
 
 - name: ocp4-deploy | registry | registry-pre-init
   include_tasks: registry-pre-init.yml
