@@ -1,0 +1,5 @@
+---
+- name: ocp4-deploy | task03-deploy | deploy infrastructure resources
+  terraform:
+    project_path: "{{ tf_base_dir }}"
+    state: present

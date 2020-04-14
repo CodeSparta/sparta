@@ -10,7 +10,7 @@ remote_home: "{{ ansible_env.HOME }}"
 vpc_name: "{{ lookup('env','nameVpc') }}"
 
 #Terraform variable to deploy 
-tf_base_dir: "{{ lookup('env', 'dirBase') }}/terraform/aws-platform-openshift4-registry"
+tf_base_dir: "{{ lookup('env', 'dirBase') }}/terraform/aws-platform-base"
 
 # Setting vars for future region support
 #ec2_region1: "{{ lookup('env', 'awsRegion1') }}"
