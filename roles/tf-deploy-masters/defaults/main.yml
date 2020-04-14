@@ -9,12 +9,8 @@ ocp_version: "{{ lookup('env','versOCP') }}"
 remote_home: "{{ ansible_env.HOME }}"
 vpc_name: "{{ lookup('env','nameVpc') }}"
 
-#Terraform vars
-tf_base_dir: "{{ lookup('env', 'dirBase') }}/terraform/"
-tf_resource_registry: aws-platform-openshift4-registry
-tf_resource_bootstrap: aws-platform-openshift4-bootstrap
-tf_resource_masters: aws-platform-openshift4-masters
-tf_resource_vpc: aws-platform-openshift4-vpc
+#Terraform variable to deploy 
+tf_base_dir: "{{ lookup('env', 'dirBase') }}/terraform/aws-platform-openshift4-master"
 
 # Setting vars for future region support
 #ec2_region1: "{{ lookup('env', 'awsRegion1') }}"
