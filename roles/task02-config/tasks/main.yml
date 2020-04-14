@@ -95,3 +95,13 @@
     src: "{{ dirartifacts }}/bak/auth/kubeconfig"
     dest: ~/.kube/config
 
+- name: Source Terraform variables
+  shell: "{{ base_directory }}/terraform/aws-platform-base/tfsetup.sh"
+
+- name: Initilize terraform modules
+  shell: "cd {{ item }} && terraform init"
+  with_items:
+    - "{{ base_directory }}/terraform/aws-platform-base/"
+    - "{{ base_directory }}/terraform/aws-platform-openshift4-registry/"
+    - "{{ base_directory }}/terraform/aws-platform-openshift4-bootstrap/"
+    - "{{ base_directory }}/terraform/aws-platform-openshift4-masters/"
