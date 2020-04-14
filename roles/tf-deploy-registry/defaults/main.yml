@@ -1,5 +1,5 @@
 ---
-# defaults file for task03-deploy
+# defaults file for tf-deploy-registry
 artifact_directory: "{{ lookup('env','dirArtifacts') }}"
 base_directory: "{{ lookup('env','dirBase') }}"
 cluster_name: "{{ lookup('env','nameCluster') }}"
@@ -26,7 +26,7 @@ TF_VAR_master_ign_path: "{{ artifact_directory }}/data/master.ign"
 TF_VAR_bootstrap_ign_path: "{{ artifact_directory }}/data/bootstrap.ign"
 
 #Terraform variable to deploy 
-tf_base_dir: "{{ lookup('env', 'dirBase') }}/terraform/aws-platform-openshift4-bootstrap"
+tf_base_dir: "{{ lookup('env', 'dirBase') }}/terraform/aws-platform-openshift4-registry"
 
 # Setting vars for future region support
 #ec2_region1: "{{ lookup('env', 'awsRegion1') }}"
