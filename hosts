@@ -1,0 +1,5 @@
+[registry]
+registry
+
+[bastion]
+localhost ansible_connection=local
