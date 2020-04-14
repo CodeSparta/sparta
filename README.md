@@ -30,7 +30,7 @@ Role Variables
 | versOCP | ocp_version | "{{ lookup('ENV', 'versOCP') }}"|
 | nameCluster | cluster_name | "{{ lookup('ENV', 'nameCluster') }}" |
 | home_directory | no mapping | "{{ lookup('ENV', 'HOME') }}" |
-| tf_base_dir | no mapping | "{{ lookup('ENV', 'dirBase') }}/terraform/aws-platform-{base,openshift4-registry,openshift4-bootsrap,openshift4-master}"
+| tf_base_dir | no mapping | "{{ lookup('ENV', 'dirBase') }}/terraform/aws-platform-{base,openshift4-registry,openshift4-bootsrap,openshift4-masters}"
 
 Example Playbook
 ----------------
