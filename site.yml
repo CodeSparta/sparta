@@ -1,19 +1,8 @@
 ---
-- name: ocp4-deploy | Install and Configure OCP4
-  hosts: localhost
-  connection: local
-  tasks: 
-    - name: ocp4-deploy | Import OCP4 init role
-      include_role: ./roles/task01-init
-      tags: 
-        - init
-    
-    - name: ocp4-deploy | Import OCP4 config role
-      include_role: ./roles/task02-config
-      tags:
-        - config
-    
-    - name: ocp4-deploy | Import OCP4 deploy role
-      include_role: ./roles/task03-deploy
-      tags:
-        - deploy
+# file: site.yml
+- import_playbook: task-02.yml
+- import_playbook: tf-vpc.yml
+- import_playbook: task-03.yml
+- import_playbook: task-03-registry.yml
+- import_playbook: tf-bootstrap.yml
+- import_playbook: tf-masters.yml
