@@ -65,11 +65,11 @@ Author Information
 ------------------
 platformONE@redhat.com 
 Specifically the following people:
-jonny@redhat.com
-mholmes@redhat.com
-jhultz@redhat.com
-dino@redhat.com
-kmorgan@redhat.com
-dlystra@redhat.com
-mradecker@redhat.com
+* jonny@redhat.com
+* mholmes@redhat.com
+* jhultz@redhat.com
+* dino@redhat.com
+* kmorgan@redhat.com
+* dlystra@redhat.com
+* mradecker@redhat.com
 
