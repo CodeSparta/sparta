@@ -3,5 +3,5 @@
   hosts: registry
   become: true
   roles:
-    - task03-deploy
+    - task03-registry
   
