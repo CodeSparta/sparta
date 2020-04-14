@@ -34,6 +34,7 @@
 - name: ocp4-deploy | task03-deploy | Prepare web root for nginx server
   file:
     path: "{{ artifact_directory }}/data"
+    recurse: true
     mode: 0755
     
 - name: ocp4-deploy | task03-deploy | check for nginx service

@@ -1,15 +1,14 @@
 ---
+artifact_directory: "{{ lookup('env','dirArtifacts') }}"
 base_directory: "{{ lookup('env','dirBase') }}"
-awsregion1: "{{ lookup('env','awsRegion1') }}"
-awsregion3: "{{ lookup('env','awsRegion2') }}"
-awsregion2: "{{ lookup('env','awsRegion3') }}"
-dirartifacts: "{{ lookup('env','dirArtifacts') }}"
-namevpc: "{{ lookup('env','nameVpc') }}"
-namedomain: "{{ lookup('env','nameDomain') }}"
-dirbase: "{{ lookup('env','dirBase') }}"
-clusterdomain: "{{ lookup('env','clusterDomain') }}"
-versocp: "{{ lookup('env','versOCP') }}"
-namecluster: "{{ lookup('env','nameCluster') }}"
+cluster_domain: "{{ lookup('env','clusterDomain') }}"
+cluster_name: "{{ lookup('env','clusterName') }}"
+ec2_region: "{{ lookup('env', 'awsRegion1') }}"
+home_directory: "{{ lookup('env','HOME') }}"
+ocp_version: "{{ lookup('env','versOCP') }}"
+remote_home: "{{ ansible_env.HOME }}"
+vpc_name: "{{ lookup('env','nameVpc') }}"
+domain_name: "{{ lookup('env','nameDomain') }}"
 gitrepos:
   - repo: https://repo1.dsop.io/ocp4/ansible-playbooks/registry.git
     dest: "{{ lookup('env', 'HOME') }}/PlatformOne/ansible/registry"
@@ -21,3 +20,16 @@ gitrepos:
     dest: "{{ lookup('env', 'HOME') }}/PlatformOne/terraform/aws-platform-openshift4-bootstrap"
   - repo: https://repo1.dsop.io/ocp4/aws/aws-platform-openshift4-masters.git
     dest: "{{ lookup('env', 'HOME') }}/PlatformOne/terraform/aws-platform-openshift4-masters"
+
+#Terraform spin-up
+TF_VAR_infrastructure_id: "{{ vpc_name }}"
+TF_VAR_aws_region: "{{ ec2_region }}"
+TF_VAR_clustername: "{{ cluster_name }}"
+TF_VAR_domain: "{{ domain_name }}"
+AWS_DEFAULT_REGION: "{{ ec2_region }}"
+
+# point the ignition files to the proper location
+TF_VAR_registry_ssh_public_key_file_path: "{{ artifact_directory }}/.ssh/id_rsa_{{ cluster_domain }}.pub"
+TF_VAR_bastion_ssh_public_key_file_path: "{{ artifact_directory }}/.ssh/id_rsa_{{ cluster_domain }}.pub"
+TF_VAR_master_ign_path: "{{ artifact_directory }}/data/master.ign"
+TF_VAR_bootstrap_ign_path: "{{ artifact_directory }}/data/bootstrap.ign"

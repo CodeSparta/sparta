@@ -1,0 +1,6 @@
+---
+- name: ocp4-deploy | Deploy regsitry via terraform
+  hosts: localhost
+  connection: local
+  roles: 
+    - tf-deploy-registry
