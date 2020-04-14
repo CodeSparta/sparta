@@ -12,8 +12,3 @@
 
 - name: ocp4-deploy | registry | registry-pre-init
   include_tasks: registry-pre-init.yml
-  when: inventory_hostname not in groups['bastion']
-
-- name: ocp4-deploy | registry | registry-container-init
-  include_tasks: registry-container-init.yml
-  when: inventory_hostname in groups['registry']

@@ -1,0 +1,19 @@
+Host bastion
+        Hostname {{ bastion_public_ip[0] }}
+        User core
+        IdentityFile {{ artifact_directory }}/.ssh/id_rsa_{{ cluster_domain }}
+        Port 22
+        StrictHostKeyChecking no
+        # use these controls if you want multiplexing: keep the same connection open
+        ControlMaster auto
+        ControlPath ~/.ssh/ssh-%r@%h:%p
+        ControlPersist 5m
+
+Host registry
+        Hostname {{ registry_private_ip[0] }}
+        User core
+        IdentityFile {{ artifact_directory }}/.ssh/id_rsa_{{ cluster_domain }}
+        Port 22
+        StrictHostKeyChecking no
+        ProxyCommand ssh -W %h:%p bastion
+
