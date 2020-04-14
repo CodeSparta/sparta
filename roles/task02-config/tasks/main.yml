@@ -11,21 +11,21 @@
   shell: "source /root/PlatformOne/*/environment"
 
 - name: Create manifest
-  shell: "openshift-install create manifests --dir={{ dirartifacts }}/data"
+  shell: "openshift-install create manifests --dir={{ artifact_directory }}/data"
 
 - name: Get cluster random name
-  shell: "awk -F'[-]' '/infrastructureName/{print $2}' {{ dirartifacts }}/data/manifests/cluster-infrastructure-02-config.yml"
+  shell: "awk -F'[-]' '/infrastructureName/{print $2}' {{ artifact_directory }}/data/manifests/cluster-infrastructure-02-config.yml"
   register: idrand
 
 - name: Replace random name with vpc name
   replace:
-    path: "{{ dirartifacts }}/data/manifests/cluster-infrastructure-02-config.yml"
-    regexp: "infrastructureName: {{ namecluster}}-{{ idrand.stdout }}"
-    replace: "infrastructureName: {{ namevpc }}"
+    path: "{{ artifact_directory }}/data/manifests/cluster-infrastructure-02-config.yml"
+    regexp: "infrastructureName: {{ cluster_name }}-{{ idrand.stdout }}"
+    replace: "infrastructureName: {{ vpc_name }}"
 
 - name: Find all manifest files
   find:
-    path: "{{ dirartifacts }}/data"
+    path: "{{ artifact_directory }}/data"
     recurse: yes
     age: 1s
   register: manifests
@@ -33,27 +33,27 @@
 - name: Replace infrastructureName for all files
   replace:
     path: "{{ item.path }}"
-    regexp: "{{ namecluster }}-{{ idrand.stdout }}"
-    replace: "{{ namevpc }}"
+    regexp: "{{ cluster_name }}-{{ idrand.stdout }}"
+    replace: "{{ vpc_name }}"
   loop: "{{ manifests.files }}"
 
 - name: Replace region for all files
   replace:
     path: "{{ item.path }}"
     regexp: "us-east-1"
-    replace: "{{ awsregion1 }}"
+    replace: "{{ ec2_region }}"
   loop: "{{ manifests.files }}"
 
 - block:
     - name: Replace region for cluster-infrastructure-02-config.yml
       replace:
-        path: "{{ dirartifacts }}/data/manifests/cluster-infrastructure-02-config.yml"
+        path: "{{ artifact_directory }}/data/manifests/cluster-infrastructure-02-config.yml"
         regexp: "us-east-1"
-        replace: "{{ awsregion1 }}"
+        replace: "{{ ec2_region }}"
   always:
     - name: Check to see if the content still exists
       lineinfile:
-        path: "{{ dirartifacts }}/data/manifests/cluster-infrastructure-02-config.yml"
+        path: "{{ artifact_directory }}/data/manifests/cluster-infrastructure-02-config.yml"
         line: us-east-1
         state: present
       check_mode: true
@@ -61,9 +61,9 @@
 
     - name: Replace region for cluster-infrastructure-02-config.yml
       replace:
-        path: "{{ dirartifacts }}/data/manifests/cluster-infrastructure-02-config.yml"
+        path: "{{ artifact_directory }}/data/manifests/cluster-infrastructure-02-config.yml"
         regexp: "us-east-1"
-        replace: "{{ awsregion1 }}"
+        replace: "{{ ec2_region }}"
       when: "{{ presence.changed }} == False"
 
 - name: Remove default ingress config & non-applicable cloud cred configs
@@ -71,28 +71,28 @@
     path: '{{ item }}'
     state: absent
   loop:
-    - "{{ dirartifacts }}/data/openshift/99_cloud-creds-secret.yaml"
-    - "{{ dirartifacts }}/data/openshift/99_role-cloud-creds-secret-reader.yaml"
+    - "{{ artifact_directory }}/data/openshift/99_cloud-creds-secret.yaml"
+    - "{{ artifact_directory }}/data/openshift/99_role-cloud-creds-secret-reader.yaml"
     
 - name: Copy Machine API Operator credentials
   copy:
-    src: "{{ dirartifacts }}/bak/openshift/"
-    dest: "{{ dirartifacts }}/data/openshift/"
+    src: "{{ artifact_directory }}/bak/openshift/"
+    dest: "{{ artifact_directory }}/data/openshift/"
 
 - name: Backup ignition config directory
   copy:
-    src: "{{ dirartifacts }}/data/"
-    dest: "{{ dirartifacts }}/bak/data-ignition/"
+    src: "{{ artifact_directory }}/data/"
+    dest: "{{ artifact_directory }}/bak/data-ignition/"
 
 - name: Generate ignition config files
-  shell: "openshift-install create ignition-configs --dir={{ dirartifacts }}/data"
+  shell: "openshift-install create ignition-configs --dir={{ artifact_directory }}/data"
 
 - name: Move auth directory out of future nginx web root path
-  shell: "mv {{ dirartifacts }}/data/auth {{ dirartifacts }}/bak/auth"
+  shell: "mv {{ artifact_directory }}/data/auth {{ artifact_directory }}/bak/auth"
 
 - name: Copy kubeconfig
   copy:
-    src: "{{ dirartifacts }}/bak/auth/kubeconfig"
+    src: "{{ artifact_directory }}/bak/auth/kubeconfig"
     dest: ~/.kube/config
 
 #- name: Source Terraform variables
