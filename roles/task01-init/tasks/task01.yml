@@ -6,3 +6,7 @@
     repo: "{{ item.repo }}"
   with_items:
     - "{{ gitrepos }}"
+
+- name: ocp4-deploy | task01-init | Create manifest
+  shell: "openshift-install create manifests --dir={{ artifact_directory }}/data"
+

@@ -1,7 +1,4 @@
 ---
-- name: ocp4-deploy | task02-config | Create manifest
-  shell: "openshift-install create manifests --dir={{ artifact_directory }}/data"
-
 - name: ocp4-deploy | task02-config | Get cluster random name
   shell: "awk -F'[-]' '/infrastructureName/{print $2}' {{ artifact_directory }}/data/manifests/cluster-infrastructure-02-config.yml"
   register: idrand

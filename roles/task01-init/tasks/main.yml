@@ -1,4 +1,4 @@
 ---
-# tasks file for ocp4_govcloud
-- name: ocp4-deploy | Task01 | 
+# tasks file for task01-init
+- name: ocp4-deploy | task01-init
   include_tasks: task01.yml
