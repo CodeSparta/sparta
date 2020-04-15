@@ -1,11 +1,11 @@
-variable "aws_region" { default = "{{ lookup('env','awsRegion1' }}" }
+variable "aws_region" { default = "{{ lookup('env','awsRegion1') }}" }
 variable "aws_azs" { default = ["a"] }
 variable "aws_availability_zones" { default = ["us-gov-west-1a"] }
 variable "default_tags" { default = {} }
 variable "infrastructure_id" { default = "{{ lookup('env','nameVpc') }}" }
-variable "clustername" { default = "{{ nameCluster }}" }
+variable "clustername" { default = "{{ lookup('env','nameCluster') }}" }
 variable "private_vpc_cidr" { default = "10.0.0.0/16" }
-variable "domain" { default = " {{ nameDomain }}" }
+variable "domain" { default = " {{ lookup('env','nameDomain') }}" }
 variable "vpc_private_subnet_cidrs" { default = ["10.0.1.0/24","10.0.2.0/24","10.0.3.0/24"] }
 variable "vpc_public_subnet_cidr" { default = ["10.0.7.0/26", "10.0.8.0/26", "10.0.9.0/26"] }
 variable "aws_access_key_id" { default = "{{ aws_access_key_id }}"  }
@@ -23,7 +23,7 @@ variable "bastion_ssh_public_key_file_path" {
   description = "The file path containing the public key used for access to the bastion server"
 }
 
-// external_access:  if set to true, external management access (ssh access) to the environment is enabled via a bastion server running in
+// external_access:  if set to true, external management access ssh access to the environment is enabled via a bastion server running in
 // a public facing subnet.
 variable "external_management_access" { default = true }
 
