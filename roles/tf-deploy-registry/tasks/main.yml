@@ -14,7 +14,7 @@
     TF_VAR_aws_secret_access_key: "{{ aws_secret_key.stdout }}"
   no_log: true
 
-- name: ocp4-deploy | tf-deploy-registry | Deploy registry infrastructure resources
+- name: ocp4-deploy | tf-deploy-registry | Deploy registry node
   terraform:
     project_path: "{{ tf_base_dir }}"
     state: present

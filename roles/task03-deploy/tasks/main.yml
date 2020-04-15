@@ -4,5 +4,5 @@
 - name: ocp4-deploy | task03-deploy | Create ssh config
   include_tasks: create-ssh-config.yml
 
-- name: ocp4-deploy | registry | registry-pre-init
+- name: ocp4-deploy | task03-deploy | registry-pre-init
   include_tasks: registry-pre-init.yml

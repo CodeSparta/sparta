@@ -1,5 +1,5 @@
 ---
-- name: ocp4-deploy | Deploy regsitry via terraform
+- name: ocp4-deploy | Deploy registry via terraform
   hosts: localhost
   connection: local
   roles: 
