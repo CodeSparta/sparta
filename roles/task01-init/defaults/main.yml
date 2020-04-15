@@ -1,23 +1,6 @@
 ---
-# defaults file for ocp4_govcloud
+# defaults file for task01-init
 
-awsRegion1="{{ lookup('ENV', 'awsRegion1') }}"
-awsRegion3="{{ lookup('ENV', 'awsRegion2') }}"
-awsRegion2="{{ lookup('ENV', 'awsRegion3') }}"
-dirArtifacts="{{ lookup('ENV', 'dirArtifacts') }}"
-nameVpc="{{ lookup('ENV', 'nameVpc') }}"
-nameDomain="{{ lookup('ENV', 'nameDomain') }}"
-dirBase="{{ lookup('ENV', 'dirBase') }}"
-clusterDomain="{{ lookup('ENV', 'clusterDomain') }}"
-versOCP="{{ lookup('ENV', 'versOCP') }}"
-nameCluster="{{ lookup('ENV', 'nameCluster') }}"
-asset_directories:
-  - mirror
-  - images
-  - repos
-  - secrets
-  - ansible
-  - terraform
 gitrepos:
   - repo: https://repo1.dsop.io/ocp4/ansible-playbooks/registry.git
     dest: "{{ lookup('env', 'HOME') }}/PlatformOne/ansible/registry"
