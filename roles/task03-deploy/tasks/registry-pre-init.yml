@@ -1,5 +1,5 @@
 ---
-- name: ocp4-deploy | task03-deploy | Copy credentials to directory
+- name: ocp4-deploy | task03-deploy | Create docker config directory
   file:
     path: "{{ home_directory }}/.docker"
     state: directory
@@ -29,7 +29,7 @@
 #  args:
 #    chdir: "{{ home_directory }}/PlatformOne/images/"
 
-- name: ocp4-deploy | task03-deploy | Download openshift images for registry
+- name: ocp4-deploy | task03-deploy | Download PpenShift images for registry
   block:
     - name: ocp4-deploy | task03-deploy | Check for file existence
       find:
