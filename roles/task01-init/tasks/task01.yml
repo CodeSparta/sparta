@@ -1,50 +1,8 @@
 ---
-- name: ocp4-deploy | Task01 | Create/Stage Secret and Configuration Assets
-  file:
-    state: directory
-    path: "{{ lookup('ENV', 'HOME') }}/PlatformOne/{{ item }}"
-    owner: "{{ lookup('ENV', 'USER') }}"
-    mode: 0755
-  loop: "{{ asset_directories }}"
-
-- name: ocp4-deploy | Task01 | Stash deployment docker images
-  command: "{{ item }}"
-  with_items:
-    - podman pull docker.io/library/registry:2
-    - podman pull docker.io/library/nginx:latest
-    - podman pull docker.io/library/containercraft/one:4.3.8
-  register: images
-  when: "'Image is up to date' not in images.stdout"
-
-- name: ocp4-deploy | Task01 | Export images 
-  command: "{{ item }}"
-  with_items:
-    - podman save -o docker-registry2-image.tar registry:2
-    - podman save -o docker-nginxlatest-image.tar nginx:latest
-    - podman save -o docker-containerone-image.tar containercraft/one:4.3.8
-  args:
-    chdir: "{{ lookup('ENV', 'HOME') }}/PlatformOne/images/
-
-- name: ocp4-deploy | Task01 | Clone Git repositories
+- name: ocp4-deploy | task01-init | Clone Git repositories
   git:
     clone: yes
     dest: "{{ item.dest }}"
     repo: "{{ item.repo }}"
   with_items:
     - "{{ gitrepos }}"
-
-- block:
-    - name: ocp4-deploy | Task01 | Start containerone container
-      shell: podman run --rm -d -h one --name one \
-             --volume {{ lookup('ENV', 'HOME') }}/platformrone:/root/PlatformOne \
-             docker.io/containercraft/one
-      register: one
-      changed_when: one.rc == 0
-  rescue:
-    - name: ocp4-deploy | Task01 | Start containerone container
-      shell: podman run --rm -d -h one --name one \
-             --volume {{ lookup('ENV', 'HOME') }}/platformrone:/root/PlatformOne \
-             docker.io/containercraft/one
-      register: one
-      changed_when: one.rc == 0
-      failed_when: "'Error response from daemon: Conflict' not in one.stderr"

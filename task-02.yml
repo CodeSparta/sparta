@@ -1,5 +1,5 @@
 ---
-- name: ocp4-deploy | Install and Configure OCP4
+- name: ocp4-deploy | Configure for OCP4
   hosts: localhost
   tasks: 
   roles:
