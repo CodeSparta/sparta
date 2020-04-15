@@ -25,7 +25,7 @@
     creates: "{{ base_directory }}"
 
 # Load local images into podman
-- name: ocp4-deploy | task03-registry | :oad nginx image into local cache
+- name: ocp4-deploy | task03-registry | Load nginx image into local cache
   command: "{{ item }}"
   with_items:
     - "podman load -i {{ base_directory}}/images/docker-nginxlatest-image.tar"
@@ -87,7 +87,7 @@
     docker.io/library/registry:2
   when: '"registry" not in nginxCheck.stdout'
 
-- name: ocp4-deploy | task03-registry | Ppdate the certificate trust on the server
+- name: ocp4-deploy | task03-registry | Update the certificate trust on the server
   copy:
     src: "{{ artifact_directory }}/ssl/{{ cluster_domain }}.crt"
     dest: "/etc/pki/ca-trust/source/anchors/{{ cluster_domain }}.crt"
