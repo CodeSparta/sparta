@@ -1,9 +1,11 @@
 ---
 # file: site.yml
 - import_playbook: task-02.yml
+- import_playbook: tf-vars.yml
 - import_playbook: tf-vpc.yml
 - import_playbook: tf-registry.yml
 - import_playbook: task-03.yml
 - import_playbook: task-03-registry.yml
 - import_playbook: tf-bootstrap.yml
 - import_playbook: tf-masters.yml
+- import_playbook: post-deploy.yml

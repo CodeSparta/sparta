@@ -1,0 +1,6 @@
+---
+- name: ocp4-deploy | terraform-vars | Capture terraform vars
+  hosts: localhost
+  connection: local
+  roles:
+    - tf-vars-create
