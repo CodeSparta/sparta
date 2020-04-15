@@ -9,17 +9,6 @@ ocp_version: "{{ lookup('env','versOCP') }}"
 remote_home: "{{ ansible_env.HOME }}"
 vpc_name: "{{ lookup('env','nameVpc') }}"
 domain_name: "{{ lookup('env','nameDomain') }}"
-gitrepos:
-  - repo: https://repo1.dsop.io/ocp4/ansible-playbooks/registry.git
-    dest: "{{ lookup('env', 'HOME') }}/PlatformOne/ansible/registry"
-  - repo: https://repo1.dsop.io/ocp4/aws/aws-platform-base.git
-    dest: "{{ lookup('env', 'HOME') }}/PlatformOne/terraform/aws-platform-base"
-  - repo: https://repo1.dsop.io/ocp4/aws/aws-platform-openshift4-registry.git
-    dest: "{{ lookup('env', 'HOME') }}/PlatformOne/terraform/aws-platform-openshift4-registry"
-  - repo: https://repo1.dsop.io/ocp4/aws/aws-platform-openshift4-bootstrap.git
-    dest: "{{ lookup('env', 'HOME') }}/PlatformOne/terraform/aws-platform-openshift4-bootstrap"
-  - repo: https://repo1.dsop.io/ocp4/aws/aws-platform-openshift4-masters.git
-    dest: "{{ lookup('env', 'HOME') }}/PlatformOne/terraform/aws-platform-openshift4-masters"
 
 #Terraform spin-up
 TF_VAR_infrastructure_id: "{{ vpc_name }}"

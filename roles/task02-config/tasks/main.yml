@@ -1,43 +1,32 @@
 ---
-- name: Clone Git repositories
-  git:
-    clone: yes
-    dest: "{{ item.dest }}"
-    repo: "{{ item.repo }}"
-  with_items:
-    - "{{ gitrepos }}"
-
-- name: Source environmental variables
-  shell: "source /root/PlatformOne/*/environment"
-
-- name: Create manifest
+- name: ocp4-deploy | task02-config | Create manifest
   shell: "openshift-install create manifests --dir={{ artifact_directory }}/data"
 
-- name: Get cluster random name
+- name: ocp4-deploy | task02-config | Get cluster random name
   shell: "awk -F'[-]' '/infrastructureName/{print $2}' {{ artifact_directory }}/data/manifests/cluster-infrastructure-02-config.yml"
   register: idrand
 
-- name: Replace random name with vpc name
+- name: ocp4-deploy | task02-config | Replace random name with vpc name
   replace:
     path: "{{ artifact_directory }}/data/manifests/cluster-infrastructure-02-config.yml"
     regexp: "infrastructureName: {{ cluster_name }}-{{ idrand.stdout }}"
     replace: "infrastructureName: {{ vpc_name }}"
 
-- name: Find all manifest files
+- name: ocp4-deploy | task02-config | Find all manifest files
   find:
     path: "{{ artifact_directory }}/data"
     recurse: yes
     age: 1s
   register: manifests
 
-- name: Replace infrastructureName for all files
+- name: ocp4-deploy | task02-config | Replace infrastructureName for all files
   replace:
     path: "{{ item.path }}"
     regexp: "{{ cluster_name }}-{{ idrand.stdout }}"
     replace: "{{ vpc_name }}"
   loop: "{{ manifests.files }}"
 
-- name: Replace region for all files
+- name: ocp4-deploy | task02-config | Replace region for all files
   replace:
     path: "{{ item.path }}"
     regexp: "us-east-1"
@@ -45,13 +34,13 @@
   loop: "{{ manifests.files }}"
 
 - block:
-    - name: Replace region for cluster-infrastructure-02-config.yml
+    - name: ocp4-deploy | task02-config | Replace region for cluster-infrastructure-02-config.yml
       replace:
         path: "{{ artifact_directory }}/data/manifests/cluster-infrastructure-02-config.yml"
         regexp: "us-east-1"
         replace: "{{ ec2_region }}"
   always:
-    - name: Check to see if the content still exists
+    - name: ocp4-deploy | task02-config | Check to see if the content still exists
       lineinfile:
         path: "{{ artifact_directory }}/data/manifests/cluster-infrastructure-02-config.yml"
         line: us-east-1
@@ -59,14 +48,14 @@
       check_mode: true
       register: presence
 
-    - name: Replace region for cluster-infrastructure-02-config.yml
+    - name: ocp4-deploy | task02-config | Replace region for cluster-infrastructure-02-config.yml
       replace:
         path: "{{ artifact_directory }}/data/manifests/cluster-infrastructure-02-config.yml"
         regexp: "us-east-1"
         replace: "{{ ec2_region }}"
       when: "{{ presence.changed }} == False"
 
-- name: Remove default ingress config & non-applicable cloud cred configs
+- name: ocp4-deploy | task02-config | Remove default ingress config & non-applicable cloud cred configs
   file:
     path: '{{ item }}'
     state: absent
@@ -74,34 +63,32 @@
     - "{{ artifact_directory }}/data/openshift/99_cloud-creds-secret.yaml"
     - "{{ artifact_directory }}/data/openshift/99_role-cloud-creds-secret-reader.yaml"
     
-- name: Copy Machine API Operator credentials
+- name: ocp4-deploy | task02-config | Copy Machine API Operator credentials
   copy:
     src: "{{ artifact_directory }}/bak/openshift/"
     dest: "{{ artifact_directory }}/data/openshift/"
 
-- name: Backup ignition config directory
+- name: ocp4-deploy | task02-config | Backup ignition config directory
   copy:
     src: "{{ artifact_directory }}/data/"
     dest: "{{ artifact_directory }}/bak/data-ignition/"
 
-- name: Generate ignition config files
+- name: ocp4-deploy | task02-config | Generate ignition config files
   shell: "openshift-install create ignition-configs --dir={{ artifact_directory }}/data"
 
-- name: Move auth directory out of future nginx web root path
+- name: ocp4-deploy | task02-config | Move auth directory out of future nginx web root path
   shell: "mv {{ artifact_directory }}/data/auth {{ artifact_directory }}/bak/auth"
 
-- name: Copy kubeconfig
+- name: ocp4-deploy | task02-config | Copy kubeconfig
   copy:
     src: "{{ artifact_directory }}/bak/auth/kubeconfig"
     dest: ~/.kube/config
 
-#- name: Source Terraform variables
-#  shell: "{{ base_directory }}/terraform/aws-platform-base/tfsetup.sh"
 - name: ocp4-deploy | tf-deploy-masters | Register AWS access key
   shell: "cat ${dirArtifacts}/.aws/govcloud.credentials | grep aws_access_key_id | awk '{print $3}'"
   register: aws_access_key
 
-- name: ocp4-deploy | tf-deploy-masters | Register AWS access key
+- name: ocp4-deploy | task02-config | Register AWS access key
   shell: "cat ${dirArtifacts}/.aws/govcloud.credentials | grep aws_secret_access_key | awk '{print $3}'"
   register: aws_secret_key
 
@@ -112,8 +99,7 @@
     TF_VAR_aws_secret_access_key: "{{ aws_secret_key.stdout }}"
   no_log: true
 
-
-- name: Initilize terraform modules
+- name: ocp4-deploy | task02-config | Initilize terraform modules
   shell: "cd {{ item }} && terraform init"
   with_items:
     - "{{ base_directory }}/terraform/aws-platform-base/"

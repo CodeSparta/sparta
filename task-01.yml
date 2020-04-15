@@ -1,9 +1,6 @@
 ---
-- name: ocp4-deploy | Install and Configure OCP4
+- name: ocp4-deploy | Clone Git repositories
   hosts: localhost
   connection: local
-  tasks: 
-    - name: ocp4-deploy | Import OCP4 init role
-      include_role: ./roles/task01-init
-      tags: 
-        - init
+  roles:
+    - task01-init
