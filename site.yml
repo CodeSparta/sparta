@@ -9,3 +9,4 @@
 - import_playbook: tf-bootstrap.yml
 - import_playbook: tf-masters.yml
 - import_playbook: post-deploy.yml
+#PlaceHolder- import_playbook: tf-vars.yml #PlaceHolder
