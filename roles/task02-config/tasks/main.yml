@@ -2,12 +2,14 @@
 - name: ocp4-deploy | task02-config | Get cluster random name
   shell: "awk -F'[-]' '/infrastructureName/{print $2}' {{ artifact_directory }}/data/manifests/cluster-infrastructure-02-config.yml"
   register: idrand
+  ignore_errors: True
 
 - name: ocp4-deploy | task02-config | Replace random name with vpc name
   replace:
     path: "{{ artifact_directory }}/data/manifests/cluster-infrastructure-02-config.yml"
     regexp: "infrastructureName: {{ cluster_name }}-{{ idrand.stdout }}"
     replace: "infrastructureName: {{ vpc_name }}"
+  ignore_errors: True
 
 - name: ocp4-deploy | task02-config | Find all manifest files
   find:
@@ -36,6 +38,7 @@
         path: "{{ artifact_directory }}/data/manifests/cluster-infrastructure-02-config.yml"
         regexp: "us-east-1"
         replace: "{{ ec2_region }}"
+  ignore_errors: True
   always:
     - name: ocp4-deploy | task02-config | Check to see if the content still exists
       lineinfile:
@@ -75,6 +78,7 @@
 
 - name: ocp4-deploy | task02-config | Move auth directory out of future nginx web root path
   shell: "mv {{ artifact_directory }}/data/auth {{ artifact_directory }}/bak/auth"
+  ignore_errors: True
 
 - name: ocp4-deploy | task02-config | Copy kubeconfig
   copy:
