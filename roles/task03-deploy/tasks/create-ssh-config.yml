@@ -15,6 +15,7 @@
   ec2_instance_info:
     filters:
       tag:Name: "{{ vpc_name }}-registry-node"
+      instance-state-name: "running"
     region: "{{ ec2_region }}"
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
@@ -27,6 +28,7 @@
   ec2_instance_info:
     filters:
       tag:Name: "{{ vpc_name }}-bastion-node"
+      instance-state-name: "running"
     region: "{{ ec2_region }}"
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
