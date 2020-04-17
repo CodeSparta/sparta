@@ -1,0 +1,24 @@
+---
+artifact_directory: "{{ lookup('env','dirArtifacts') }}"
+base_directory: "{{ lookup('env','dirBase') }}"
+cluster_domain: "{{ lookup('env','clusterDomain') }}"
+cluster_name: "{{ lookup('env','nameCluster') }}"
+ec2_region: "{{ lookup('env', 'awsRegion1') }}"
+home_directory: "{{ lookup('env','HOME') }}"
+ocp_version: "{{ lookup('env','versOCP') }}"
+remote_home: "{{ ansible_env.HOME }}"
+vpc_name: "{{ lookup('env','nameVpc') }}"
+domain_name: "{{ lookup('env','nameDomain') }}"
+
+#Terraform spin-up
+TF_VAR_infrastructure_id: "{{ vpc_name }}"
+TF_VAR_aws_region: "{{ ec2_region }}"
+TF_VAR_clustername: "{{ cluster_name }}"
+TF_VAR_domain: "{{ domain_name }}"
+AWS_DEFAULT_REGION: "{{ ec2_region }}"
+
+# point the ignition files to the proper location
+TF_VAR_registry_ssh_public_key_file_path: "{{ artifact_directory }}/.ssh/id_rsa_{{ cluster_domain }}.pub"
+TF_VAR_bastion_ssh_public_key_file_path: "{{ artifact_directory }}/.ssh/id_rsa_{{ cluster_domain }}.pub"
+TF_VAR_master_ign_path: "{{ artifact_directory }}/data/master.ign"
+TF_VAR_bootstrap_ign_path: "{{ artifact_directory }}/data/bootstrap.ign"

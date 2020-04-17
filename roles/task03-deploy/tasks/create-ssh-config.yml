@@ -37,6 +37,9 @@
 - set_fact:
     bastion_public_ip: "{{ bastion_eip.instances | map(attribute='public_ip_address') | list }}"
 
+- set_fact:
+    bastion_private_ip: "{{ bastion_eip.instances | map(attribute='private_ip_address') | list }}"
+
 - name: ocp4-deploy | task03-deploy | Create ~/.ssh/config file from template
   template:
     src: config.j2

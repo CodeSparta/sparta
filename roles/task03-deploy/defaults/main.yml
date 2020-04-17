@@ -1,5 +1,6 @@
 ---
 # defaults file for task03-deploy
+c1d: true
 artifact_directory: "{{ lookup('env','dirArtifacts') }}"
 base_directory: "{{ lookup('env','dirBase') }}"
 cluster_name: "{{ lookup('env','clusterName') }}"
