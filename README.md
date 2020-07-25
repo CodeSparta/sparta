@@ -1,4 +1,4 @@
-# Konductor Plugin | Maestro Platform Middleware Applier
+# Konductor Plugin | Maestro Platform Infrastructure Deployer
 ### Requirements:
 This codebase presumes a koffer bundle present in the `/tmp/` directory.
     
