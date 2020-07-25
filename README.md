@@ -1,4 +1,5 @@
-# Requirements:
+# Konductor Plugin | Maestro Platform Middleware Applier
+### Requirements:
 This codebase presumes a koffer bundle present in the `/tmp/` directory.
     
 ### 1. Aquire root & unpack tarball
