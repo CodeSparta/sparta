@@ -1,0 +1,13 @@
+---
+- name: '{{ ansible_name_module }} | file | Create Directory Structure' 
+  file:
+    path: '{{ item }}'
+    state: directory
+    mode: '0777'
+  with_items:
+    - '{{ dir_deploy }}/nginx'
+- name: '{{ ansible_name_module }} | copy | Load Ignition Files into Nginx Service'
+  copy:
+    src: "{{ dir_deploy }}/cluster/ignition/"
+    dest: "{{ dir_deploy }}/nginx/"
+    mode: 0777

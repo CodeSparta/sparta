@@ -1,0 +1,22 @@
+#!/usr/local/bin/ansible-playbook --inventory=inventory
+- name: '{{ ansible_name }} | bundle | build' 
+  hosts: containerone
+  vars_files:
+    - '../p1.yml'
+    - 'vars/{{ target_environment }}.yml'
+    - 'vars/global.yml'
+  vars:
+    module: "build"
+    state_provider: "local"
+    terraform_module_path: "{{ dir_git_tfcore }}"
+   #terraform_global_variables: "{{ dir_terraform }}/p1.tfvars"
+    ansible_name_module: "{{ ansible_name }} | {{ module }}"
+  tasks:
+
+    ####### Terraform Apply
+    - name: '{{ ansible_name_module }} | terraform | Build VPC'
+      terraform:
+        state: present
+        project_path: "{{ terraform_module_path }}"
+       #variables_file: "{{ terraform_global_variables }}"
+      register: terraform_output

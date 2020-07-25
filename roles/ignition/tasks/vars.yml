@@ -1,0 +1,7 @@
+---
+# name: '{{ ansible_name_module }} | role | shell:cat | Register AWS access key ID'
+# shell: "awk '/aws_access_key_id/{print $3}' {{ dir_artifacts }}/.aws/govcloud.credentials"
+# register: aws_access_key_id_govcloud
+# name: '{{ ansible_name_module }} | role | shell:cat | Register AWS secret access key'
+# shell: "cat ${dirArtifacts}/.aws/govcloud.credentials | grep aws_secret_access_key | awk '{print $3}'"
+# register: aws_secret_access_key_govcloud

@@ -1,0 +1,40 @@
+################################################################################
+# Write Install Config .yaml
+write_machine_api_secrets_yaml () {
+run_log 0 "Writing machine api credential yaml files"
+
+cat <<EOF > ${p1DirArtifacts}/bak/openshift/99_openshift-ingress-operator_cloud-credentials-secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cloud-credentials
+  namespace: openshift-ingress-operator
+data:
+  aws_access_key_id: `echo -n "${access_KEYID}" | base64 -w0`
+  aws_secret_access_key: `echo -n "${access_KEYSECRET}" | base64 -w0`
+EOF
+
+cat <<EOF > ${p1DirArtifacts}/bak/openshift/99_openshift-machine-api_aws-cloud-credentials-secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: aws-cloud-credentials
+  namespace: openshift-machine-api
+data:
+  aws_access_key_id: `echo -n "${access_KEYID}" | base64 -w0`
+  aws_secret_access_key: `echo -n "${access_KEYSECRET}" | base64 -w0`
+EOF
+
+cat <<EOF > ${p1DirArtifacts}/bak/openshift/99_openshift-image-registry_installer-cloud-credentials-secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: installer-cloud-credentials
+  namespace: openshift-image-registry
+data:
+  aws_access_key_id: `echo -n "${access_KEYID}" | base64 -w0`
+  aws_secret_access_key: `echo -n "${access_KEYSECRET}" | base64 -w0`
+EOF
+
+}
+

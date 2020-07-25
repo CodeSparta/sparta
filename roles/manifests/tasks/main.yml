@@ -1,0 +1,8 @@
+---
+# main.yml tasks file for role/manifests
+- name: '{{ ansible_name_module }} | Generate install-config.yaml' 
+  include_tasks: generate-install-config.yml
+- name: '{{ ansible_name_module }} | Init Manifests' 
+  include_tasks: manifests-init.yml
+- name: '{{ ansible_name_module }} | Edit Manifests' 
+  include_tasks: manifests-edit.yml

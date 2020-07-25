@@ -1,0 +1,3 @@
+podman pull quay.io/openshift-release-dev/ocp-release@sha256:8f923b7b8efdeac619eb0e7697106c1d17dd3d262c49d8742b38600417cf7d1d
+podman tag $(podman images | grep ocp-release) registry.svc.ci.openshift.org/origin/release:4.5
+podman push registry.tacobell.besttacos.com:5000/origin/release:4.5

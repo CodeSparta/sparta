@@ -1,0 +1,49 @@
+---
+# openshift-install binary to run
+openshift_install_binary: /usr/bin/openshift-install
+
+# Instance Types
+cloud_instance_type_master: "m5.xlarge"
+cloud_instance_type_worker: "m5.xlarge"
+cloud_instance_type_storage: "m5.xlarge"
+
+# Developer Toggle
+#   Options:
+#     - oc
+#     - skopeo
+image_mirror_utility: "oc"
+
+#####################################################################################################
+# End of user configurable variables
+#####################################################################################################
+# Bash ENV Lookups
+local_home: "{{ lookup('env', 'HOME') }}"
+local_user: "{{ lookup('env', 'USER') }}"
+
+# Ansible Playbook Run Variables
+name_vendor: "RedHat"
+ansible_name: " {{ name_vendor }} | Konductor | Infra Automation"
+ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+
+# Directory Inventory
+dir_deploy: "{{ local_home }}/deploy"
+dir_images: "{{ dir_deploy }}/images"
+dir_secrets: "{{ dir_deploy }}/secrets"
+dir_cluster: "{{ dir_deploy }}/cluster"
+dir_ansible: "{{ dir_deploy }}/ansible"
+dir_terraform: "{{ dir_deploy }}/terraform"
+
+# Terraform Variables
+tf_vars: "{{ dir_terraform }}/global.tfvars"
+
+# Hosts Environment 
+remote_home: "{{ ansible_env.HOME }}"
+
+# Linux Container Pull Secrets
+registry_auth_file: "{{ dir_secrets }}/docker/config.json }}"
+
+# SSH Keys
+sshkeys_priv_file: "{{ dir_secrets }}/ssh/id_rsa_cluster_deploy"
+sshkeys_priv_string: "{{ lookup('file', '{{ sshkeys_priv_file }}') }}"
+sshkeys_pub_file: "{{ dir_secrets }}/ssh/id_rsa_cluster_deploy.pub"
+sshkeys_pub_string: "{{ lookup('file', '{{ sshkeys_pub_file }}') }}"

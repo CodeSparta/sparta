@@ -1,6 +1,0 @@
----
-- name: ocp4-deploy | Clone Git repositories
-  hosts: localhost
-  connection: local
-  roles:
-    - task01-init

@@ -1,6 +1,0 @@
----
-- name: ocp4-deploy | Install registry artifacts on Platform0ne
-  hosts: localhost
-  connection: local
-  roles:
-    - task03-deploy

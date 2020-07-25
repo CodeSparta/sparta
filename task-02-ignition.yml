@@ -1,6 +1,0 @@
----
-- name: ocp4-deploy | Configure for OCP4
-  hosts: localhost
-  tasks: 
-  roles:
-    - task02-ignition

@@ -1,5 +1,0 @@
----
-- name: ocp4-deploy | tf-deploy-bootstrap | Deploy bootstrap resources
-  terraform:
-    project_path: "{{ tf_base_dir }}"
-    state: present

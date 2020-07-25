@@ -1,0 +1,2 @@
+---
+openshift_install_binary: /usr/bin/openshift-install

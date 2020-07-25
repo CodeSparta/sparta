@@ -1,5 +1,0 @@
----
-- name: ocp4-deploy | post-config | Run post config playbook
-  hosts: all
-  roles:
-    - post-deploy

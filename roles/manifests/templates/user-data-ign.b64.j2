@@ -1,0 +1,5 @@
+{% block content -%}
+    {% filter b64encode -%}
+        {% include 'user-data-ign.json.j2' %}
+    {% endfilter %}
+{% endblock %}

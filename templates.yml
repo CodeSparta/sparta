@@ -1,0 +1,51 @@
+#!/usr/local/bin/ansible-playbook --inventory=inventory
+- name: '{{ ansible_name }} | Konductor | template' 
+  hosts: local
+  vars_files:
+    - '../cluster-vars.yml'
+    - 'vars/{{ target_environment }}.yml'
+    - 'vars/global.yml'
+    - 'vars/git.yml'
+  vars:
+    module: "template"
+    state_provider: "{{ terraform_state_provider }}"
+    ansible_name_module: "{{ ansible_name }} | {{ module }}"
+    dir_deploy_templates: "{{ dir_deploy }}/ansible/deploy/templates"
+    tmpl_installconfig_j2: "{{ dir_deploy_templates }}/openshift-install/{{ cloud_provider }}-{{ target_environment }}-install-config.yaml.j2"
+    cloud_key_id_special: "{{ lookup('ini', 'aws_access_key_id section=default file={{ dir_secrets }}/aws/credentials') }}"
+    cloud_key_secret_special: "{{ lookup('ini', 'aws_secret_access_key section=default file={{ dir_secrets }}/aws/credentials') }}"
+    redhat_quay_pull_file: '{{ dir_secrets }}/docker/config.json }}'
+  tasks:
+
+    - name: '{{ ansible_name_module }} | template | Stage OpenShift Configs & Manifests' 
+      template:
+        src: '{{ item.src }}'
+        dest: '{{ item.dest }}'
+      loop: 
+        - { module: 'templates', src: "{{ dir_deploy_templates }}/openshift-install/99_openshift-image-registry_installer-cloud-credentials-secret.yaml.j2", dest: "{{ dir_cluster }}/aux/openshift/99_openshift-image-registry_installer-cloud-credentials-secret.yaml"}
+        - { module: 'templates', src: "{{ dir_deploy_templates }}/openshift-install/99_openshift-ingress-operator_cloud-credentials-secret.yaml.j2", dest: "{{ dir_cluster }}/aux/openshift/99_openshift-ingress-operator_cloud-credentials-secret.yaml"}
+        - { module: 'templates', src: "{{ dir_deploy_templates }}/openshift-install/99_openshift-machine-api_aws-cloud-credentials-secret.yaml.j2", dest: "{{ dir_cluster }}/aux/openshift/99_openshift-machine-api_aws-cloud-credentials-secret.yaml"}
+        - { module: 'p1', src: "{{ dir_deploy_templates }}/terraform/global.tfvars.j2", dest: "{{ dir_terraform }}/global.tfvars"}
+#       - { module: 'core', src: "{{ dir_deploy_templates }}/terraform/{{ state_provider }}.tfstate.j2", dest: "{{ dir_git_tfcore }}/{{ state_provider }}.tfstate"}
+#       - { module: 'cloudctl', src: "{{ dir_deploy_templates }}/terraform/{{ state_provider }}.tfstate.j2", dest: "{{ dir_git_tfcloudctl }}/{{ state_provider }}.tfstate"}
+#       - { module: 'bootstrap', src: "{{ dir_deploy_templates }}/terraform/{{ state_provider }}.tfstate.j2", dest: "{{ dir_git_tfbootstrap }}/{{ state_provider }}.tfstate"}
+#       - { module: 'masters', src: "{{ dir_deploy_templates }}/terraform/{{ state_provider }}.tfstate.j2", dest: "{{ dir_git_tfmasters }}/{{ state_provider }}.tfstate"}
+ 
+    ####### Ignition User Data
+    - name: '{{ ansible_name_module }} role | manifests | template | Stage OpenShift Ignition User-Data JSON'
+      template:
+        src: "{{ dir_deploy_templates }}/user-data/user-data-ign.json.j2"
+        dest: "{{ dir_deploy }}/config/user-data/{{ item.name }}.json"
+      with_items:
+        - { name: master,    IGNITION_URL:  "http://registry.{{ cluster_domain }}/master.ign" }
+        - { name: bootstrap, IGNITION_URL:  "http://registry.{{ cluster_domain }}/bootstrap.ign" }
+        - { name: bastion,   USER_AUTH_KEY: "{{ lookup('file', '{{ dir_secrets }}/ssh/id_rsa_cluster_deploy.pub')}}" }
+
+    - name: '{{ ansible_name_module }} role | manifests | template | Stage OpenShift Ignition User-Data B64'
+      template:
+        src: "{{ dir_deploy_templates }}/user-data/user-data-ign.b64.j2"
+        dest: "{{ dir_deploy }}/config/user-data/{{ item.name }}-json.b64"
+      with_items:
+        - { name: 'master',    IGNITION_URL: "http://registry.{{ cluster_domain }}/master.ign" }
+        - { name: 'bootstrap', IGNITION_URL: "http://registry.{{ cluster_domain }}/bootstrap.ign" }
+        - { name: 'bastion',   USER_AUTH_KEY: "{{ lookup('file', '{{ dir_secrets }}/ssh/id_rsa_cluster_deploy.pub') }}" }

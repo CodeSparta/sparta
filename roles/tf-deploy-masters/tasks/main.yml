@@ -1,5 +1,0 @@
----
-- name: ocp4-deploy | tf-deploy-masters | Deploy master nodes
-  terraform:
-    project_path: "{{ tf_base_dir }}"
-    state: present

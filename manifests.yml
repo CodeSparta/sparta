@@ -1,0 +1,14 @@
+#!/usr/local/bin/ansible-playbook --inventory=inventory
+- name: '{{ ansible_name }} | bundle | manifests' 
+  hosts: local
+  vars_files:
+    - '../cluster-vars.yml'
+    - 'vars/{{ target_environment }}.yml'
+    - 'vars/global.yml'
+  vars:
+    module: "manifests"
+    ansible_name_module: "{{ ansible_name }} | {{ module }}"
+    dir_deploy_templates: "{{ dir_deploy }}/ansible/deploy/templates"
+    tmpl_installconfig_j2: "{{ dir_deploy_templates }}/openshift-install/{{ cloud_provider }}-{{ target_environment }}-install-config.yaml.j2"
+  roles:
+    - manifests

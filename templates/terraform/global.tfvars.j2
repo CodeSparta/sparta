@@ -1,0 +1,21 @@
+aws_access_key = "{{ cloud_key_id_special }}"
+aws_secret_key = "{{ cloud_key_secret_special }}"
+aws_profile = "default"
+sshkeys_pub_file = "{{ sshkeys_pub_file }}"
+name_domain = "{{ name_domain }}"
+cluster_name = "{{ cluster_name }}"
+cluster_domain = "{{ cluster_domain }}"
+name_cluster_vpc = "{{ name_cluster_vpc }}"
+iam_instance_profile = "{{ name_cluster_vpc }}-master-profile"
+bootstrap_ign_path = "{{ dir_deploy }}/config/user-data/bootstrap.json"
+default_tags = {  }
+external_management_access = "{{ public_ssh_access_enabled }}"
+
+aws_region = "{{ cloud_region }}"
+//aws_zone_a = "{{ cloud_region }}a"
+//aws_zone_b = "{{ cloud_region }}b"
+//aws_zone_c = "{{ cloud_region }}c"
+
+/*
+  Terraform Modules
+*/

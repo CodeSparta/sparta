@@ -1,4 +1,0 @@
----
-# tasks file for task03-registry
-- name: ocp4-deploy | task03-registry | registry-container-init
-  include_tasks: registry-container-init.yml

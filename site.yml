@@ -1,12 +1,9 @@
----
-# file: site.yml
-- import_playbook: task-02.yml
-- import_playbook: task-02-ignition.yml
-- import_playbook: tf-vpc.yml
-- import_playbook: tf-registry.yml
-- import_playbook: task-03.yml
-- import_playbook: task-03-registry.yml
-- import_playbook: tf-bootstrap.yml
-- import_playbook: tf-masters.yml
-#- import_playbook: post-deploy.yml
-#PlaceHolder- import_playbook: tf-vars.yml #PlaceHolder
+#!/usr/local/bin/ansible-playbook --inventory=inventory
+- name: 'RedHat | Konductor | site.yml' 
+  hosts: local
+
+- import_playbook: tree.yml        # Create base deployment directory tree 
+- import_playbook: secrets.yml     # Stage deployment secrets
+- import_playbook: templates.yml   # Template prerequisite configs & auxillary manifests 
+- import_playbook: manifests.yml   # Create & customize OpenShift manifest files
+- import_playbook: ignition.yml    # Build RH CoreOS ignition files from manifests

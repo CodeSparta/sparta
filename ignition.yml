@@ -1,0 +1,12 @@
+#!/usr/local/bin/ansible-playbook --inventory=inventory
+- name: 'RedHat | Konductor | ignition' 
+  hosts: local
+  vars_files:
+    - '../cluster-vars.yml'
+    - 'vars/{{ target_environment }}.yml'
+    - 'vars/global.yml'
+  vars:
+    module: "ignition"
+    ansible_name_module: "{{ ansible_name }} | {{ module }}"
+  roles:
+    - ignition

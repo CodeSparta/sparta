@@ -1,0 +1,8 @@
+---
+####### Generate install-config.yaml
+- name: '{{ ansible_name_module }} | template | Generate install-config.yaml'
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+  loop: 
+    - { src: "{{ tmpl_installconfig_j2 }}", dest: "{{ dir_cluster }}/config/install-config.yaml" }

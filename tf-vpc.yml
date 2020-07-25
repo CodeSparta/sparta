@@ -1,6 +1,0 @@
----
-- name: ocp4-deploy | Deploy VPC with terraform
-  hosts: localhost
-  connection: local
-  roles: 
-    - tf-deploy-vpc

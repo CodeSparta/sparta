@@ -1,0 +1,32 @@
+{
+  "ignition": {
+    "config": {% raw %}{{% endraw %}{% if item.IGNITION_URL is defined %}
+
+      "append": [
+        {
+          "source": "{{item.IGNITION_URL}}",
+          "verification": {}
+        }
+      ]
+    {% endif %}},
+    "security": {
+      "tls": {}
+    },
+    "timeouts": {},
+    "version": "2.2.0"
+  },
+  "networkd": {},
+  "passwd": {% raw %}{{% endraw %}{% if item.USER_AUTH_KEY is defined %}
+
+    "users": [
+      {
+        "name": "core",
+        "sshAuthorizedKeys": [
+          "{{item.USER_AUTH_KEY}}"
+        ]
+      }
+    ]
+  {% endif %}},
+  "storage": {},
+  "systemd": {}
+}

@@ -1,7 +1,0 @@
----
-- name: ocp4-deploy | Install registry on registry node
-  hosts: registry
-  become: true
-  roles:
-    - task03-registry
-  

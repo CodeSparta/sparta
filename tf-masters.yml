@@ -1,6 +1,0 @@
----
-- name: ocp4-deploy | Deploy master nodes via terraform
-  hosts: localhost
-  connection: local
-  roles: 
-    - tf-deploy-masters
