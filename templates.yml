@@ -25,7 +25,7 @@
         - { module: 'templates', src: "{{ dir_deploy_templates }}/openshift-install/99_openshift-image-registry_installer-cloud-credentials-secret.yaml.j2", dest: "{{ dir_cluster }}/aux/openshift/99_openshift-image-registry_installer-cloud-credentials-secret.yaml"}
         - { module: 'templates', src: "{{ dir_deploy_templates }}/openshift-install/99_openshift-ingress-operator_cloud-credentials-secret.yaml.j2", dest: "{{ dir_cluster }}/aux/openshift/99_openshift-ingress-operator_cloud-credentials-secret.yaml"}
         - { module: 'templates', src: "{{ dir_deploy_templates }}/openshift-install/99_openshift-machine-api_aws-cloud-credentials-secret.yaml.j2", dest: "{{ dir_cluster }}/aux/openshift/99_openshift-machine-api_aws-cloud-credentials-secret.yaml"}
-        - { module: 'p1', src: "{{ dir_deploy_templates }}/terraform/global.tfvars.j2", dest: "{{ dir_terraform }}/global.tfvars"}
+#       - { module: 'p1', src: "{{ dir_deploy_templates }}/terraform/global.tfvars.j2", dest: "{{ dir_terraform }}/global.tfvars"}
 #       - { module: 'core', src: "{{ dir_deploy_templates }}/terraform/{{ state_provider }}.tfstate.j2", dest: "{{ dir_git_tfcore }}/{{ state_provider }}.tfstate"}
 #       - { module: 'cloudctl', src: "{{ dir_deploy_templates }}/terraform/{{ state_provider }}.tfstate.j2", dest: "{{ dir_git_tfcloudctl }}/{{ state_provider }}.tfstate"}
 #       - { module: 'bootstrap', src: "{{ dir_deploy_templates }}/terraform/{{ state_provider }}.tfstate.j2", dest: "{{ dir_git_tfbootstrap }}/{{ state_provider }}.tfstate"}
