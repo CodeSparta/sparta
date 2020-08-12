@@ -1,5 +1,6 @@
 #!/bin/bash
 # Konductor.sh
+#   Authors: kmorgan@redhat.com, kritchie@redhat.com
 #   Author: kmorgan@redhat.com
 # About:
 #   Build and start CloudCtl AirGap OpenShift Deployment Pod from a Koffer Bundle
@@ -17,12 +18,13 @@ run_log () {
 
 ################################################################################
 # Verify Bundle Integrity & Launch
-if [[ ! -d ./deploy ]]; then
+if [[ ! -f /root/deploy/nginx/release.txt ]]; then
   run_log 0 "Verifying SHA256SUM: ArtifactsBundle.tar.xz"
+
   sha256sum --check ArtifactsBundle.tar.xz.sha256 \
-      && tar -xv -C /root -f ArtifactsBundle.tar.xz \
-      && rm -rf ArtifactsBundle.tar.xz ArtifactsBundle.tar.xz.sha256 \
-      || run_log 1 "SHA Verify Failed!"
+    || run_log 1 "SHA Verify Failed!"
+
+  tar -xv -C /root -f /root/ArtifactsBundle.tar.xz && rm -rf ArtifactsBundle.tar.xz ArtifactsBundle.tar.xz.sha256
 fi
 
 ################################################################################
@@ -30,7 +32,7 @@ fi
 ################################################################################
 # Working Variables
 k9DirDeploy="${HOME}/deploy"
-varVerOpenshift="$(cat /deploy/nginx/release.txt)"
+varVerOpenshift="$(cat /root/deploy/nginx/release.txt)"
 
 ################################################################################
 # Stage ansible variables
@@ -58,12 +60,34 @@ run_init_stage () {
 mkdir -p ${k9DirDeploy}/config
 cat <<EOF > ${k9DirDeploy}/config/environment
 export k9DirDeploy="\${HOME}/deploy"
-export versOCP="${versOCP}"
+export versOCP="${varVerOpenshift}"
 export k9NameVpc="${k9NameVpc}"
 export k9NameDomain="${k9NameDomain}"
 export k9NameCluster="${k9NameCluster}"
 export k9ClusterDomain="${k9ClusterDomain}"
 export k9DirCluster="${k9DirCluster}"
+export k9VpcId="${k9VpcId}"
+export k9VpcCidr="${k9VpcCidr}"
+export k9RhcosAmi="${k9RhcosAmi}"
+export k9SubnetList=[${k9SubnetList}]
+EOF
+}
+
+# Post run of ENVIRONMENT file population to capture changes from answer.sh file
+run_init_post () {
+mkdir -p ${k9DirDeploy}/config
+cat <<EOF > ${k9DirDeploy}/config/environment
+export k9DirDeploy="\${HOME}/deploy"
+export versOCP="${varVerOpenshift}"
+export k9NameVpc="${k9NameVpc}"
+export k9NameDomain="${k9NameDomain}"
+export k9NameCluster="${cluster_name}"
+export k9ClusterDomain="${cluster_domain}"
+export k9DirCluster="${k9DirCluster}"
+export k9VpcId="${vpc_id}"
+export k9VpcCidr="${private_vpc_cird}"
+export k9RhcosAmi="${rhcos_ami}"
+export k9SubnetList=[${subnet_list}]
 EOF
 }
 
@@ -77,10 +101,10 @@ openssl req \
   -sha256 \
   -days   3650 \
   -newkey rsa:4096 \
-  -subj   "/CN=${p1ClusterDomain}" \
+  -subj   "/CN=${k9ClusterDomain}" \
   -out    /root/deploy/secrets/registry/ssl/registry.crt  \
   -keyout /root/deploy/secrets/registry/ssl/registry.key  \
-  -addext "subjectAltName=DNS:registry.${p1ClusterDomain},DNS:cloudctl,DNS:registry,DNS:localhos,IP:10.88.0.1,IP:127.0.0.1" 2>&1 1>/dev/null
+  -addext "subjectAltName=DNS:registry.${k9ClusterDomain},DNS:cloudctl,DNS:registry,DNS:localhost,IP:10.88.0.1,IP:127.0.0.1" 2>&1 1>/dev/null
 }
 
 ################################################################################
@@ -90,19 +114,18 @@ usr_prompt_aws_keys () {
   run_log 0 "AWS GovCloud IAM Credentials Web Panel:" ;
   run_log 0 "  https://console.amazonaws-us-gov.com/iam/home#/security_credentials" ;
   echo
-  run_log 0 "AWS Commercial IAM Security Credentials Web Panel:" ; 
-  run_log 0 "  https://console.aws.amazon.com/iam/home#/security_credentials" ; 
-  echo
   run_log 0 "Click on 'Create access key'"
   # Prompt user to paste secret
   echo
   read  -rp "    >> Please copy/paste your AWS 'Access Key ID': " access_KEYID;
+  read  -rp "    >> Please enter your AWS 'Region': " aws_REGION;
   read -srp "    >> Please copy/paste your AWS 'Secret Access Key' (Secret is masked): " access_KEYSECRET;
 
 mkdir -p ${k9DirDeploy}/secrets/aws
 cat <<EOF > ${k9DirDeploy}/secrets/aws/credentials
 ; https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html
 [default]
+region = ${aws_REGION}
 aws_access_key_id = ${access_KEYID}
 aws_secret_access_key = ${access_KEYSECRET}
 EOF
@@ -115,12 +138,16 @@ run_init_usr_prompt () {
   prompt_verify () {
     echo " 
     Artifact Environment Variables:
-      Target Environment: ${k9TargetEnvironment}
-      VPC Name:           ${k9NameVpc}
-      Cluster Domain:     ${k9ClusterDomain}
-      Cluster Name:       ${k9NameCluster}
-      Base Domain:        ${k9NameDomain}
-    "
+      TARGET_ENVIRONMENT: ${k9TargetEnvironment}
+      VPC_NAME:           ${k9NameVpc}
+      CLUSTER_DOMAIN:     ${k9ClusterDomain}
+      CLUSTER_NAME:       ${k9NameCluster}
+      BASE_DOMAIN:        ${k9NameDomain}
+      VPC_ID:             ${k9VpcId}
+      PRIVATE_VPC_CIDR:   ${k9VpcCidr}
+      RHCOS_AMI:          ${k9RhcosAmi}
+      SUBNET_LIST:        ${k9SubnetList}
+"
 
   while true; do
     read -p "    Please confirm these details are correct (Yes/No): " verify
@@ -140,7 +167,31 @@ run_init_usr_prompt () {
     Please enter your AWS VPC name: ' k9NameVpc
   }
 
-  # Prompt user for AWS VPC Name
+  # Prompt user for AWS VPC_ID
+  prompt_k9VpcId () {
+    read -p '
+    Please enter your AWS VPC_ID: ' k9VpcId
+  }
+
+  # Prompt user for AWS PRIVATE_VPC_CIDR
+  prompt_k9VpcCidr () {
+    read -p '
+    Please enter your AWS PRIVATE_VPC_CIDR (ex: 10.0.0.0/24): ' k9VpcCidr
+  }
+
+  # Prompt user for AWS RHCOS_AMI
+  prompt_k9RhcosAmi () {
+    read -p '
+    Please enter your AWS RHCOS_AMI: ' k9RhcosAmi
+  }
+
+  # Prompt user for AWS SUBNET_LIST
+  prompt_k9SubnetList () {
+    read -p '
+    Please enter your AWS SUBNET_LIST (csv ex: subnet-a, subnet-b): ' k9SubnetList
+  }
+
+  # Prompt user for AWS Cluster Name
   prompt_k9NameCluster () {
   echo "
     Please enter a cluster name which will be prepended to the Base Domain
@@ -185,6 +236,10 @@ run_init_usr_prompt () {
     prompt_k9NameDomain
     prompt_k9NameCluster
     prompt_k9NameVpc
+    prompt_k9VpcId
+    prompt_k9VpcCidr
+    prompt_k9SubnetList
+    prompt_k9RhcosAmi
     prompt_verify
   }
 sub_run
@@ -203,9 +258,6 @@ run_log 0 "
       AWS Admin Credentials:
           GovCloud Credentials:
             @ https://console.amazonaws-us-gov.com/iam/home#/security_credentials
-          Commercial Credentials:
-            @ https://console.aws.amazon.com/iam/home#/security_credentials
-
 "
   while true; do
     read -p "    Are you ready to continue? (Yes/No): " verify
@@ -218,7 +270,80 @@ run_log 0 "
   done
 }
 
-# Function call order
+################################################################################
+# One Time Artifact Env Staging to Populate 'answer.sh'
+################################################################################
+
+run_init_answer () {
+cat <<EOF > /root/answer.sh
+export k9DirDeploy="\${HOME}/deploy"
+export versOCP="${varVerOpenshift}"
+export vpc_name="${k9NameVpc}"
+export k9NameDomain="${k9NameDomain}"
+export cluster_name="${k9NameCluster}"
+export cluster_domain="${k9ClusterDomain}"
+export k9DirCluster="${k9DirCluster}"
+export aws_region="${aws_REGION}"
+export aws_access_key_id="${access_KEYID}"
+export aws_secret_access_key="${access_KEYSECRET}"
+export vpc_id="${k9VpcId}"
+export private_vpc_cidr="${k9VpcCidr}"
+export rhcos_ami="${k9RhcosAmi}"
+export subnet_list=[${k9SubnetList}]
+EOF
+}
+
+## In Case the values have changed in the answer.sh, rewrite the values for the aws keys
+
+write_aws_keys () {
+mkdir -p ${k9DirDeploy}/secrets/aws
+cat <<EOF > ${k9DirDeploy}/secrets/aws/credentials
+; https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html
+[default]
+aws_region = ${aws_region}
+aws_access_key_id = ${aws_access_key_id}
+aws_secret_access_key = ${aws_secret_access_key}
+EOF
+}
+
+################################################################################
+# One Time Artifact Env Staging to Populate 'global.tfvars'
+################################################################################
+
+write_global_tf_vars () {
+cat <<EOF > ${k9DirDeploy}/terraform/global.tfvars
+cluster_name="${k9NameCluster}"
+cluster_domain="${k9ClusterDomain}"
+aws_region="${aws_REGION}"
+aws_access_key_id="${access_KEYID}"
+aws_secret_access_key="${access_KEYSECRET}"
+vpc_id="${k9VpcId}"
+private_vpc_cidr="${k9VpcCidr}"
+rhcos_ami="${k9RhcosAmi}"
+subnet_list=[${k9SubnetList}]
+EOF
+}
+################################################################################
+# Post Artifact Env Staging to Populate 'global.tfvars' from 'answer.sh' vars
+################################################################################
+
+write_global_tf_vars_post () {
+cat <<EOF > ${k9DirDeploy}/terraform/global.tfvars
+cluster_name="${cluster_name}"
+cluster_domain="${cluster_domain}"
+aws_region="${aws_region}"
+aws_access_key_id="${aws_access_key_id}"
+aws_secret_access_key="${aws_secret_access_key}"
+vpc_id="${vpc_id}"
+private_vpc_cidr="${private_vpc_cidr}"
+rhcos_ami="${rhcos_ami}"
+subnet_list=[${subnet_list}]
+EOF
+}
+################################################################################
+# Function Call Sequence 
+################################################################################
+
 run_discover () {
   run_info
   run_init_usr_prompt
@@ -226,8 +351,21 @@ run_discover () {
   usr_prompt_aws_keys 
   write_self_signed_cert 
   run_stage_deploy_variables
+  run_init_answer
+  write_global_tf_vars
+  exit
 }
-run_discover
+
+if [ ! -f /root/answer.sh ]; then
+    run_discover
+else 
+    source /root/answer.sh
+    run_init_post
+    write_global_tf_vars_post
+    write_aws_keys
+    write_self_signed_cert
+    run_stage_deploy_variables
+fi
 
 
 ################################################################################
@@ -238,38 +376,30 @@ runUser="$USER"
 p1DirImages=${HOME}/deploy/images
 
 sudo chown -R ${runUser}:${runUser} ${HOME}/deploy
+sudo mkdir -p /root/deploy/nginx
 sudo chmod -R 0777 ${HOME}/deploy/nginx
-################################################################################
-# Option Run Ansible Playbook
+
+########################################################################################
+# Option Run Ansible Playbook (no longer prompt user; cluster will deploy without input)
+########################################################################################
+
 run_ansible_playbook_bundle () {
-while true; do
-  read -rp "    >> Would you like to deploy your cluster now? (yes/no): " yn
-    case $yn in
-      [Yy]* ) echo ;
-	      run_log 0 "Executing ansible playbook ${runAnsibleCmd}" ; 
-              clear;
-              podman exec -it one /bin/bash -c 'cd /root/deploy/ansible/deploy ; ./site.yml' ;
-              break
-              ;;
-      [Nn]* ) run_log 0 " >> Exiting now, thank you!" ;
-	      break
-              ;;
-          * ) echo "$SEP_2 Please answer yes or no." ;;
-    esac
-  break
-done
-echo
+  echo;
+  run_log 0 "Executing ansible playbook ${runAnsibleCmd}"; 
+  clear;
+  podman exec -it one /bin/bash -c 'cd /root/deploy/ansible/deploy ; ./site.yml';
+  break;
 }
 
 
 run_clean () {
-  for container in $(podman ps | awk '/one|nginx|registry|pause|busybox/{print $3}' 2>/dev/null); do
+  for container in $(podman ps | awk '/konductor|one|nginx|registry|pause|busybox/{print $3}' 2>/dev/null); do
     podman rm --force $container
   done
   for pod in $(podman pod ps | awk '/cloudctl/{print $1}' 2>/dev/null); do
     podman pod rm --force $pod
   done
-  for image in $(podman images | awk '/one|nginx|registry|pause|busybox/{print $3}' 2>/dev/null); do
+  for image in $(podman images | awk '/konductor|one|nginx|registry|pause|busybox/{print $3}' 2>/dev/null); do
     podman rmi --force $image
   done
 }
@@ -284,6 +414,7 @@ load_images () {
 
 load_mirror_certificate () {
 # echo "  >> Loading registry certificate to host."
+mkdir -p /root/deploy/secrets/registry/ssl \
 cp /root/deploy/secrets/registry/ssl/registry.crt \
     /etc/pki/ca-trust/source/anchors/registry.crt \
   && sudo update-ca-trust
@@ -304,8 +435,8 @@ run_core () {
 test_core () {
   
   echo "  >> Testing NGINX Ignition Service"
-  ignTest=$(curl -s http://localhost:8080/bootstrap.ign 2>&1 1>/dev/null ; echo $?)
-  [[ ${ignTest} == '0' ]] \
+  ignTest=$(curl -s http://localhost:8080/release.txt 2>&1 1>/dev/null ; echo $?)
+  [[ ! ${ignTest} == '0' ]] \
       && echo "  >> NGINX Ignition Delivery Service Failed!" \
       || echo "  >> NGINX Ignition Delivery Service Online."
 
@@ -326,5 +457,7 @@ run () {
 run_core
 test_core
 run_ansible_playbook_bundle
+sleep 2
+podman restart nginx
 }
 run

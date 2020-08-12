@@ -1,0 +1,42 @@
+#!/usr/local/bin/ansible-playbook --inventory=inventory
+
+- name: ' Konductor UPI '
+  hosts: local
+  vars_files:
+  - '../cluster-vars.yml'
+  - 'vars/{{ target_environment }}.yml'
+  - 'vars/global.yml'
+  - 'vars/git.yml'
+  vars:
+    module: "build"
+    state_provider: "local"
+    tf_module_path: "{{ dir_terraform }}/shaman"
+    ansible_name_module: " Konductor | UPI | {{ module }}"
+
+  tasks:
+
+    - name: '{{ ansible_name_module }} | file | Create ~/.aws'
+      file:
+        path: "/root/.aws"
+        state: directory
+
+    ####### Symlinks
+    - name: '{{ ansible_name_module }} | variable | Create variable symlink'
+      file:
+        src: "{{ tf_module_path }}/variables.tf"
+        dest: "{{ item }}"
+        state: link
+      loop:
+        - "{{ tf_module_path }}/elb/variables.tf"
+        - "{{ tf_module_path }}/control-plane/variables.tf"
+
+    ####### Terraform Apply
+    - name: '{{ ansible_name_module }} | terraform | apply'
+      terraform:
+        project_path: "{{ item }}"
+        variables_file: "{{ tf_vars }}"
+        state: present
+      loop:
+        - "{{ tf_module_path }}/elb"
+        - "{{ tf_module_path }}/control-plane"
+      register: tf_output

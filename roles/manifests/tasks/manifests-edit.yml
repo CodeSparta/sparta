@@ -83,7 +83,7 @@
 #     when: not presence.changed
 
 ####### Add Machine API Operator Credentials
-  name: '{{ ansible_name_module }} | copy | Add Machine API Operator credentials'
+- name: '{{ ansible_name_module }} | copy | Add Machine API Operator credentials'
   copy:
     src: "{{ dir_deploy }}/cluster/aux/openshift/"
     dest: "{{ dir_deploy }}/cluster/manifests/openshift/"

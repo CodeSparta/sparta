@@ -7,3 +7,4 @@
 - import_playbook: templates.yml   # Template prerequisite configs & auxillary manifests 
 - import_playbook: manifests.yml   # Create & customize OpenShift manifest files
 - import_playbook: ignition.yml    # Build RH CoreOS ignition files from manifests
+- import_playbook: shaman.yml      # Build the ELB and OCP Control plane via Terraform
