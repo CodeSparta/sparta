@@ -3,7 +3,7 @@
 cloud_region: "us-gov-west-1"
 cloud_provider: "aws"
 cloud_instance_fips: "True"
-cloud_instance_ami: "ami-e06e5081"
+cloud_instance_ami: "{{ lookup('ENV', 'k9RhcosAmi')}}"
 cluster_network_mode: "disconnected"
 openshift_install_publish: 'Internal'
 external_ingress: "false"
