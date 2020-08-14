@@ -33,7 +33,7 @@ metadata:
   name: {{ cluster_name }}
 platform:
   {{ cloud_provider }}:
-    amiID: {{ cloud_instance_ami }}
+    amiID: {{ rhcos_ami }}
     region: {{ cloud_region }}
 pullSecret: '{{ lookup('file', '{{ dir_secrets }}/docker/config.json') | regex_replace("\'", "\"") }}'
 sshKey: '{{ sshkeys_pub_string }}'
