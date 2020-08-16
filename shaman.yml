@@ -17,11 +17,11 @@
   tasks:
 
     ####### Terraform Init
-    - name: '{{ ansible_name_module }} | shell | terraform init'
-      shell: terraform init
-      loop:
-        - "{{ tf_module_path }}/elb"
-        - "{{ tf_module_path }}/control-plane"
+#    - name: '{{ ansible_name_module }} | shell | terraform init'
+#      shell: terraform init
+#      loop:
+#        - "{{ tf_module_path }}/elb"
+#        - "{{ tf_module_path }}/control-plane"
 
     ####### Terraform Apply
     - name: '{{ ansible_name_module }} | terraform | apply'
