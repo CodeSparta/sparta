@@ -2,7 +2,7 @@
 # Target Cloud Environment Variables
 cloud_region: "us-gov-west-1"
 cloud_provider: "aws"
-cloud_instance_fips: "True"
+cloud_instance_fips: "False"
 cluster_network_mode: "disconnected"
 openshift_install_publish: 'Internal'
 external_ingress: "false"
