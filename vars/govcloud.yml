@@ -2,7 +2,11 @@
 # Target Cloud Environment Variables
 cloud_region: "us-gov-west-1"
 cloud_provider: "aws"
+
+# False because of incompatible Service mesh deployment
+# https://bugzilla.redhat.com/show_bug.cgi?id=1861098
 cloud_instance_fips: "False"
+
 cluster_network_mode: "disconnected"
 openshift_install_publish: 'Internal'
 external_ingress: "false"
