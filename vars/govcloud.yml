@@ -1,6 +1,6 @@
 ---
 # Target Cloud Environment Variables
-cloud_region: "{{ cloud_region }}"
+cloud_region: "{{ aws_region }}"
 cloud_provider: "aws"
 
 # False because of incompatible Service mesh deployment
