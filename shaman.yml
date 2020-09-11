@@ -23,7 +23,6 @@
         variables_file: "{{ vars_module_path }}/global.tfvars"
         state: present
       loop:
-        - "{{ tf_module_path }}/resource-import"
         - "{{ tf_module_path }}/elb"
         - "{{ tf_module_path }}/control-plane"
         - "{{ tf_module_path }}/route53"
