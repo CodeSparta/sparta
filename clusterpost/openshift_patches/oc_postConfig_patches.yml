@@ -1,0 +1,26 @@
+#!/usr/bin/ansible-playbook -vv
+- name: Post Deployment | Patch Kubernetes Objects
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Post Deployment | Patch DNS Operator for private cluster
+      k8s:
+        definition:
+          apiVersion: config.openshift.io/v1
+          kind: DNS
+          metadata:
+            name: cluster
+          spec:
+            privateZone:
+          state: absent
+
+    - name: Post Deployment | Disable Cloud Credential operator
+      k8s:
+        definition:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: cloud-credential-operator-config
+            namespace: openshift-cloud-credential-operator
+          data:
+            disabled: "true"
