@@ -1,7 +1,7 @@
 ---
 ####### Detect manifest random id name
 - name: '{{ ansible_name_module }} | shell:awk | Get cluster random name'
-  shell: "awk -F'[-]' '/infrastructureName/{print $2}' {{ dir_deploy }}/cluster/manifests/manifests/cluster-infrastructure-02-config.yml"
+  shell: "awk -F'[-]' '/infrastructureName/{print $NF}' {{ dir_deploy }}/cluster/manifests/manifests/cluster-infrastructure-02-config.yml"
   register: idrand
   ignore_errors: True
   no_log: True
