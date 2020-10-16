@@ -14,7 +14,7 @@
 ```
   3. Manually start supporting services
 ```
- source collector/tools/emulate.sh
+ source collector/tools/entrypoint.sh
 ```
   4. Start Koffer collector plugin:
 ```
