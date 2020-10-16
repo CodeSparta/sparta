@@ -1,9 +1,5 @@
 # CloudCTL Pod Docker Image Pull List
-images_cloudctl:
-  - uri: "docker.io/codesparta"
-    name: konductor
-    tag: "{{ konductor_version | default( tpdk_version ) }}"
-    path: "{{ dir_platform }}/images"
+images_pause:
   - uri: "k8s.gcr.io"
     name: pause
     tag: 3.1
@@ -11,6 +7,12 @@ images_cloudctl:
   - uri: "k8s.gcr.io"
     name: pause
     tag: 3.2
+    path: "{{ dir_platform }}/images"
+
+images_cloudctl:
+  - uri: "docker.io/containercraft"
+    name: konductor
+    tag: "{{ konductor_version | default( tpdk_version ) }}"
     path: "{{ dir_platform }}/images"
   - uri: "docker.io/library"
     name: busybox
