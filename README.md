@@ -1,4 +1,4 @@
-# Konductor Plugin | Maestro Platform Infrastructure Deployer
+# TPDK Plugin | OpenShift Infrastructure Deployment IaC
 ### Requirements:
 This codebase presumes a koffer bundle present in the `/tmp/` directory.
     

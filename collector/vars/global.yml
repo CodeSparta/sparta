@@ -3,7 +3,7 @@
 # End of user configurable variables
 #####################################################################################################
 # OpenShift Version
-#version_openshift: "{{ lookup('env', 'varVerOpenshift') }}"
+version_openshift: "{{ lookup('env', 'varVerOpenshift') }}"
 #tpdk_version: "{{ lookup('env', 'varVerTpdk') }}"
 konductor_version: latest
 tpdk_version: master
