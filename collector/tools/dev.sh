@@ -1,10 +1,14 @@
 #!/bin/bash -x
-clear
+
 project="collector-openshift"
+clear && mkdir -p /tmp/bundle
+
 sudo podman run -it --rm --pull always \
-    --workdir /root/koffer \
+    --name ${project} -h ${project} \
     --volume $(pwd):/root/koffer:z \
-    --name ${project} -h ${project} --entrypoint bash \
+    --volume /tmp/bundle:/root/bundle:z \
+    --workdir /root/koffer --entrypoint bash \
+    --volume ${HOME}/.gitconfig:/root/.gitconfig:ro \
   docker.io/codesparta/koffer:latest
 
 #   --volume ${HOME}/.aws:/root/.aws:z \
