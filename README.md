@@ -1,8 +1,8 @@
-# TPDK Plugin | OpenShift Infrastructure Deployment IaC
+# TPDK Plugin | OpenShift Deployment IaC
 ### Prerequisites:
   - [Podman]
 
-## A) Build offline Koffer bundle
+## Low Side) Build offline Koffer bundle
 
   1. Run Koffer `openshift` plugin
 ```
@@ -18,7 +18,7 @@
  du -sh ${HOME}/bundle/koffer-bundle.openshift-*.tar.xz
 ```
 
-## A) Deploy from bundled artifacts
+## High Side) Deploy from bundled artifacts
   1. Extract bundle
 ```
  sudo tar -xv -f /tmp/koffer-bundle.openshift-*.tar -C /root
