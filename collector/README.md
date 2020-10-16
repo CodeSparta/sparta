@@ -15,12 +15,11 @@ Features:
 ## Instructions:
 ### 1. Run Infrastructure Collector with Koffer Engine
 ```
- mkdir -p /tmp/platform ; \
-sudo podman run -it --rm \
-    --volume /tmp/bundle:/root/deploy/bundle:z \
-  docker.io/codesparta/koffer bundle \
-    --repo collector-infra@master
-
+mkdir -p /tmp/bundle && \
+sudo podman run -it --rm --pull always \
+    --volume /tmp/platform:/root/bundle:z \
+  docker.io/containercraft/koffer:latest bundle \
+    --plugin openshift
 ```
 ### 2. Move Koffer Bundle to target host `${USER}` directory
 # [Developer Docs & Utils](./dev)
