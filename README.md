@@ -1,17 +1,47 @@
 # TPDK Plugin | OpenShift Infrastructure Deployment IaC
-### Requirements:
-This codebase presumes a koffer bundle present in the `/tmp/` directory.
-    
-### 1. Aquire root & unpack tarball
+### Prerequisites:
+  - [Podman]
+
+## A) Build offline Koffer bundle
+
+  1. Run Koffer `openshift` plugin
 ```
-sudo -i
+ mkdir -p ${HOME}/bundle && \
+ podman run -it --rm --pull always \
+     --volume ${HOME}/bundle:/root/bundle:z \
+   docker.io/containercraft/koffer:latest bundle \
+     --plugin openshift
 ```
+
+  2. Check bundle
 ```
-tar -xv -C /root -f /tmp/koffer-bundle.*.tar
+ du -sh ${HOME}/bundle/koffer-bundle.openshift-*.tar.xz
 ```
-### 2. Run Konductor CloudCtl Pod stand up script
+
+## A) Deploy from bundled artifacts
+  1. Extract bundle
 ```
- ./start-cloudctl.sh
+ sudo tar -xv -f /tmp/koffer-bundle.openshift-*.tar -C /root
 ```
-# Demo:
-  - Building the bundle    
+  2. Exec to root
+```
+ sudo -i
+```
+  3. Declare variables
+```
+ vi ./answer.sh
+```
+  4. Start Deploy
+```
+ ./konductor.sh
+```
+  5. Exec into konductor
+```
+ podman exec -it konductor connect
+```
+  6. Monitor cluster operators
+```
+ watch oc get co
+```
+
+[Podman]:https://podman.io/getting-started/installation.html
