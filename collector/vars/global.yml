@@ -5,8 +5,8 @@
 # OpenShift Version
 #version_openshift: "{{ lookup('env', 'varVerOpenshift') }}"
 #tpdk_version: "{{ lookup('env', 'varVerTpdk') }}"
-konductor_version=latest
-tpdk_version=master
+konductor_version: latest
+tpdk_version: master
 
 # Ansible Playbook Run Variables
 name_vendor: " CodeSparta"
