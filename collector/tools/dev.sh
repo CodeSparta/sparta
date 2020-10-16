@@ -1,10 +1,11 @@
 #!/bin/bash -x
 clear
-project="collector-infra"
+project="collector-openshift"
 sudo podman run -it --rm --pull always \
-    --workdir /root/platform/iac/${project} \
-    --volume $(pwd):/root/platform/iac/${project}:z \
+    --workdir /root/koffer \
+    --volume $(pwd):/root/koffer:z \
     --name ${project} -h ${project} --entrypoint bash \
   docker.io/codesparta/koffer:latest
 
-#   --volume $(pwd)/aws/:/root/.aws/:z \
+#   --volume ${HOME}/.aws:/root/.aws:z \
+#   --volume ${HOME}/.docker:/root/.docker:z \

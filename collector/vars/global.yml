@@ -16,11 +16,10 @@ ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
 local_home: "{{ lookup('env', 'HOME') }}"
 dir_koffer: "{{ local_home }}/koffer"
 dir_bundle: "{{ local_home }}/bundle"
-dir_platform: "{{ local_home }}/deploy"
 dir_images: "{{ dir_platform }}/images"
 dir_ansible: "{{ dir_platform }}/ansible"
 dir_secrets: "{{ dir_platform }}/secrets"
-dir_platform: "{{ dir_platform }}/platform"
+dir_platform: "{{ local_home }}/platform"
 
 # Terraform Variables
 dir_terraform: "{{ dir_platform }}/terraform"

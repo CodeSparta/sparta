@@ -1,6 +1,6 @@
 #!/usr/local/bin/ansible-playbook --inventory=inventory
 - name: 'RedHat | Konductor | site.yml' 
-  hosts: local
+  hosts: koffer
 
 - import_playbook: tree.yml        # Create base deployment directory tree 
 - import_playbook: secrets.yml     # Stage deployment secrets

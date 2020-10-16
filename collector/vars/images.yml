@@ -2,7 +2,7 @@
 images_cloudctl:
   - uri: "docker.io/codesparta"
     name: konductor
-    tag: "{{ lookup('env', 'varVerKonductor') }}"
+    tag: "{{ konductor_version | default( tpdk_version ) }}"
     path: "{{ dir_platform }}/images"
   - uri: "k8s.gcr.io"
     name: pause
