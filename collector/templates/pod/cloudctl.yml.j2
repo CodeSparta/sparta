@@ -50,7 +50,7 @@ spec:
       readOnlyRootFilesystem: false
     volumeMounts:
     - mountPath: /usr/share/nginx/html:z
-      name: root-deploy-nginx
+      name: root-platform-nginx
       readOnly: true
     workingDir: /
   - command:
@@ -73,16 +73,16 @@ spec:
       privileged: false
       readOnlyRootFilesystem: false
     volumeMounts:
-    - mountPath: /root/deploy/mirror:z
-      name: root-deploy-mirror
+    - mountPath: /root/platform/mirror:z
+      name: root-platform-mirror
     - mountPath: /etc/docker/registry/auth:z
-      name: root-deploy-secrets-registry-auth
+      name: root-platform-secrets-registry-auth
       readOnly: false
     - mountPath: /etc/docker/registry/ssl:z
-      name: root-deploy-secrets-registry-ssl
+      name: root-platform-secrets-registry-ssl
       readOnly: false
     - mountPath: /etc/docker/registry/config.yml:z
-      name: root-deploy-mirror-config.yml
+      name: root-platform-mirror-config.yml
       readOnly: false
     workingDir: /
   - env:
@@ -109,32 +109,32 @@ spec:
       privileged: true
       readOnlyRootFilesystem: false
     volumeMounts:
-    - mountPath: /root/deploy:z
-      name: root-deploy
-    workingDir: /root/deploy
+    - mountPath: /root/platform:z
+      name: root-platform
+    workingDir: /root/platform
   volumes:
   - hostPath:
-      path: /root/deploy/nginx
+      path: /root/platform/nginx
       type: Directory
-    name: root-deploy-nginx
+    name: root-platform-nginx
   - hostPath:
-      path: /root/deploy/secrets/registry/auth
+      path: /root/platform/secrets/registry/auth
       type: Directory
-    name: root-deploy-secrets-registry-auth
+    name: root-platform-secrets-registry-auth
   - hostPath:
-      path: /root/deploy/mirror/config.yml
+      path: /root/platform/mirror/config.yml
       type: File
-    name: root-deploy-mirror-config.yml
+    name: root-platform-mirror-config.yml
   - hostPath:
-      path: /root/deploy/mirror
+      path: /root/platform/mirror
       type: Directory
-    name: root-deploy-mirror
+    name: root-platform-mirror
   - hostPath:
-      path: /root/deploy/secrets/registry/ssl
+      path: /root/platform/secrets/registry/ssl
       type: Directory
-    name: root-deploy-secrets-registry-ssl
+    name: root-platform-secrets-registry-ssl
   - hostPath:
-      path: /root/deploy
+      path: /root/platform
       type: Directory
-    name: root-deploy
+    name: root-platform
 status: {}

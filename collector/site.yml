@@ -4,7 +4,7 @@
   vars_files:
     - 'vars/global.yml'
 
-- import_playbook: tree.yml         # Create base deploy directory tree
+- import_playbook: tree.yml         # Create base directory tree
 - import_playbook: secrets.yml      # Collect Secrets
 - import_playbook: git.yml          # Pull git repos
 - import_playbook: images.yml       # Pull cloudctl images & Download container images to directory

@@ -26,12 +26,13 @@ ansible_name: " {{ name_vendor }} | Konductor | Infra Automation"
 ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
 
 # Directory Inventory
-dir_deploy: "{{ local_home }}/deploy"
-dir_images: "{{ dir_deploy }}/images"
-dir_secrets: "{{ dir_deploy }}/secrets"
-dir_cluster: "{{ dir_deploy }}/cluster"
-dir_ansible: "{{ dir_deploy }}/ansible"
-dir_terraform: "{{ dir_deploy }}/terraform"
+dir_platform: "{{ local_home }}/platform"
+dir_iac: "{{ dir_platform }}/iac"
+dir_ansible: "{{ dir_iac }}"
+dir_terraform: "{{ dir_iac }}"
+dir_secrets: "{{ dir_platform }}/secrets"
+dir_cluster: "{{ dir_platform }}/cluster"
+dir_images: "{{ dir_platform }}/images"
 
 # Terraform Variables
 tf_vars: "{{ dir_terraform }}/global.tfvars"
@@ -43,7 +44,7 @@ remote_home: "{{ ansible_env.HOME }}"
 registry_auth_file: "{{ dir_secrets }}/docker/config.json }}"
 
 # SSH Keys
-sshkeys_priv_file: "{{ dir_secrets }}/ssh/id_rsa_cluster_deploy"
+sshkeys_priv_file: "{{ dir_secrets }}/ssh/id_rsa_kubeadmin"
 sshkeys_priv_string: "{{ lookup('file', '{{ sshkeys_priv_file }}') }}"
-sshkeys_pub_file: "{{ dir_secrets }}/ssh/id_rsa_cluster_deploy.pub"
+sshkeys_pub_file: "{{ dir_secrets }}/ssh/id_rsa_cluster_kubeadmin.pub"
 sshkeys_pub_string: "{{ lookup('file', '{{ sshkeys_pub_file }}') }}"

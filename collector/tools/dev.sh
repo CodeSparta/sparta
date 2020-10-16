@@ -9,7 +9,7 @@ sudo podman run -it --rm --pull always \
     --volume /tmp/bundle:/root/bundle:z \
     --workdir /root/koffer --entrypoint bash \
     --volume ${HOME}/.docker:/root/.docker:ro \
-    --volume ${HOME}/.gitconfig:/root/.gitconfig:ro \
+    --volume ${HOME}/.gitconfig:/root/.gitconfig:z \
   docker.io/codesparta/koffer:latest
 
 #   --volume ${HOME}/.aws:/root/.aws:z \

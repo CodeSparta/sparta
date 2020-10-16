@@ -3,8 +3,8 @@ keyfile: '/root/.ssh/id_rsa'
 git_branch: master
 
 # Ansible Git Repos
-url_git_deploy: 'https://github.com/CodeSparta/maestro-infra.git'
-dir_git_deploy: "{{ dir_ansible }}/deploy"
+url_git_openshift: 'https://github.com/CodeSparta/openshift.git'
+dir_git_openshift: "{{ dir_iac }}"
 
 # Terraform Git Repos
 url_git_shaman: 'https://github.com/CodeSparta/shaman'
@@ -14,8 +14,8 @@ dir_git_shaman_vpc: "{{ dir_terraform }}/devkit-vpc"
 
 # Git Clone Items
 ansiblerepos:
-  - repo: "{{ url_git_deploy }}"
-    dest: "{{ dir_git_deploy }}"
+  - repo: "{{ url_git_openshift }}"
+    dest: "{{ dir_git_openshift }}"
     branch: "{{ git_branch }}"
 
 terraformrepos:

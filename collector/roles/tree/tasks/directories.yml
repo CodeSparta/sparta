@@ -24,7 +24,7 @@
     dest: '{{ item.dest }}'
     mode: '{{ item.mode }}'
   with_items:
-    - { mode: '0775', src: '{{ dir_koffer }}/collector/templates/bin/answer.sh.j2', dest: '/tmp/answer.sh' }
+    - { mode: '0775', src: '{{ dir_koffer }}/collector/templates/registry/etc-docker-registry-config.yml.j2', dest: '{{ dir_platform }}/mirror/config.yml' }
     - { mode: '0775', src: '{{ dir_koffer }}/collector/templates/bin/konductor.sh.j2', dest: '/tmp/konductor.sh' }
     - { mode: '0775', src: '{{ dir_koffer }}/collector/templates/pod/cloudctl.yml.j2', dest: '/tmp/cloudctl.yml' }
-    - { mode: '0775', src: '{{ dir_koffer }}/collector/templates/registry/etc-docker-registry-config.yml.j2', dest: '/root/deploy/mirror/config.yml' }
+    - { mode: '0775', src: '{{ dir_koffer }}/collector/templates/bin/answer.sh.j2', dest: '/tmp/answer.sh' }

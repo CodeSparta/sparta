@@ -5,9 +5,9 @@
     state: directory
     mode: '0777'
   with_items:
-    - '{{ dir_deploy }}/nginx'
+    - '{{ dir_platform }}/nginx'
 - name: '{{ ansible_name_module }} | copy | Load Ignition Files into Nginx Service'
   copy:
-    src: "{{ dir_deploy }}/cluster/ignition/"
-    dest: "{{ dir_deploy }}/nginx/"
+    src: "{{ dir_platform }}/cluster/ignition/"
+    dest: "{{ dir_platform }}/nginx/"
     mode: 0777

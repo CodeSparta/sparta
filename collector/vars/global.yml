@@ -14,16 +14,16 @@ ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
 
 # Directory Inventory
 local_home: "{{ lookup('env', 'HOME') }}"
+dir_iac: "{{ dir_platform }}/iac"
 dir_koffer: "{{ local_home }}/koffer"
 dir_bundle: "{{ local_home }}/bundle"
 dir_images: "{{ dir_platform }}/images"
-dir_ansible: "{{ dir_platform }}/ansible"
 dir_secrets: "{{ dir_platform }}/secrets"
 dir_platform: "{{ local_home }}/platform"
 
 # Terraform Variables
-dir_terraform: "{{ dir_platform }}/terraform"
-tf_vars: "{{ dir_terraform }}/deploy/terraform/global.tfvars"
+dir_terraform: "{{ dir_iac }}"
+tf_vars: "{{ dir_iac }}/global.tfvars"
 
 # Hosts Environment 
 local_user: "{{ lookup('env', 'USER') }}"
@@ -34,7 +34,7 @@ registry_quay_auth_file: "{{ dir_secrets }}/docker/quay.json }}"
 registry_mirror_auth_file: "{{ dir_secrets }}/docker/mirror.json }}"
 
 # SSH Keys
-sshkeys_pub_file: "{{ lookup('env', 'HOME') }}/deploy/{{ cluster_domain }}/.ssh/id_rsa_{{ cluster_domain }}.pub"
-sshkeys_priv_file: "{{{ lookup('env', 'HOME') }}/deploy/{{ cluster_domain }}/.ssh/id_rsa_{{ cluster_domain }}"
+sshkeys_pub_file: "{{ dir_secrets }}/ssh/id_rsa_{{ cluster_domain }}.pub"
+sshkeys_priv_file: "{{{ dir_secrets }}/ssh/id_rsa_{{ cluster_domain }}"
 sshkeys_pub_string: "{{ lookup('file', '{{ sshkeys_pub_file }}') }}"
 sshkeys_priv_string: "{{ lookup('file', '{{ sshkeys_priv_file }}') }}"

@@ -4,7 +4,7 @@
     path: '{{ dir_platform }}/mirror/ocp-release.{{ version_openshift }}.lock'
   register: mirror_lock_check
 
-###### Download OpenShift Docker Images from Quay.io to File: /root/deploy/mirror/v2
+###### Download OpenShift Docker Images from Quay.io to File: /root/platform/mirror/v2
 - name: '{{ ansible_name_module }} | block | Download OpenShift images'
   block:
 

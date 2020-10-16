@@ -4,10 +4,10 @@
 
 - name: '{{ ansible_name_module }} | copy | Move auth directory out of future nginx web root path'
   copy:
-    src: "{{ dir_deploy }}/cluster/ignition/auth"
+    src: "{{ dir_platform }}/cluster/ignition/auth"
     dest: "{{ dir_secrets }}/cluster/"
 - file:
-    path: "{{ dir_deploy }}/cluster/ignition/auth"
+    path: "{{ dir_platform }}/cluster/ignition/auth"
     state: absent
 
 - name: '{{ ansible_name_module }} | copy | Copy kubeconfig'

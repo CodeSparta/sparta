@@ -5,6 +5,9 @@
 # About:
 #   Build and start CloudCtl AirGap OpenShift Deployment Pod from a Koffer Bundle
 ################################################################################
+export k9DirCluster="/root/platform/cluster"
+
+################################################################################
 # Base Logging
 run_log () {
   if   [[ $1 == 0 ]]; then
@@ -18,7 +21,7 @@ run_log () {
 
 ################################################################################
 # Verify Bundle Integrity & Launch
-if [[ ! -f /root/deploy/nginx/release.txt ]]; then
+if [[ ! -f /root/platform/nginx/release.txt ]]; then
   run_log 0 "Verifying SHA256SUM: ArtifactsBundle.tar.xz"
 
   sha256sum --check ArtifactsBundle.tar.xz.sha256 \
@@ -31,8 +34,8 @@ fi
 # Konductor Initialization & Prerequisites
 ################################################################################
 # Working Variables
-k9DirDeploy="${HOME}/deploy"
-varVerOpenshift="$(cat /root/deploy/nginx/release.txt)"
+k9DirDeploy="${HOME}/platform"
+varVerOpenshift="$(cat /root/platform/nginx/release.txt)"
 
 ################################################################################
 # Stage ansible variables
@@ -75,7 +78,7 @@ run_init_stage () {
 # Stage environment variables
 mkdir -p ${k9DirDeploy}/config
 cat <<EOF > ${k9DirDeploy}/config/environment
-export k9DirDeploy="\${HOME}/deploy"
+export k9DirDeploy="\${HOME}/platform"
 export versOCP="${varVerOpenshift}"
 export k9NameVpc="${k9NameVpc}"
 export k9NameDomain="${k9NameDomain}"
@@ -93,7 +96,7 @@ EOF
 run_init_post () {
 mkdir -p ${k9DirDeploy}/config
 cat <<EOF > ${k9DirDeploy}/config/environment
-export k9DirDeploy="\${HOME}/deploy"
+export k9DirDeploy="\${HOME}/platform"
 export versOCP="${varVerOpenshift}"
 export k9NameVpc="${k9NameVpc}"
 export k9NameDomain="${k9NameDomain}"
@@ -118,8 +121,8 @@ openssl req \
   -days   3650 \
   -newkey rsa:4096 \
   -subj   "/CN=${k9ClusterDomain}" \
-  -out    /root/deploy/secrets/registry/ssl/registry.crt  \
-  -keyout /root/deploy/secrets/registry/ssl/registry.key  \
+  -out    /root/platform/secrets/registry/ssl/registry.crt  \
+  -keyout /root/platform/secrets/registry/ssl/registry.key  \
   -addext "subjectAltName=DNS:registry.${k9NameCluster}.${k9NameDomain},DNS:cloudctl,DNS:registry,DNS:localhost,IP:10.88.0.1,IP:127.0.0.1" 2>&1 1>/dev/null
 }
 
@@ -299,7 +302,7 @@ export k9NameVpc="${k9NameVpc}"
 export k9VpcCidr="${k9VpcCidr}"
 export k9RhcosAmi="${k9RhcosAmi}"
 export k9AwsKeyId="${k9AwsKeyId}"
-export k9DirDeploy="\${HOME}/deploy"
+export k9DirDeploy="\${HOME}/platform"
 export k9AwsRegion="${k9AwsRegion}"
 export k9NameDomain="${k9NameDomain}"
 export k9SubnetList=[${k9SubnetList}]
@@ -397,11 +400,11 @@ fi
 ################################################################################
 
 runUser="$USER"
-p1DirImages=${HOME}/deploy/images
+p1DirImages=${HOME}/platform/images
 
-sudo chown -R ${runUser}:${runUser} ${HOME}/deploy
-sudo mkdir -p /root/deploy/nginx
-sudo chmod -R 0777 ${HOME}/deploy/nginx
+sudo chown -R ${runUser}:${runUser} ${HOME}/platform
+sudo mkdir -p /root/platform/nginx
+sudo chmod -R 0777 ${HOME}/platform/nginx
 
 ########################################################################################
 # Option Run Ansible Playbook (no longer prompt user; cluster will deploy without input)
@@ -411,7 +414,7 @@ run_ansible_playbook_bundle () {
   echo;
   run_log 0 "Executing ansible playbook ${runAnsibleCmd}"; 
   clear;
- #podman exec -it one /bin/bash -c 'cd /root/deploy/ansible/deploy ; ./site.yml';
+ #podman exec -it one /bin/bash -c 'cd /root/platform/iac/deploy ; ./site.yml';
   # Exec golang entrypoint to run deploy/site.yml
   podman exec -it one konductor deploy
 }
@@ -439,8 +442,8 @@ load_images () {
 
 load_mirror_certificate () {
  echo "  >> Loading registry certificate on host."
-mkdir -p /root/deploy/secrets/registry/ssl 2>/dev/null \
-cp /root/deploy/secrets/registry/ssl/registry.crt \
+mkdir -p /root/platform/secrets/registry/ssl 2>/dev/null \
+cp /root/platform/secrets/registry/ssl/registry.crt \
     /etc/pki/ca-trust/source/anchors/registry.crt 2>/dev/null \
   && sudo update-ca-trust 1>&2 2>/dev/null
 }

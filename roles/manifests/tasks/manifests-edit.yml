@@ -1,7 +1,7 @@
 ---
 ####### Detect manifest random id name
 - name: '{{ ansible_name_module }} | shell:awk | Get cluster random name'
-  shell: "awk -F'[-]' '/infrastructureName/{print $NF}' {{ dir_deploy }}/cluster/manifests/manifests/cluster-infrastructure-02-config.yml"
+  shell: "awk -F'[-]' '/infrastructureName/{print $NF}' {{ dir_platform }}/cluster/manifests/manifests/cluster-infrastructure-02-config.yml"
   register: idrand
   ignore_errors: True
   no_log: True
@@ -9,7 +9,7 @@
 ####### replace manifest random id name
 - name: '{{ ansible_name_module }} | replace | s/randId/vpcName/g'
   replace:
-    path: "{{ dir_deploy }}/cluster/manifests/manifests/cluster-infrastructure-02-config.yml"
+    path: "{{ dir_platform }}/cluster/manifests/manifests/cluster-infrastructure-02-config.yml"
     regexp: "infrastructureName: {{ cluster_name }}-{{ idrand.stdout }}"
     replace: "infrastructureName: {{ name_cluster_vpc }}"
   no_log: True
@@ -18,7 +18,7 @@
 ####### Itemize all manifest files
 - name: '{{ ansible_name_module }} | find |  Find all manifest files'
   find:
-    path: "{{ dir_deploy }}/cluster/manifests"
+    path: "{{ dir_platform }}/cluster/manifests"
     recurse: yes
     age: 1s
   register: manifests
@@ -32,61 +32,26 @@
   no_log: True
   loop: "{{ manifests.files }}"
 
-####### Rename region across all manifests
-# name: '{{ ansible_name_module }} | replace | Replace region for all files'
-# replace:
-#   path: "{{ item.path }}"
-#   regexp: "us-east-1"
-#   replace: "{{ cloud_region }}"
-# no_log: True
-# loop: "{{ manifests.files }}"
-
 ####### Remove Ingress Controller
 - name: '{{ ansible_name_module }} | Remove | Remove Ingress Controller'
   file:
-    path: "{{ dir_deploy }}/cluster/manifests/manifests/cluster-ingress-default-ingresscontroller.yaml"
+    path: "{{ dir_platform }}/cluster/manifests/manifests/cluster-ingress-default-ingresscontroller.yaml"
     state: absent
   when: external_ingress == 'true'
 
 ####### Remove Publish Internal
 - name: '{{ ansible_name_module }} | Remove | Remove Publish: Internal'
   lineinfile:
-    path: "{{ dir_deploy }}/cluster/manifests/manifests/cluster-config.yaml"
+    path: "{{ dir_platform }}/cluster/manifests/manifests/cluster-config.yaml"
     state: absent
     regexp: '^publish: Internal'
   when: external_ingress == 'true'
 
-####### Rename region across all manifests | Workaround version requires debugging and simplification
-# NOT RELEVANT ON OCP 4.5+
-# block:
-#   - name: '{{ ansible_name_module }} | replace | Replace region for cluster-infrastructure-02-config.yml'
-#     replace:
-#       path: "{{ dir_artifacts }}/data/manifests/cluster-infrastructure-02-config.yml"
-#       regexp: "us-east-1"
-#       replace: "{{ cloud_region }}"
-#     no_log: True
-# ignore_errors: True
-# always:
-#   - name: '{{ ansible_name_module }} | replace | Check to see if the content still exists'
-#     lineinfile:
-#       path: "{{ dir_artifacts }}/data/manifests/cluster-infrastructure-02-config.yml"
-#       line: us-east-1
-#       state: present
-#     check_mode: true
-#     register: presence
-#   - name: '{{ ansible_name_module }} | replace | Replace region for cluster-infrastructure-02-config.yml'
-#     replace:
-#       path: "{{ dir_artifacts }}/data/manifests/cluster-infrastructure-02-config.yml"
-#       regexp: "us-east-1"
-#       replace: "{{ cloud_region }}"
-#     no_log: True
-#     when: not presence.changed
-
 ####### Add Machine API Operator Credentials
 - name: '{{ ansible_name_module }} | copy | Add Machine API Operator credentials'
   copy:
-    src: "{{ dir_deploy }}/cluster/aux/openshift/"
-    dest: "{{ dir_deploy }}/cluster/manifests/openshift/"
+    src: "{{ dir_platform }}/cluster/aux/openshift/"
+    dest: "{{ dir_platform }}/cluster/manifests/openshift/"
 # when: cluster_network_mode == 'disconnected'
 
 ####### Remove Default ingress config & non-applicable cloud credential configs
@@ -95,6 +60,6 @@
     path: '{{ item }}'
     state: absent
   loop:
-    - "{{ dir_deploy }}/cluster/manifests/openshift/99_cloud-creds-secret.yaml"
-    - "{{ dir_deploy }}/cluster/manifests/openshift/99_role-cloud-creds-secret-reader.yaml"
+    - "{{ dir_platform }}/cluster/manifests/openshift/99_cloud-creds-secret.yaml"
+    - "{{ dir_platform }}/cluster/manifests/openshift/99_role-cloud-creds-secret-reader.yaml"
   when: cluster_network_mode == 'disconnected'

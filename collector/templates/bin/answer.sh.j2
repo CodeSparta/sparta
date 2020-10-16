@@ -1,10 +1,9 @@
 ################################################################################
 # AWS Region & Target Env:
 #  Target Options:
-#   - fences
 #   - govcloud
-export k9AwsRegion="us-gov-west-1"
 export k9TargetEnvironment="govcloud"
+export k9AwsRegion="us-gov-west-1"
 
 ################################################################################
 # AWS Access Key ID & Secret
@@ -12,27 +11,22 @@ export k9AwsKeyId="XXXXXX"
 export k9AwsKeySecret="XXXXXXXXX"
 
 ################################################################################
-# VPC Name - Must be the same as Cluster Subdomain
-export k9NameVpc="sparta"
-
-# Cluster Subdomain
-export k9NameCluster="sparta"
-
-# Cluster TLD
-export k9NameDomain="redhat.io"
+# AWS VPC ID
+export k9VpcId="vpc-XXXXXXXXX"
 
 # AWS Red Hat CoreOS AMI ID
 export k9RhcosAmi="ami-XXXXXXXXX"
 
-# AWS VPC ID
-export k9VpcId="vpc-XXXXXXXXX"
+# Cluster TLD
+export k9NameDomain="redhat.io"
+
+# VPC Name - Must be the same as Cluster Subdomain
+export k9NameVpc="sparta"
+
+# Cluster subdomain
+export k9NameCluster="${k9NameVpc}"
 
 ################################################################################
 # Private VPC Subnet IDs
 export k9SubnetList='["subnet-XXXXXXXXX", "subnet-XXXXXXXXX", "subnet-XXXXXXXXX"]'
 export k9VpcCidr="10.0.0.0/16"
-
-# General Settings
-export versOCP="4.5.5"
-export varVerOpenshift="4.5.5"
-export k9DirCluster="/root/deploy/cluster"

@@ -1,17 +1,17 @@
 ---
 - name: '{{ ansible_name_module }} | file:absent | Purge pre-existing artifacts'
   file:
-    path: '{{ dir_deploy }}/cluster/ignition'
+    path: '{{ dir_platform }}/cluster/ignition'
     state: absent
 - name: '{{ ansible_name_module }} | file:directory | Purge pre-existing artifacts'
   file:
-    path: '{{ dir_deploy }}/cluster/ignition'
+    path: '{{ dir_platform }}/cluster/ignition'
     state: directory
 
 - name: '{{ ansible_name_module }} | copy | Load manifests into ignition directory'
   copy:
-    src: "{{ dir_deploy }}/cluster/manifests/"
-    dest: "{{ dir_deploy }}/cluster/ignition/"
+    src: "{{ dir_platform }}/cluster/manifests/"
+    dest: "{{ dir_platform }}/cluster/ignition/"
 
 - name: '{{ ansible_name_module }} | shell:openshift-install | Generate ignition config files'
-  shell: "{{ openshift_install_binary }} create ignition-configs --dir={{ dir_deploy }}/cluster/ignition"
+  shell: "{{ openshift_install_binary }} create ignition-configs --dir={{ dir_platform }}/cluster/ignition"

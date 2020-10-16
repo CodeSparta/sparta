@@ -64,6 +64,5 @@
 #   - '/tmp/ArtifactsBundle.tar.xz.sha256'
 #   - '/tmp/ArtifactsBundle.tar.xz'
 #   - '/tmp/registry.yml'
-#   - '/tmp/registry.sh'
 #   dest: '{{ dir_platform }}/{{ cloud_provider }}-{{ target_environment }}-{{ name_cluster_vpc }}-p1bundle.tar'
 #   format: tar
