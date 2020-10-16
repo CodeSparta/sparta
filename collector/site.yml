@@ -1,0 +1,27 @@
+#!/usr/local/bin/ansible-playbook --inventory=inventory
+- name: ' Koffer | Artifact Rake Utility' 
+  hosts: local
+  vars_files:
+    - 'vars/global.yml'
+# vars_prompt:
+#   - name: quay_image_pull_secret
+#     prompt: |
+#       Copy your OpenShift Image Pull Secret from the Cluster Manager Portal
+#         >> https://cloud.redhat.com/openshift/install/metal/user-provisioned
+#     private: no
+# tasks:
+# - name: 'Koffer | Artifact Rake Utility | site.yml | file | Create ~/.docker'
+#   file:
+#     path: "/root/.docker"
+#     state: directory
+# - name: 'Koffer | Artifact Rake Utility | site.yml | copy | Stage Quay.io Pull Secret @ /root/.docker/config.json'
+#   copy:
+#     dest: "/root/.docker/config.json"
+#     content: '{{ quay_image_pull_secret }}'
+
+- import_playbook: tree.yml         # Create base deploy directory tree
+- import_playbook: secrets.yml      # Collect Secrets
+- import_playbook: git.yml          # Pull git repos
+- import_playbook: images.yml       # Pull cloudctl images & Download container images to directory
+- import_playbook: shaman.yml       # Workaround: extra terraform init
+- import_playbook: bundle.yml       # Bundle artifacts for airgap pivot
