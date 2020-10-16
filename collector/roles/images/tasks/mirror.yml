@@ -1,7 +1,7 @@
 ---
 - name: '{{ ansible_name_module }} | stat | check for mirror v2.sha256'
   stat:
-    path: '{{ dir_deploy }}/mirror/ocp-release.{{ version_openshift }}.lock'
+    path: '{{ dir_platform }}/mirror/ocp-release.{{ version_openshift }}.lock'
   register: mirror_lock_check
 
 ###### Download OpenShift Docker Images from Quay.io to File: /root/deploy/mirror/v2
@@ -11,7 +11,7 @@
   ######### Purge & Prepare
     - name: '{{ ansible_name_module }} | file:directory | Create mirror artifact directories'
       file:
-        path: "{{ dir_deploy }}/mirror"
+        path: "{{ dir_platform }}/mirror"
         state: directory
 
   ######### Mirror Images to directory
@@ -38,6 +38,6 @@
 
 - name: '{{ ansible_name_module }} | command:touch | Place mirror lock file'
   command:
-    cmd: 'touch {{ dir_deploy }}/mirror/ocp-release.{{ version_openshift }}.lock'
+    cmd: 'touch {{ dir_platform }}/mirror/ocp-release.{{ version_openshift }}.lock'
   args:
     warn: false

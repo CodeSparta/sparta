@@ -3,24 +3,24 @@ images_cloudctl:
   - uri: "docker.io/codesparta"
     name: konductor
     tag: "{{ lookup('env', 'varVerKonductor') }}"
-    path: "{{ dir_deploy }}/images"
+    path: "{{ dir_platform }}/images"
   - uri: "k8s.gcr.io"
     name: pause
     tag: 3.1
-    path: "{{ dir_deploy }}/images"
+    path: "{{ dir_platform }}/images"
   - uri: "k8s.gcr.io"
     name: pause
     tag: 3.2
-    path: "{{ dir_deploy }}/images"
+    path: "{{ dir_platform }}/images"
   - uri: "docker.io/library"
     name: busybox
     tag: latest
-    path: "{{ dir_deploy }}/images"
+    path: "{{ dir_platform }}/images"
   - uri: "docker.io/library"
     name: nginx
     tag: latest
-    path: "{{ dir_deploy }}/images"
+    path: "{{ dir_platform }}/images"
   - uri: "docker.io/library"
     name: registry
     tag: latest
-    path: "{{ dir_deploy }}/images"
+    path: "{{ dir_platform }}/images"
