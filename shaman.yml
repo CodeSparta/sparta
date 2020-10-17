@@ -6,7 +6,7 @@
   - '../cluster-vars.yml'
   - 'vars/{{ target_environment }}.yml'
   - 'vars/global.yml'
-  - 'vars/git.yml'
+# - 'vars/git.yml'
   vars:
     module: "build"
     state_provider: "local"
