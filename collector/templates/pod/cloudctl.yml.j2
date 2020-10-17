@@ -98,7 +98,7 @@ spec:
       value: chroot
     - name: varVerOpenshift
       value: {{ lookup('env', 'varVerOpenshift') }}
-    image: docker.io/codesparta/konductor:cloudctl
+    image: docker.io/containercraft/konductor:cloudctl
     name: konductor
     resources: {}
     securityContext:
