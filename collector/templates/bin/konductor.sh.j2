@@ -40,11 +40,11 @@ varVerOpenshift="$(cat /root/platform/nginx/release.txt)"
 ################################################################################
 # Stage ansible variables
 run_stage_deploy_variables () {
-echo && run_log 0 "Staging Ansible ${k9DirDeploy}/ansible/cluster-vars.yml variables file"
+echo && run_log 0 "Staging Ansible ${k9DirDeploy}/iac/cluster-vars.yml variables file"
 source /root/answer.sh
 export k9ClusterDomain="${k9NameCluster}.${k9NameDomain}"
 
-cat <<EOF | tee ${k9DirDeploy}/ansible/cluster-vars.yml
+cat <<EOF | tee ${k9DirDeploy}/iac/cluster-vars.yml
 ---
 vpc_id: "${k9VpcId}"
 vpc_name: "${k9NameVpc}"
