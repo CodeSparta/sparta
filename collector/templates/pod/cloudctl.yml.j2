@@ -91,7 +91,7 @@ spec:
     - name: TERM
       value: xterm
     - name: HOSTNAME
-      value: one
+      value: konductor
     - name: container
       value: oci
     - name: BUILDAH_ISOLATION
@@ -99,7 +99,7 @@ spec:
     - name: varVerOpenshift
       value: {{ lookup('env', 'varVerOpenshift') }}
     image: docker.io/codesparta/konductor:cloudctl
-    name: one
+    name: konductor
     resources: {}
     securityContext:
       allowPrivilegeEscalation: true

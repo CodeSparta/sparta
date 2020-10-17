@@ -4,7 +4,7 @@ git_branch: master
 
 # Ansible Git Repos
 url_git_openshift: 'https://github.com/CodeSparta/openshift.git'
-dir_git_openshift: "{{ dir_iac }}"
+dir_git_openshift: "{{ dir_iac }}/openshift"
 
 # Terraform Git Repos
 url_git_shaman: 'https://github.com/CodeSparta/shaman'
