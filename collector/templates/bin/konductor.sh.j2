@@ -485,7 +485,8 @@ run () {
 run_core
 test_core
 run_ansible_playbook_bundle
-sleep 2
+sleep 1
 podman restart nginx
+podman restart registry
 }
 run
