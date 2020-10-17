@@ -332,7 +332,7 @@ EOF
 ################################################################################
 
 write_global_tf_vars () {
-cat <<EOF > ${k9DirDeploy}/terraform/global.tfvars
+cat <<EOF > ${k9DirDeploy}/iac/global.tfvars
 vpc_id="${k9VpcId}"
 vpc_name="${k9NameVpc}"
 rhcos_ami="${k9RhcosAmi}"
@@ -352,7 +352,7 @@ EOF
 ################################################################################
 
 write_global_tf_vars_post () {
-cat <<EOF > ${k9DirDeploy}/terraform/global.tfvars
+cat <<EOF > ${k9DirDeploy}/iac/global.tfvars
 vpc_id="${k9VpcId}"
 vpc_name="${k9NameVpc}"
 rhcos_ami="${k9RhcosAmi}"
