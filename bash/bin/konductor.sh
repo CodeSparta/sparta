@@ -37,8 +37,8 @@ varVerOpenshift="$(cat /root/deploy/nginx/release.txt)"
 ################################################################################
 # Stage ansible variables
 run_stage_deploy_variables () {
-echo && run_log 0 "Staging Ansible ${k9DirDeploy}/ansible/cluster-vars.yml variables file"
-cat <<EOF | tee ${k9DirDeploy}/ansible/cluster-vars.yml
+echo && run_log 0 "Staging Ansible ${k9DirDeploy}/iac/cluster-vars.yml variables file"
+cat <<EOF | tee ${k9DirDeploy}/iac/cluster-vars.yml
 ---
 version_openshift: "${varVerOpenshift}"
 target_environment: "${k9TargetEnvironment}"
@@ -387,7 +387,7 @@ run_ansible_playbook_bundle () {
   echo;
   run_log 0 "Executing ansible playbook ${runAnsibleCmd}"; 
   clear;
-  podman exec -it one /bin/bash -c 'cd /root/deploy/ansible/deploy ; ./site.yml';
+  podman exec -it one /bin/bash -c 'cd /root/platform/iac ; ./site.yml';
   break;
 }
 

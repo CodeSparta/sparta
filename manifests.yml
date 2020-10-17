@@ -8,7 +8,7 @@
   vars:
     module: "manifests"
     ansible_name_module: "{{ ansible_name }} | {{ module }}"
-    dir_platform_templates: "{{ dir_platform }}/ansible/deploy/templates"
+    dir_platform_templates: "{{ dir_iac }}/openshift/templates"
     tmpl_installconfig_j2: "{{ dir_platform_templates }}/openshift-install/{{ cloud_provider }}-{{ target_environment }}-install-config.yaml.j2"
   roles:
     - manifests
