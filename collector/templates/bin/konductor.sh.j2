@@ -412,6 +412,10 @@ sudo chmod -R 0777 ${HOME}/platform/nginx
 
 run_ansible_playbook_bundle () {
   echo;
+  run_log 0 "Restarting Nginx & Registry containers"; 
+  podman restart nginx
+  podman restart registry
+  echo;
   run_log 0 "Executing ansible playbook ${runAnsibleCmd}"; 
   clear;
  #podman exec -it konductor /bin/bash -c 'cd /root/platform/iac/deploy ; ./site.yml';
