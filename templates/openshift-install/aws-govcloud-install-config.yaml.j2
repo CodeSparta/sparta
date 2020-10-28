@@ -2,6 +2,7 @@ apiVersion: v1
 additionalTrustBundle: |
 {{ lookup("file", "{{ dir_secrets }}/registry/ssl/registry.crt") | indent( width=2, indentfirst=True) }}
 baseDomain: {{ name_domain }}
+credentialsMode: Passthrough
 imageContentSources:
 - mirrors:
   - registry.{{ cluster_domain }}:5000/openshift-release-dev
