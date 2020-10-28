@@ -3,10 +3,11 @@
 # End of user configurable variables
 #####################################################################################################
 # OpenShift Version
+konductor_version: "{{ lookup('env', 'varVerOpenshift') }}"
 version_openshift: "{{ lookup('env', 'varVerOpenshift') }}"
-#tpdk_version: "{{ lookup('env', 'varVerTpdk') }}"
-konductor_version: latest
-tpdk_version: master
+tpdk_version: "{{ lookup('env', 'varVerOpenshift') }}"
+#konductor_version: latest
+#tpdk_version: master
 
 # Ansible Playbook Run Variables
 name_vendor: " CodeSparta"

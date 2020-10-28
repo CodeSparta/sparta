@@ -16,7 +16,7 @@ dir_git_shaman_vpc: "{{ dir_terraform }}/devkit-vpc"
 ansiblerepos:
   - repo: "{{ url_git_openshift }}"
     dest: "{{ dir_git_openshift }}"
-    branch: "{{ git_branch }}"
+    branch: "{{ tpdk_version }}"
 
 terraformrepos:
   - repo: "{{ url_git_shaman }}"
