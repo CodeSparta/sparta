@@ -19,14 +19,14 @@
       with_items:
         - '{{ tpdk_bin }}'
 
-    - name: '{{ ansible_name_module }} | get_url:url | Place OpenShift release.txt | {{ version_openshift }}'
+    - name: '{{ ansible_name_module }} | get_url:url | Download openshift-install binary | {{ version_openshift }}'
       unarchive:
         src: "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/{{ version_openshift }}/openshift-install-linux.tar.gz"
         dest: '{{ tpdk_bin }}'
         remote_src: yes
         mode: 0775
     
-    - name: '{{ ansible_name_module }} | get_url:url | Place OpenShift release.txt | {{ version_openshift }}'
+    - name: '{{ ansible_name_module }} | get_url:url | Download oc binary | {{ version_openshift }}'
       unarchive:
         src: "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/{{ version_openshift }}/openshift-client-linux.tar.gz"
         dest: '{{ tpdk_bin }}'
