@@ -7,6 +7,7 @@
 - import_playbook: tree.yml         # Create base directory tree
 - import_playbook: secrets.yml      # Collect Secrets
 - import_playbook: git.yml          # Pull git repos
+- import_playbook: tools.yml        # Pull oc & install binaries
 - import_playbook: images.yml       # Pull cloudctl images & Download container images to directory
 - import_playbook: shaman.yml       # Workaround: extra terraform init
 - import_playbook: bundle.yml       # Bundle artifacts for airgap pivot
