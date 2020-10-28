@@ -17,7 +17,7 @@
   ######### Mirror Images to directory
     - name: '{{ ansible_name_module }} | shell:oc.adm.release.mirror | Sync content from quay.io'
       shell: |
-        oc adm release mirror --insecure=true \
+        {{ tpdk_bin }}/oc adm release mirror --insecure=true \
           --to=localhost:5000/openshift-release-dev \
           --registry-config=/root/.docker/config.json \
           --from=quay.io/openshift-release-dev/ocp-release:{{ version_openshift }}-x86_64 \

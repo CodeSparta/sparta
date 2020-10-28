@@ -23,6 +23,7 @@ dir_bundle: "{{ local_home }}/bundle"
 dir_images: "{{ dir_platform }}/images"
 dir_secrets: "{{ dir_platform }}/secrets"
 dir_platform: "{{ local_home }}/platform"
+tpdk_bin: "{{ dir_platform }}/bin"
 
 # Terraform Variables
 dir_terraform: "{{ dir_iac }}"
