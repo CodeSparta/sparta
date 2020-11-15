@@ -25,6 +25,7 @@
         - { module: 'templates', src: "{{ dir_platform_templates }}/openshift-install/99_openshift-image-registry_installer-cloud-credentials-secret.yaml.j2", dest: "{{ dir_cluster }}/aux/openshift/99_openshift-image-registry_installer-cloud-credentials-secret.yaml"}
         - { module: 'templates', src: "{{ dir_platform_templates }}/openshift-install/99_openshift-ingress-operator_cloud-credentials-secret.yaml.j2", dest: "{{ dir_cluster }}/aux/openshift/99_openshift-ingress-operator_cloud-credentials-secret.yaml"}
         - { module: 'templates', src: "{{ dir_platform_templates }}/openshift-install/99_openshift-machine-api_aws-cloud-credentials-secret.yaml.j2", dest: "{{ dir_cluster }}/aux/openshift/99_openshift-machine-api_aws-cloud-credentials-secret.yaml"}
+        - { module: 'templates', src: "{{ dir_platform_templates }}/openshift-install/aws-creds.yml.j2", dest: "{{ dir_cluster }}/aux/openshift/aws-creds.yml"}
  
     ####### Ignition User Data
     - name: '{{ ansible_name_module }} role | manifests | template | Stage OpenShift Ignition User-Data JSON'
