@@ -63,3 +63,10 @@
     - "{{ dir_platform }}/cluster/manifests/openshift/99_cloud-creds-secret.yaml"
     - "{{ dir_platform }}/cluster/manifests/openshift/99_role-cloud-creds-secret-reader.yaml"
   when: cluster_network_mode == 'disconnected'
+
+####### Remove privateZone from cluster DNS config
+- name: '{{ ansible_name_module }} | replace | Remove privateZone'
+  replace:
+    path: "{{ dir_platform }}/cluster/manifests/manifests/cluster-dns-02-config.yml"
+    regexp: '^\s\sprivateZone[^&]+'
+    replace: '' 
