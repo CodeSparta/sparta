@@ -1,4 +1,4 @@
-# [Koffer](https://github.com/containercraft/Koffer) Collector | OpenShift Infrastructure Artifacts
+# [Koffer](https://github.com/cloudctl/Koffer) Collector | OpenShift Infrastructure Artifacts
 This automation provides a unified and standardized tarball of artifacts for
 airgap infrastructure deployment tasks. Included is the restricted environment
 delivery services `CloudCtl` pod & `start-cloudctl.sh` script.
@@ -18,7 +18,7 @@ Features:
 mkdir -p /tmp/bundle && \
 sudo podman run -it --rm --pull always \
     --volume /tmp/platform:/root/bundle:z \
-  docker.io/containercraft/koffer:latest bundle \
+  docker.io/cloudctl/koffer:latest bundle \
     --plugin openshift
 ```
 ### 2. Move Koffer Bundle to target host `${USER}` directory

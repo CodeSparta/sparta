@@ -9,7 +9,7 @@
  mkdir -p ${HOME}/bundle && \
  podman run -it --rm --pull always \
      --volume ${HOME}/bundle:/root/bundle:z \
-   docker.io/containercraft/koffer:latest bundle \
+   docker.io/cloudctl/koffer:latest bundle \
      --plugin openshift
 ```
 
