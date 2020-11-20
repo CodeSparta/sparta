@@ -3,12 +3,18 @@
   hosts: koffer
   vars_files:
     - 'vars/global.yml'
-    - 'vars/git.yml'
   vars:
     module: "tree"
     ansible_name_module: "{{ ansible_name }} | {{ module }}"
   tasks:
 
+    - name: '{{ ansible_name_module }} | file | Purge pre-existing artifacts'
+      file:
+        path: '{{ item }}'
+        state: absent
+      loop:
+        - '{{ dir_platform }}'
+    
     - name: '{{ ansible_name_module }} | file | Create Directory Structure' 
       file:
         path: '{{ item }}'
@@ -17,13 +23,4 @@
         recurse: yes
       with_items:
         - '{{ local_home }}/bundle'
-        - '{{ dir_platform }}/terraform'
-        - '{{ dir_platform }}/ansible'
-        - '{{ dir_platform }}/mirror'
-        - '{{ dir_platform }}/images'
-        - '{{ dir_platform }}/nginx'
-        - '{{ dir_platform }}/secrets'
-        - '{{ dir_platform }}/secrets/ssh'
-        - '{{ dir_platform }}/secrets/registry'
-        - '{{ dir_platform }}/secrets/registry/ssl'
-        - '{{ dir_platform }}/secrets/registry/auth'
+        - '{{ dir_platform }}/iac'
