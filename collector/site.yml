@@ -8,15 +8,4 @@
 - import_playbook: git.yml          # Pull git repos
 - import_playbook: shaman.yml       # Workaround: extra terraform init
 - import_playbook: bundle.yml       # Bundle artifacts for airgap pivot
-
-  tasks:
-
-    - name: '{{ ansible_name_module }} | file:directory | Set Permissions on Bundle'
-      file:
-        recurse: true
-        path: '{{ item }}'
-        state: directory
-        mode: 0655
-      loop:
-        - "{{ dir_bundle }}"
-    
+- import_playbook: finalize.yml     # Set final permission
