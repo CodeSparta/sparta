@@ -14,6 +14,6 @@
         recurse: true
         path: '{{ item }}'
         state: directory
-        mode: 0655
+        mode: 0777
       loop:
         - "{{ dir_bundle }}"
