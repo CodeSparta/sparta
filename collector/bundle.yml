@@ -23,7 +23,7 @@
       loop:
         - "{{ dir_bundle }}"
     
-    - name: '{{ ansible_name_module }} | command:tar.cvf | Build unified bundle with auxilary unpack+launch utilities'
+    - name: '{{ ansible_name_module }} | command:tar.cvf | Build bundle koffer-bundle.openshift-iac.tar'
       command:
         "tar -vc --use-compress-program='pigz -9 ' -f {{ dir_bundle }}/koffer-bundle.openshift-iac.tar -C {{ local_home }} platform"
       args:
