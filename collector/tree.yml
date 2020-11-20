@@ -3,7 +3,6 @@
   hosts: koffer
   vars_files:
     - 'vars/global.yml'
-    - 'vars/images.yml'
     - 'vars/git.yml'
   vars:
     module: "tree"
