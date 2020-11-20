@@ -6,6 +6,39 @@
   vars:
     module: "bundle"
     ansible_name_module: "{{ ansible_name }} | {{ module }}"
-    redhat_quay_pull_file: '{{ dir_artifacts }}/.docker/master.json }}'
-  roles:
-    - bundle
+  tasks:
+
+    - name: '{{ ansible_name_module }} | file | Purge pre-existing bundles'
+      file:
+        path: '{{ item }}'
+        state: absent
+      loop:
+        - "{{ dir_bundle }}/koffer-bundle.openshift-iac.tar"
+    
+    - name: '{{ ansible_name_module }} | file:directory | Create Staging Directory'
+      file:
+        path: '{{ item }}'
+        state: directory
+        mode: 0655
+      loop:
+        - "{{ dir_bundle }}"
+    
+    - name: '{{ ansible_name_module }} | command:tar.cvf | Build bundle koffer-bundle.openshift-iac.tar'
+      command:
+        "tar -vc --use-compress-program='pigz -9 ' -f {{ dir_bundle }}/koffer-bundle.openshift-iac.tar -C {{ local_home }} platform"
+      args:
+        creates: "{{ dir_bundle }}/koffer-bundle.openshift-iac.tar"
+        warn: false
+    
+#   - name: '{{ ansible_name_module }} | stat:sha256 | SHA koffer-bundle.openshift-iac.tar'
+#     command: 'sha256sum {{ dir_bundle }}/koffer-bundle.openshift-iac.tar'
+#     args:
+#       warn: false
+#       chdir: '{{ dir_bundle }}'
+#     register: bundle_sha
+    
+#   - name: '{{ ansible_name_module }} | copy:content.bcrypt_htpasswd | Generate Default Registry Basic Auth'
+#     copy:
+#       content: '{{ bundle_sha.stdout }}'
+#       dest: "{{ dir_bundle }}/koffer-bundle.openshift-iac.tar.sha256"
+#       mode: 0655

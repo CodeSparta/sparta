@@ -3,10 +3,24 @@
   hosts: koffer
   vars_files:
     - 'vars/global.yml'
-    - 'vars/images.yml'
-    - 'vars/git.yml'
   vars:
     module: "tree"
     ansible_name_module: "{{ ansible_name }} | {{ module }}"
-  roles:
-    - tree
+  tasks:
+
+    - name: '{{ ansible_name_module }} | file | Purge pre-existing artifacts'
+      file:
+        path: '{{ item }}'
+        state: absent
+      loop:
+        - '{{ dir_platform }}'
+    
+    - name: '{{ ansible_name_module }} | file | Create Directory Structure' 
+      file:
+        path: '{{ item }}'
+        state: directory
+        mode: '0775'
+        recurse: yes
+      with_items:
+        - '{{ local_home }}/bundle'
+        - '{{ dir_platform }}/iac'
