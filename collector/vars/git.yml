@@ -2,7 +2,7 @@
 git_branch: master
 
 # Ansible Git Repos
-url_git_openshift: 'https://github.com/CodeSparta/openshift-iac.git'
+url_git_openshift: 'https://github.com/CodeSparta/sparta.git'
 dir_git_openshift: "{{ dir_iac }}/openshift"
 
 # Terraform Git Repos

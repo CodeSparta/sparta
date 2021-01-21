@@ -19,7 +19,7 @@ mkdir -p ${HOME}/bundle && \
 sudo podman run -it --rm --pull always \
     --volume ${HOME}/bundle:/root/bundle:z \
   quay.io/cloudctl/koffer bundle --silent \
-    --plugin openshift-iac
+    --plugin sparta
 ```
 ### 2. Move Koffer Bundle to target host `${USER}` directory
 # [Developer Docs & Utils](./dev)
