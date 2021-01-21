@@ -1,0 +1,15 @@
+---
+vpc_id: "vpc-0894d3be035191bda"
+vpc_name: "sparta"
+rhcos_ami: "ami-6e2a100f"
+aws_region: "us-gov-west-1"
+name_domain: "codectl.io"
+subnet_list: subnet-0add24af86db981ec,subnet-093fc91c829cf7e3d,subnet-0f393ef497d1244ac                                                           
+cluster_name: "sparta"
+cluster_domain: "{{ cluster_name }}.{{ name_domain }}"
+private_vpc_cidr: "10.0.0.0/16"
+name_cluster_vpc: "sparta"
+version_openshift: "4.6.12"
+aws_access_key_id: "XXXXXXXXXXXXXXXXXXX"
+aws_secret_access_key: "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+target_environment: "aws"
