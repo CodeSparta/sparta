@@ -15,9 +15,9 @@ Features:
 ## Instructions:
 ### 1. Run Infrastructure Collector with Koffer Engine
 ```
-mkdir -p /tmp/bundle && \
+mkdir -p ${HOME}/bundle && \
 sudo podman run -it --rm --pull always \
-    --volume /tmp/platform:/root/bundle:z \
+    --volume ${HOME}/bundle:/root/bundle:z \
   quay.io/cloudctl/koffer bundle --silent \
     --plugin openshift-iac
 ```
