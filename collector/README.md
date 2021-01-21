@@ -18,8 +18,8 @@ Features:
 mkdir -p /tmp/bundle && \
 sudo podman run -it --rm --pull always \
     --volume /tmp/platform:/root/bundle:z \
-  docker.io/cloudctl/koffer:latest bundle \
-    --plugin openshift
+  quay.io/cloudctl/koffer bundle --silent \
+    --plugin openshift-iac
 ```
 ### 2. Move Koffer Bundle to target host `${USER}` directory
 # [Developer Docs & Utils](./dev)
