@@ -1,0 +1,16 @@
+---
+vpc_id: "vpc-0f70194c184e8a079"
+vpc_name: "thedoctor-vpc"
+rhcos_ami: "ami-6e2a100f"
+aws_region: "us-gov-west-1"
+name_domain: "thedoctor.com"
+subnet_list: subnet-03f287e8c2cfc6e04,subnet-01a641b7e5e2efded,subnet-0636aae1ab668640f
+cluster_name: "tardis"
+cluster_domain: "{{ name_domain }}.{{ cluster_name }}"
+private_vpc_cidr: "10.0.50.0/16"
+name_cluster_vpc: "thedoctor-vpc"
+version_openshift: "4.6.12"
+aws_access_key_id: "AKIAXXXXXXXXXXXXXXXXXOCL3R"
+aws_secret_access_key: "kvqw8XXXXXXXXXXXXXXXXXXXMwWFtvx5Sx"
+target_environment: "govcloud"
+cloud_provider: "aws"

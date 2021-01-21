@@ -45,23 +45,6 @@ source /root/answer.sh
 export k9ClusterDomain="${k9NameCluster}.${k9NameDomain}"
 
 cat <<EOF | tee ${k9DirDeploy}/iac/cluster-vars.yml
----
-vpc_id: "${k9VpcId}"
-vpc_name: "${k9NameVpc}"
-rhcos_ami: "${k9RhcosAmi}"
-aws_region: "${k9AwsRegion}"
-name_domain: "${k9NameDomain}"
-cluster_name: "${k9NameCluster}"
-private_vpc_cidr: "${k9VpcCidr}"
-cluster_name: "${k9NameCluster}"
-name_cluster_vpc: "${k9NameVpc}"
-cluster_domain: "${k9NameCluster}.${k9NameDomain}"
-aws_access_key_id: "${k9AwsKeyId}"
-cluster_domain: "${k9ClusterDomain}"
-version_openshift: "${varVerOpenshift}"
-aws_secret_access_key: "${k9AwsKeySecret}"
-target_environment: "${k9TargetEnvironment}"
-subnet_list: ${k9SubnetList}
 EOF
 }
 

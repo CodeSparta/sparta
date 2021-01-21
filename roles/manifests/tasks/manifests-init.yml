@@ -17,4 +17,4 @@
 
 ####### Generate base manifests set
 - name: '{{ ansible_name_module }} | init | shell:openshift-install | create manifests'
-  shell: "{{ openshift_install_binary }} create manifests --dir={{ dir_cluster }}/manifests"
+  shell: "{{ openshift_install_binary }} create manifests --dir={{ dir_cluster }}/manifests --log-level debug"
