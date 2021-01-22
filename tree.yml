@@ -1,6 +1,6 @@
 #!/usr/local/bin/ansible-playbook --inventory=inventory.yaml
 - name: '{{ name_vendor }} | Koffer | tree.yml' 
-  hosts: local
+  hosts: cloudctl
   vars_files:
     - 'vars/global.yml'
 #   - 'vars/git.yml'
@@ -43,3 +43,12 @@
         - '{{ dir_secrets }}/aws'
         - '{{ local_home }}/.aws'
         - '{{ local_home }}/.kube'
+
+    - name: '{{ ansible_name_module }} | file | Create Directory ~/.aws' 
+      delegate_to: konductor
+      file:
+        path: '{{ item }}'
+        state: directory
+        mode: '0644'
+      with_items:
+        - '{{ local_home }}/.aws'

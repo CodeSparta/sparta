@@ -1,11 +1,10 @@
 #!/usr/local/bin/ansible-playbook --inventory=inventory.yaml
 - name: '{{ ansible_name }} | Konductor | template' 
-  hosts: local
+  hosts: konductor
   vars_files:
     - '../cluster-vars.yml'
     - 'vars/{{ target_environment }}.yml'
     - 'vars/global.yml'
-#   - 'vars/git.yml'
   vars:
     module: "template"
     state_provider: "{{ terraform_state_provider }}"
@@ -22,10 +21,10 @@
         src: '{{ item.src }}'
         dest: '{{ item.dest }}'
       loop: 
-        - { module: 'templates', src: "{{ dir_platform_templates }}/openshift-install/99_openshift-image-registry_installer-cloud-credentials-secret.yaml.j2", dest: "{{ dir_cluster }}/aux/openshift/99_openshift-image-registry_installer-cloud-credentials-secret.yaml"}
-        - { module: 'templates', src: "{{ dir_platform_templates }}/openshift-install/99_openshift-ingress-operator_cloud-credentials-secret.yaml.j2", dest: "{{ dir_cluster }}/aux/openshift/99_openshift-ingress-operator_cloud-credentials-secret.yaml"}
-        - { module: 'templates', src: "{{ dir_platform_templates }}/openshift-install/99_openshift-machine-api_aws-cloud-credentials-secret.yaml.j2", dest: "{{ dir_cluster }}/aux/openshift/99_openshift-machine-api_aws-cloud-credentials-secret.yaml"}
-        - { module: 'templates', src: "{{ dir_platform_templates }}/openshift-install/aws-creds.yml.j2", dest: "{{ dir_cluster }}/aux/openshift/aws-creds.yml"}
+        - { src: "{{ dir_platform_templates }}/openshift-install/99_openshift-image-registry_installer-cloud-credentials-secret.yaml.j2", dest: "{{ dir_cluster }}/aux/openshift/99_openshift-image-registry_installer-cloud-credentials-secret.yaml"}
+        - { src: "{{ dir_platform_templates }}/openshift-install/99_openshift-ingress-operator_cloud-credentials-secret.yaml.j2", dest: "{{ dir_cluster }}/aux/openshift/99_openshift-ingress-operator_cloud-credentials-secret.yaml"}
+        - { src: "{{ dir_platform_templates }}/openshift-install/99_openshift-machine-api_aws-cloud-credentials-secret.yaml.j2", dest: "{{ dir_cluster }}/aux/openshift/99_openshift-machine-api_aws-cloud-credentials-secret.yaml"}
+        - { src: "{{ dir_platform_templates }}/openshift-install/aws-creds.yml.j2", dest: "{{ dir_cluster }}/aux/openshift/aws-creds.yml"}
  
     ####### Ignition User Data
     - name: '{{ ansible_name_module }} role | manifests | template | Stage OpenShift Ignition User-Data JSON'

@@ -4,5 +4,5 @@ metadata:
   name: aws-creds
   namespace: kube-system
 data:
-  aws_access_key_id: {{ cloud_key_id_special | b64encode }}
-  aws_secret_access_key: {{ cloud_key_secret_special | b64encode }}
+  aws_access_key_id: {{ aws_access_key_id | b64encode }}
+  aws_secret_access_key: {{ aws_secret_access_key | b64encode }}
