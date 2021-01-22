@@ -1,6 +1,6 @@
-#!/usr/local/bin/ansible-playbook --inventory=inventory
+#!/usr/local/bin/ansible-playbook --inventory=inventory.yaml
 - name: 'RedHat | Konductor | ignition' 
-  hosts: local
+  hosts: konductor
   vars_files:
     - '../cluster-vars.yml'
     - 'vars/{{ target_environment }}.yml'

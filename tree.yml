@@ -42,7 +42,6 @@
         - '{{ dir_platform }}/secrets/ssh'
         - '{{ dir_secrets }}/aws'
         - '{{ local_home }}/.aws'
-        - '{{ local_home }}/.kube'
 
     - name: '{{ ansible_name_module }} | file | Create Directory ~/.aws' 
       delegate_to: konductor
@@ -52,3 +51,4 @@
         mode: '0644'
       with_items:
         - '{{ local_home }}/.aws'
+        - '{{ local_home }}/.kube'
