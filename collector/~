@@ -1,0 +1,11 @@
+#!/usr/local/bin/ansible-playbook --inventory=inventory.yaml
+- name: ' Koffer | Artifact Rake Utility' 
+  hosts: koffer
+  vars_files:
+    - 'vars/global.yml'
+
+- import_playbook: tree.yml         # Create base directory tree
+- import_playbook: git.yml          # Pull git repos
+- import_playbook: shaman.yml       # Workaround: extra terraform init
+- import_playbook: bundle.yml       # Bundle artifacts for airgap pivot
+- import_playbook: finalize.yml     # Set final permission

@@ -1,4 +1,4 @@
-#!/usr/local/bin/ansible-playbook --inventory=inventory
+#!/usr/local/bin/ansible-playbook --inventory=inventory.yaml
 - name: '{{ ansible_name }} | bundle | manifests' 
   hosts: local
   vars_files:
