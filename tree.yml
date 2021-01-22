@@ -39,4 +39,6 @@
         - '{{ dir_platform }}/secrets/docker'
         - '{{ dir_platform }}/secrets/aws'
         - '{{ dir_platform }}/secrets/ssh'
+        - '{{ dir_secrets }}/aws'
+        - '{{ local_home }}/.aws'
         - '{{ local_home }}/.kube'
