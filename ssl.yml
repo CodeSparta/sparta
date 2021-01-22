@@ -1,0 +1,25 @@
+#!/usr/local/bin/ansible-playbook --inventory=inventory.yaml
+- name: '{{ name_vendor }} | Konductor | ssl.yml' 
+  hosts: cloudctl
+  vars_files:
+    - '../cluster-vars.yml'
+    - 'vars/global.yml'
+  vars:
+    module: "ssl"
+    ansible_name_module: "{{ ansible_name }} | {{ module }}"
+  tasks:
+    - name: '{{ ansible_name_module }} | set_fact:cloudctl_ip | Lookup cloudctl IP address'
+      set_fact:
+        name_ip_cloudctl: "{{ ansible_default_ipv4.address }}"
+        cacheable: yes
+
+- name: '{{ name_vendor }} | Konductor | ssl.yml' 
+  hosts: konductor
+  vars_files:
+    - '../cluster-vars.yml'
+    - 'vars/global.yml'
+  vars:
+    module: "ssl"
+    ansible_name_module: "{{ ansible_name }} | {{ module }}"
+  roles:
+    - ssl

@@ -27,6 +27,7 @@ ansible_name: " {{ name_vendor }} | Konductor | Infra Automation"
 ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
 
 # Directory Inventory
+dir_tmp: "/tmp/konductor"
 dir_platform: "{{ local_home }}/platform"
 dir_iac: "{{ dir_platform }}/iac"
 dir_ansible: "{{ dir_iac }}"

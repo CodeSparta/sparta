@@ -28,6 +28,7 @@
         - '{{ dir_platform }}/mirror'
         - '{{ dir_platform }}/images'
         - '{{ dir_platform }}/nginx'
+        - '{{ dir_tmp }}'
     - file:
         path: '{{ item }}'
         state: directory

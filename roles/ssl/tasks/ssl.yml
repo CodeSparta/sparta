@@ -1,42 +1,14 @@
 ---
-####### Self Signed Certs for registry
-- name: '{{ ansible_name_module }} | ssl | openssl_privatekey | Registry FQDN Private Key'
-  openssl_privatekey:
-    path: "{{ dir_secrets }}/registry/ssl/registry.{{ cluster_domain }}.key"
-    size: 4096
-
-- name: '{{ ansible_name_module }} | ssl | openssl_csr | Registry FQDN Certificate Signing Request'
-  openssl_csr:
-    path: "{{ dir_secrets }}/registry/ssl/registry.{{ cluster_domain }}.csr"
-    privatekey_path: "{{ dir_secrets }}/registry/ssl/registry.{{ cluster_domain }}.key"
-    common_name: "registry"
-    subject_alt_name:
-      - "DNS:registry.{{ cluster_domain }}"
-      - "DNS:{{ name_dns_cloudctl }}"
-      - "DNS:{{ name_dns_registry }}"
-      - "DNS:{{ name_dns_localhost }}"
-      - "DNS:{{ name_dns_addr_cni }}"
-      - "DNS:{{ name_dns_addr_host }}"
-#     - "DNS:{{ name_ip_cloudctl }}"
-
-- name: '{{ ansible_name_module }} | ssl | openssl_certificate | Generate FQDN Registry Certificates | Self Signed + 365 Day TTL'
-  openssl_certificate:
-    path: "{{ dir_secrets }}/registry/ssl/registry.{{ cluster_domain }}.crt"
-    privatekey_path: "{{ dir_secrets }}/registry/ssl/registry.{{ cluster_domain }}.key"
-    csr_path: "{{ dir_secrets }}/registry/ssl/registry.{{ cluster_domain }}.csr"
-    selfsigned_not_after: "+365d"
-    selfsigned_digest: "sha256"
-    provider: selfsigned
-
----
 - name: '{{ ansible_name_module }} | openssl_privatekey | SSL Private Key | CloudCtl Self Signed Certificate Key'
   openssl_privatekey:
+    force: yes
     path: "{{ dir_tmp }}/cloudctl/certs/ssl/server/cloudctl.pem"
     size: 4096
   delegate_to: localhost
 
 - name: '{{ ansible_name_module }} | openssl_csr | Certificate Signing Request | CloudCtl CSR'
   openssl_csr:
+    force: yes
     mode: 0644
     path: "{{ dir_tmp }}/cloudctl/certs/ssl/server/cloudctl.csr"
     privatekey_path: "{{ dir_tmp }}/cloudctl/certs/ssl/server/cloudctl.pem"
@@ -54,27 +26,21 @@
       - "DNS:nginx"
       - "DNS:registry"
       - "DNS:cloudctl"
-      - "DNS:lb.{{ domain_cluster }}"
-      - "DNS:api.{{ domain_cluster }}"
-      - "DNS:ign.{{ domain_cluster }}"
-      - "DNS:dns.{{ domain_cluster }}"
-      - "DNS:ftp.{{ domain_cluster }}"
-      - "DNS:ctl.{{ domain_cluster }}"
-      - "DNS:nginx.{{ domain_cluster }}"
-      - "DNS:registry.{{ domain_cluster }}"
-      - "DNS:cloudctl.{{ domain_cluster }}"
+      - "DNS:lb.{{ cluster_domain }}"
+      - "DNS:api.{{ cluster_domain }}"
+      - "DNS:ign.{{ cluster_domain }}"
+      - "DNS:dns.{{ cluster_domain }}"
+      - "DNS:ftp.{{ cluster_domain }}"
+      - "DNS:ctl.{{ cluster_domain }}"
+      - "DNS:nginx.{{ cluster_domain }}"
       - "DNS:registry.{{ cluster_domain }}"
-      - "DNS:{{ name_dns_cloudctl }}"
-      - "DNS:{{ name_dns_registry }}"
-      - "DNS:{{ name_dns_localhost }}"
-      - "DNS:{{ name_dns_addr_cni }}"
-      - "DNS:{{ name_dns_addr_host }}"
-      - "IP:{{ listen_address }}"
+      - "DNS:cloudctl.{{ cluster_domain }}"
   delegate_to: localhost
 
 - name: '{{ ansible_name_module }} | openssl_certificate | Self Signed 365d TTL Certificate | CloudCtl Certificate'
   openssl_certificate:
     mode: 0644
+    force: yes
     path: "{{ dir_tmp }}/cloudctl/certs/ssl/server/cloudctl.crt"
     csr_path: "{{ dir_tmp }}/cloudctl/certs/ssl/server/cloudctl.csr"
     privatekey_path: "{{ dir_tmp }}/cloudctl/certs/ssl/server/cloudctl.pem"
@@ -85,6 +51,7 @@
 
 - name: '{{ ansible_name_module }} | openssl_csr | Certificate Signing Request | Ansible Runner Client'
   openssl_csr:
+    force: yes
     mode: 0644
     path: "{{ dir_tmp }}/runner/ssl/client/runner.csr"
     privatekey_path: "{{ dir_tmp }}/cloudctl/certs/ssl/server/cloudctl.pem"
@@ -94,12 +61,13 @@
       - "DNS:172.10.0.1"
       - "DNS:localhost"
       - "DNS:cloudctl"
-      - "DNS:cloudctl.{{ domain_cluster }}"
-      - "IP:{{ listen_address }}"
+      - "DNS:cloudctl.{{ cluster_domain }}"
+      - "DNS:registry.{{ cluster_domain }}"
   delegate_to: localhost
 
 - name: '{{ ansible_name_module }} | openssl_certificate | Self Signed 365d TTL Certificate | Ansible Runner Client'
   openssl_certificate:
+    force: yes
     mode: 0644
     path: "{{ dir_tmp }}/runner/ssl/client/runner.crt"
     csr_path: "{{ dir_tmp }}/runner/ssl/client/runner.csr"
