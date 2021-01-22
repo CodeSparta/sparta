@@ -12,6 +12,6 @@ all:
         ansible_connection: ssh
     localhost:
       hosts:
-        koffer:
+        konductor:
           ansible_user: root
           ansible_connection: local

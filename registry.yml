@@ -1,0 +1,11 @@
+#!/usr/local/bin/ansible-playbook --inventory=inventory.yaml
+- name: '{{ name_vendor }} | Konductor | registry.yml' 
+  hosts: cloudctl
+  vars_files:
+    - '../cluster-vars.yml'
+    - 'vars/global.yml'
+  vars:
+    module: "registry"
+    ansible_name_module: "{{ ansible_name }} | {{ module }}"
+  roles:
+    - registry

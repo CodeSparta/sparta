@@ -35,6 +35,9 @@ dir_secrets: "{{ dir_platform }}/secrets"
 dir_cluster: "{{ dir_platform }}/cluster"
 dir_images: "{{ dir_platform }}/images"
 
+# CloudCtl variables
+upstream_registry: 'quay.io'
+
 # Terraform Variables
 tf_vars: "{{ dir_terraform }}/global.tfvars"
 
