@@ -4,7 +4,10 @@ vpc_name: "sparta"
 rhcos_ami: "ami-6e2a100f"
 aws_region: "us-gov-west-1"
 name_domain: "codectl.io"
-subnet_list: subnet-0add24af86db981ec,subnet-093fc91c829cf7e3d,subnet-0f393ef497d1244ac                                                           
+subnet_list: 
+  - subnet-0add24af86db981ec
+  - subnet-093fc91c829cf7e3d
+  - subnet-0f393ef497d1244ac                                                           
 cluster_name: "sparta"
 cluster_domain: "{{ cluster_name }}.{{ name_domain }}"
 private_vpc_cidr: "10.0.0.0/16"
