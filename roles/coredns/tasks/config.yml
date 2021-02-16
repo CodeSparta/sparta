@@ -1,0 +1,22 @@
+---
+- name: '{{ ansible_name_module }} | ec2_vpc_dhcp_option | AWS ec2 DHCP DNS Servers {{ listen_address }}' 
+  amazon.aws.ec2_vpc_dhcp_option:
+    region: "{{ aws_region }}"
+    dns_servers:
+      - "{{ listen_address }}"
+      - "{{ default_dns_forwarder }}"
+    vpc_id: "{{ vpc_id }}"
+    inherit_existing: True
+    delete_old: False
+    aws_access_key: "{{ aws_access_key_id }}"
+    aws_secret_key: "{{ aws_secret_access_key }}"
+  delegate_to: konductor
+
+- name: '{{ ansible_name_module }} | template | Build CoreDNS configs' 
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    mode: '{{ item.mode }}'
+  loop: 
+    - { mode: '0655', src: "coredns/config.json.j2", dest: "{{ dir_platform }}/coredns/config.json"}
+    - { mode: '0655', src: "coredns/core.db.j2", dest: "{{ dir_platform }}/coredns/core.db"}

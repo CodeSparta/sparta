@@ -1,5 +1,0 @@
-[local]
-localhost ansible_connection=local ansible_user=root
-
-[bastion]
-10.88.0.1 ansible_connection=ssh ansible_user=core

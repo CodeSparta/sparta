@@ -1,0 +1,9 @@
+{{ cluster_domain }}.          IN SOA   registry.{{ cluster_domain }}. cloudctl.{{ cluster_domain }}. {{ db_time }} 7200 3600 1209600 3600
+cloudctl.{{ cluster_domain }}. IN A     {{ listen_address }}
+registry.{{ cluster_domain }}. IN A     {{ listen_address }}
+*.apps.{{ cluster_domain }}.   IN CNAME {{ apps_elb_fqdn  | default('null') }}
+api.{{ cluster_domain }}.      IN CNAME {{ infra_elb_fqdn | default('null') }}
+api-int.{{ cluster_domain }}.  IN CNAME {{ infra_elb_fqdn | default('null') }}
+etcd-0.{{ cluster_domain }}.   IN A     {{ master_ipv4_a  | default('10.0.0.51') }}
+etcd-1.{{ cluster_domain }}.   IN A     {{ master_ipv4_b  | default('10.0.0.52') }}
+etcd-2.{{ cluster_domain }}.   IN A     {{ master_ipv4_c  | default('10.0.0.53') }}

@@ -1,0 +1,6 @@
+default_cluster_name: "sparta"
+default_domain_base: "codectl.io"
+default_dns_forwarder: "10.0.0.2"
+dns_forwarder: "{{ dns_forward_ipv4 | default(default_dns_forwarder) }}"
+db_time: "{{ ansible_date_time.year }}{{ ansible_date_time.month }}{{ ansible_date_time.day }}{{ ansible_date_time.hour }}"
+coredns: true
