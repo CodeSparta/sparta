@@ -25,5 +25,5 @@
       loop:
         - "{{ tf_module_path }}/elb"
         - "{{ tf_module_path }}/control-plane"
-        - "{{ tf_module_path }}/route53"
+#       - "{{ tf_module_path }}/route53"
       register: tf_output

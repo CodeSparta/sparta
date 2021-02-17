@@ -54,3 +54,6 @@ sshkeys_priv_file: "{{ dir_secrets }}/ssh/id_rsa_kubeadmin"
 sshkeys_priv_string: "{{ lookup('file', '{{ sshkeys_priv_file }}') }}"
 sshkeys_pub_file: "{{ dir_secrets }}/ssh/id_rsa_kubeadmin.pub"
 sshkeys_pub_string: "{{ lookup('file', '{{ sshkeys_pub_file }}') }}"
+
+# CoreDNS
+dns_forward_ipv4: "{{ dns_forwarder | default('8.8.8.8') }}"

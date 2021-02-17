@@ -1,0 +1,36 @@
+#!/usr/local/bin/ansible-playbook --inventory=inventory.yaml
+- name: '{{ ansible_name }} | coredns.yml' 
+  hosts: cloudctl
+  become: true
+  become_user: root
+  vars_files:
+    - 'vars/global.yml'
+    - 'vars/run.yml'
+    - '../cluster-vars.yml'
+  vars:
+    module: "coredns"
+    ansible_name_module: "{{ ansible_name }} | {{ module }}"
+    listen_address: "{{ lookup('env', 'PUBLISH_ADDRESS') | default(ansible_default_ipv4.address, true) }}"
+  tasks:
+    - name: set ec2 dns optionset
+      set_fact:
+        dns_forward_ipv4: '{{ listen_address | default(dns_forward_ipv4) }}'
+
+    - name: set ec2 dns optionset
+      amazon.aws.ec2_vpc_dhcp_option:
+        aws_access_key: "{{ aws_access_key_id }}"
+        aws_secret_key: "{{ aws_secret_access_key }}"
+        domain_name: "{{ cluster_domain }}"
+        region: "{{ aws_region }}"
+        vpc_id: "{{ vpc_id }}"
+        dns_servers:
+          - "{{ dns_forward_ipv4 }}"
+        inherit_existing: True
+        delete_old: True
+        tags:
+          Name: "cloudctl-coredns-{{ vpc_name }}"
+      delegate_to: konductor
+
+  roles:
+    - role: coredns
+      when: start_dns == true
