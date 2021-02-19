@@ -1,0 +1,18 @@
+$ORIGIN .
+$TTL 43200;
+{{ cluster_domain }}                        IN SOA    cloudctl.{{ cluster_domain }}. registry.{{ cluster_domain }}. (
+                                                        {{ db_time }} ; serial
+                                                        60            ; refresh (1 minute)
+                                                        15            ; retry (15 seconds)
+                                                        1800          ; expire (30 minutes)
+                                                        10            ; minimum (10 seconds)
+                                                      )
+                                                NS    cloudctl.{{ cluster_domain }}.
+$ORIGIN {{ cluster_domain }}.
+
+cloudctl                                     IN A     {{ listen_address }}
+cloudctl.{{ cluster_domain }}.               IN A     {{ listen_address }}
+registry.{{ cluster_domain }}.               IN A     {{ listen_address }}
+*.apps.{{ cluster_domain }}.                 IN CNAME {{ elb_name | default(null) }}.
+api.{{ cluster_domain }}.                    IN CNAME {{ elb_int_fqdn }}.
+api-int.{{ cluster_domain }}.                IN CNAME {{ elb_int_fqdn }}.

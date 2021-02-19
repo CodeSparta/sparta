@@ -56,4 +56,5 @@ sshkeys_pub_file: "{{ dir_secrets }}/ssh/id_rsa_kubeadmin.pub"
 sshkeys_pub_string: "{{ lookup('file', '{{ sshkeys_pub_file }}') }}"
 
 # CoreDNS
-dns_forward_ipv4: "{{ dns_forwarder | default('8.8.8.8') }}"
+dns_forward_ipv4: "{{ dns_forwarder | default('10.0.0.2') }}"
+db_time: "{{ ansible_date_time.year }}{{ ansible_date_time.month }}{{ ansible_date_time.day }}{{ ansible_date_time.hour }}"

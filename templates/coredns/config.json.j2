@@ -1,0 +1,13 @@
+.:5353 {
+    forward . {{ dns_forward_ipv4 }}
+    errors
+    cache
+    log
+}
+
+{{ cluster_domain }}:5353 {
+    file /core.db
+    errors stdout
+    log stdout
+    cache
+}

@@ -10,4 +10,3 @@
     volume:
       - "{{ dir_platform }}/coredns/config.json:/CoreFile:z"
       - "{{ dir_platform }}/coredns/core.db:/core.db:z"
-#   privileged: yes

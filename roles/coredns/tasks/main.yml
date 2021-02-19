@@ -1,4 +1,8 @@
 ---
+- name: '{{ ansible_name_module }} | role:include_tasks | aws.yml' 
+  include_tasks: aws.yml
+- debug:
+    msg: "{{ elb_int_fqdn }}"
 - name: '{{ ansible_name_module }} | role:include_tasks | tree.yml' 
   include_tasks: tree.yml
 - name: '{{ ansible_name_module }} | role:include_tasks | config.yml' 

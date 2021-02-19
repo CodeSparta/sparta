@@ -1,0 +1,45 @@
+---
+- name: set ec2 dns optionset
+  amazon.aws.ec2_vpc_dhcp_option:
+    aws_access_key: "{{ aws_access_key_id }}"
+    aws_secret_key: "{{ aws_secret_access_key }}"
+    domain_name: "{{ cluster_domain }}"
+    region: "{{ aws_region }}"
+    vpc_id: "{{ vpc_id }}"
+    dns_servers:
+      - "{{ listen_address }}"
+    inherit_existing: True
+    delete_old: True
+    tags:
+      Name: "cloudctl-coredns-{{ vpc_name }}"
+  delegate_to: konductor
+
+- name: Gather information about all ELBs
+  community.aws.elb_application_lb_info:
+    names: "{{ cluster_name }}-int"
+    region: "{{ aws_region }}"
+    aws_access_key: "{{ aws_access_key_id }}"
+    aws_secret_key: "{{ aws_secret_access_key }}"
+  register: elb_int
+  delegate_to: konductor
+
+- name: 'set fact'
+  set_fact:
+    elb_int_fqdn: "{{ elb_int.load_balancers | map(attribute='dns_name') | first }}"
+  delegate_to: konductor
+
+- name: openshift_ingress | Collect ingress loadbalancer name
+  elb_classic_lb_info:
+    region: '{{ aws_region }}'
+  register: elbinfo
+  delegate_to: konductor
+
+- name: lookup apps elb
+  set_fact:
+    elb_tags: "{{ elbinfo.elbs[0].tags | list }}"
+  delegate_to: konductor
+
+- name: lookup apps elb
+  set_fact:
+    elb_name: "{{ elbinfo.elbs[0].dns_name }}"
+  delegate_to: konductor
