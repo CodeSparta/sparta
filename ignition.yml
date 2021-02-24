@@ -20,3 +20,4 @@
         name: nginx
         state: started
         force_restart: yes
+        recreate: no
