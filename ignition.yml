@@ -19,4 +19,4 @@
       podman_container:
         name: nginx
         state: started
-        recreate: no
+        force_restart: yes
