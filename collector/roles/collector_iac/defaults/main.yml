@@ -1,0 +1,34 @@
+---
+plugin:
+  role: 'sparta'
+  name: 'Koffer Artifact Collector | Red Hat Consulting | CodeSparta/sparta-iac'
+koffer:
+  docker_config: '/root/.docker/config.json'
+  bundle: "{{   lookup('env', 'BUNDLE')  | default('true', true) | bool }}"
+  date: "{{ ansible_date_time.year }}{{ ansible_date_time.month }}{{ ansible_date_time.day }}{{ ansible_date_time.hour }}"
+  omnibus: "{{  lookup('env', 'OMNIBUS')    | default('true',  true) | bool  }}"
+sparta:
+  version: "{{  lookup('env', 'VERSION') | default('master', true) }}"
+dir:
+  tmp: '/tmp/koffer'
+  iac: '/root/platform/iac'
+  bin: '/bin/root/platform/bin'
+  meta: '/bin/root/platform/meta'
+  nginx: '/bin/root/platform/nginx'
+  koffer: '/root/koffer'
+  bundle: '/root/bundle'
+  mirror: '/root/platform/mirror'
+  secrets: '/root/platform/secrets'
+  registry: '/root/platform/mirror/docker'
+  platform: '/root/platform'
+git:
+  sparta:
+    tfinit: False
+    dest: '{{ dir.iac }}/sparta'
+    url: 'https://github.com/CodeSparta/sparta-iac.git'
+    ref: "{{   lookup('env', 'TPDK_VERSION')  | default('master', true) | bool }}"
+  shaman:
+    tfinit: True
+    dest: '{{ dir.iac }}/shaman'
+    url: 'https://github.com/CodeSparta/shaman.git'
+    ref: "{{   lookup('env', 'TPDK_VERSION')  | default('master', true) | bool }}"
