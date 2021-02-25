@@ -10,4 +10,4 @@
 - import_playbook: manifests.yml   # Create & customize OpenShift manifest files
 - import_playbook: ignition.yml    # Build RH CoreOS ignition files from manifests
 - import_playbook: shaman.yml      # Build the ELB and OCP Control plane via Terraform
-- import_playbook: dns.yml         # Configure CoreDNS "BYO DNS" Deploy time NS
+#- import_playbook: dns.yml         # Configure CoreDNS "BYO DNS" Deploy time NS
