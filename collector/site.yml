@@ -1,18 +1,13 @@
-#!/usr/local/bin/ansible-playbook --inventory=inventory.yaml
+#!/usr/local/bin/ansible-playbook
 - name: ' Koffer | Artifact Rake Utility' 
   hosts: koffer
-  vars_files:
-    - 'vars/global.yml'
-
-  tasks:
-    
-    # run openshift artifact collector
-    - import_role:
-        name: sparta.collector.openshift
-
-    # run operators artifact collector
-    - import_role:
-        name: sparta.collector.operators
+  #  tasks:
+  #    # run openshift artifact collector
+  #    - import_role:
+  #        name: sparta.collector.openshift
+  #    # run operators artifact collector
+  #    - import_role:
+  #        name: sparta.collector.operators
 
 - import_playbook: tree.yml         # Create base directory tree
 - import_playbook: git.yml          # Pull git repos
