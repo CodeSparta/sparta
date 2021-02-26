@@ -14,13 +14,13 @@
         name: sparta.collector.iac
 
     # run openshift artifact collector
-    - import_role:
-        name: sparta.collector.openshift
-
-    # run openshift artifact collector
-    - import_role:
-        name: sparta.collector.bundle
+#   - import_role:
+#       name: sparta.collector.openshift
 
     # run operators artifact collector
 #   - import_role:
 #       name: sparta.collector.operators
+
+    # run openshift artifact collector
+    - import_role:
+        name: sparta.collector.bundle
