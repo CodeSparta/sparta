@@ -6,7 +6,7 @@
   tasks:
     # run openshift artifact collector
     - import_role:
-        name: iac
+        name: sparta.collector.iac
   # # run openshift artifact collector
   #  - import_role:
   #     name: sparta.collector.openshift

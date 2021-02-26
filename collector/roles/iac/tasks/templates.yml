@@ -1,8 +1,0 @@
----
-- name: '{{ plugin.name }} | role:{{ plugin.role }} | template | Stage Sparta OpenShift Deploy Config' 
-  template:
-    src: '{{ item.src }}'
-    dest: '{{ item.dest }}'
-    mode: '0755'
-  loop: 
-    - { src: "ansible/cluster-vars.yml.j2", dest: "{{ dir.iac }}/cluster-vars.yml"}
