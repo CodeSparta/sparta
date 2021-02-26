@@ -15,11 +15,11 @@
 
     # run openshift artifact collector
     - import_role:
-        name: sparta.collector.bundle
+        name: sparta.collector.openshift
 
     # run openshift artifact collector
-#   - import_role:
-#       name: sparta.collector.openshift
+    - import_role:
+        name: sparta.collector.bundle
 
     # run operators artifact collector
 #   - import_role:
