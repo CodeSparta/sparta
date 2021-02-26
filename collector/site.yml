@@ -2,8 +2,10 @@
 - name: ' Koffer | Artifact Rake Utility' 
   hosts: koffer
   tasks:
-
+  environment:
+        PATH: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
     # run openshift artifact collector
+
     - import_role:
         name: iac
   
