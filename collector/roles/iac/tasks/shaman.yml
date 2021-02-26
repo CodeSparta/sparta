@@ -1,0 +1,11 @@
+---
+- name: '{{ plugin.name }} | command:terraform | init shaman terraform modules'
+  command:
+    cmd: terraform init
+    chdir: "{{ item }}"
+  loop:
+    - "{{ dir.iac }}/shaman"
+    - "{{ dir.iac }}/shaman/elb"
+    - "{{ dir.iac }}/shaman/route53"
+    - "{{ dir.iac }}/shaman/control-plane"
+    - "{{ dir.iac }}/shaman/resource-import"

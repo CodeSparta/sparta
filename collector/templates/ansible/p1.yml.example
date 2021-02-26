@@ -1,9 +1,0 @@
----
-version_openshift: "4.3.8"
-target_environment: 'fences'
-git_branch: "aws-fences-automation"
-cluster_network_mode: "disconnected"
-cluster_domain: "i.am.groot"
-name_cluster_vpc: "groot"
-name_domain: "am.groot"
-cluster_name: "i"

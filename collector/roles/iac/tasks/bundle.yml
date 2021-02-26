@@ -1,0 +1,16 @@
+---
+- name: '{{ plugin.name }} | file:absent | Purge pre-existing bundles'
+  file:
+    state: absent
+    path: '{{ item }}'
+  loop:
+    - "{{ dir.bundle }}/koffer-bundle.sparta-iac-{{ koffer.date }}.tar"
+
+- name: '{{ plugin.name }} | command:tar.cvf | Build bundle koffer-bundle.sparta-iac.tar'
+  command:
+    cmd: |
+      tar -vSc -f {{ dir.bundle }}/koffer-bundle.sparta-iac-{{ koffer.date }}.tar -C /root platform
+  args:
+    creates: "{{ dir.bundle }}/koffer-bundle.sparta-iac-{{ koffer.date }}.tar"
+  when:
+    - koffer.bundle
