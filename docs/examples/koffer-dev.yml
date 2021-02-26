@@ -1,0 +1,12 @@
+koffer:
+  silent: true
+  plugins:
+    sparta:
+      version: master
+      service: github.com
+      organization: codesparta
+      env:
+        - name: "bundle"
+          value: "true"
+        - name: "VERSION"
+          value: "master"
