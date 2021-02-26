@@ -14,8 +14,8 @@
         name: sparta.collector.iac
 
     # run openshift artifact collector
-#   - import_role:
-#       name: sparta.collector.openshift
+    - import_role:
+        name: sparta.collector.openshift
 
     # run operators artifact collector
 #   - import_role:
