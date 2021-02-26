@@ -7,11 +7,19 @@
 
     # run openshift artifact collector
     - import_role:
+        name: sparta.collector.dependencies
+
+    # run openshift artifact collector
+    - import_role:
         name: sparta.collector.iac
 
     # run openshift artifact collector
     - import_role:
-        name: sparta.collector.openshift
+        name: sparta.collector.bundle
+
+    # run openshift artifact collector
+#   - import_role:
+#       name: sparta.collector.openshift
 
     # run operators artifact collector
 #   - import_role:
