@@ -4,4 +4,4 @@
 - include_tasks: templates.yml    # Place basic template of deploy config
 - include_tasks: shaman.yml       # Workaround: extra terraform init
 - include_tasks: bundle.yml       # Bundle artifacts for airgap pivot
-  when: bundle
+  when: koffer.bundle
