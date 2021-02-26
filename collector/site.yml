@@ -1,16 +1,16 @@
 #!/usr/local/bin/ansible-playbook
 - name: ' Koffer | Artifact Rake Utility' 
   hosts: koffer
-    tasks:
+  tasks:
 
-      # run openshift artifact collector
-      - import_role:
-          name: iac
-   
-      # run openshift artifact collector
-  #    - import_role:
-          name: sparta.collector.openshift
-      # run operators artifact collector
+    # run openshift artifact collector
+    - import_role:
+        name: iac
+  
+  # # run openshift artifact collector
+  #  - import_role:
+  #     name: sparta.collector.openshift
+  #   # run operators artifact collector
   #    - import_role:
   #        name: sparta.collector.operators
 
