@@ -3,10 +3,10 @@
   environment:
     PATH: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
   tasks:
-    # run openshift artifact collector
+    # download collector dependencies
     - import_role:
         name: sparta.collector.dependencies
-    # run openshift artifact collector
+    # run sparta iac artifact collector
     - import_role:
         name: sparta.collector.iac
     # run openshift artifact collector
@@ -15,6 +15,9 @@
     # run operators artifact collector
     # import_role:
     #   name: sparta.collector.operators
+    # run cloudctl artifact collector
+    - import_role:
+        name: sparta.collector.cloudctl
     # run openshift artifact collector
     - import_role:
         name: sparta.collector.bundle
