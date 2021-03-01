@@ -17,3 +17,6 @@
 
 - name: '{{ ansible_name_module }} | include_tasks | nginx.yml'
   include_tasks: nginx.yml
+
+- name: '{{ ansible_name_module }} | include_tasks | container.yml'
+  include_tasks: container.yml

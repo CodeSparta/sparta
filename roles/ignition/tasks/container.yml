@@ -1,0 +1,8 @@
+---
+- name: 'RedHat | cloudctl | Restart nginx Container'
+  containers.podman.podman_container:
+    name: nginx
+    state: started
+    force_restart: yes
+    recreate: no
+  delegate_to: cloudctl
