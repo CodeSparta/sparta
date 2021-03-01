@@ -10,14 +10,3 @@
     ansible_name_module: "{{ ansible_name }} | {{ module }}"
   roles:
     - ignition
-
-- name: 'RedHat | cloudctl | Restart nginx Container' 
-  hosts: cloudctl
-  become: yes
-  tasks:
-    - name: 'RedHat | cloudctl | Restart nginx Container'
-      podman_container:
-        name: nginx
-        state: started
-        force_restart: yes
-        recreate: no
