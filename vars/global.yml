@@ -40,6 +40,7 @@ dir_images: "{{ dir_platform }}/images"
 upstream_registry: 'quay.io'
 cluster_domain: "{{ cluster_name }}.{{ name_domain }}"
 domain_cluster: "{{ cluster_name }}.{{ name_domain }}"
+domain_base: "{{ name_domain }}"
 
 # Terraform Variables
 tf_vars: "{{ dir_terraform }}/global.tfvars"
