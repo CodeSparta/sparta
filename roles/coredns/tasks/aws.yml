@@ -11,7 +11,7 @@
     inherit_existing: True
     delete_old: True
     tags:
-      Name: "cloudctl-coredns-{{ vpc_name }}"
+      Name: "cloudctl-{{ vpc_name }}"
   delegate_to: konductor
 
 - name: Gather information about all ELBs
