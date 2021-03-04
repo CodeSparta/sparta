@@ -38,9 +38,13 @@ dir_images: "{{ dir_platform }}/images"
 
 # CloudCtl variables
 upstream_registry: 'quay.io'
+cluster_name: "{{ vpc_name }}"
+name_cluster_vpc: "{{ vpc_name }}"
 cluster_domain: "{{ cluster_name }}.{{ name_domain }}"
 domain_cluster: "{{ cluster_name }}.{{ name_domain }}"
 domain_base: "{{ name_domain }}"
+target_environment: "govcloud"
+private_vpc_cidr: "10.0.0.0/16"
 
 # Terraform Variables
 tf_vars: "{{ dir_terraform }}/global.tfvars"

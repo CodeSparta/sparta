@@ -1,15 +1,15 @@
-#!/usr/local/bin/ansible-playbook --inventory=inventory.yaml
+#!/usr/local/bin/ansible-playbook
 - name: '{{ ansible_name }} | Konductor | template' 
   hosts: konductor
   vars_files:
     - '../cluster-vars.yml'
-    - 'vars/{{ target_environment }}.yml'
     - 'vars/global.yml'
+    - 'vars/{{ target_environment }}.yml'
   vars:
     module: "template"
     state_provider: "{{ terraform_state_provider }}"
     ansible_name_module: "{{ ansible_name }} | {{ module }}"
-    dir_platform_templates: "{{ dir_iac }}/openshift/templates"
+    dir_platform_templates: "{{ dir_iac }}/sparta/templates"
     tmpl_installconfig_j2: "{{ dir_platform_templates }}/openshift-install/{{ cloud_provider }}-{{ target_environment }}-install-config.yaml.j2"
     cloud_key_id_special: "{{ lookup('ini', 'aws_access_key_id section=default file={{ dir_secrets }}/aws/credentials') }}"
     cloud_key_secret_special: "{{ lookup('ini', 'aws_secret_access_key section=default file={{ dir_secrets }}/aws/credentials') }}"

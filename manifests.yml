@@ -1,14 +1,14 @@
-#!/usr/local/bin/ansible-playbook --inventory=inventory.yaml
+#!/usr/local/bin/ansible-playbook
 - name: '{{ ansible_name }} | bundle | manifests' 
   hosts: konductor
   vars_files:
     - '../cluster-vars.yml'
-    - 'vars/{{ target_environment }}.yml'
     - 'vars/global.yml'
+    - 'vars/{{ target_environment }}.yml'
   vars:
     module: "manifests"
     ansible_name_module: "{{ ansible_name }} | {{ module }}"
-    dir_platform_templates: "{{ dir_iac }}/openshift/templates"
+    dir_platform_templates: "{{ dir_iac }}/sparta/templates"
     tmpl_installconfig_j2: "{{ dir_platform_templates }}/openshift-install/{{ cloud_provider }}-{{ target_environment }}-install-config.yaml.j2"
   roles:
     - manifests

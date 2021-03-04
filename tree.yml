@@ -1,4 +1,4 @@
-#!/usr/local/bin/ansible-playbook --inventory=inventory.yaml
+#!/usr/local/bin/ansible-playbook
 - name: '{{ name_vendor }} | Koffer | tree.yml' 
   hosts: cloudctl
   vars_files:
