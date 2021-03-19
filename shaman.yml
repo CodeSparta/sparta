@@ -27,3 +27,32 @@
         - "{{ tf_module_path }}/control-plane"
         - "{{ tf_module_path }}/route53"
       register: tf_output
+
+    - name: Waiting for default ingress to be defined...
+      k8s_info:
+        api_version: v1
+        kind: Service
+        name: router-default
+        namespace: openshift-ingress
+      register: ingress_status_out
+      until:
+      - ingress_status_out is defined
+      - ingress_status_out.resources[0] is defined
+      - ingress_status_out.resources[0].status.loadBalancer.ingress[0].hostname is defined
+      retries: 120
+      delay: 10
+
+    - name: Set ingress_hostname fact
+      set_fact:
+        ingress_hostname: "{{ ingress_status_out.resources[0].status.loadBalancer.ingress[0].hostname }}"
+
+    - name: Create Route 53 entry
+      route53:
+        state: present
+        zone: "{{ cluster_domain }}"
+        record: "*.apps.{{ cluster_domain }}"
+        type: CNAME
+        value: "{{ ingress_hostname }}"
+        private_zone: true
+        aws_access_key: "{{ aws_access_key_id }}"
+        aws_secret_key: "{{ aws_secret_access_key }}"
