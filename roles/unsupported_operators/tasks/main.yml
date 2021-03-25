@@ -1,0 +1,6 @@
+---
+- name: '{{ ansible_module | role:include_tasks | registry.yaml }}'
+  include_tasks: registry.yml
+
+- name: '{{ ansible_module | role:include_tasks | machine_config.yaml }}'
+  include_tasks: machine_config.yml

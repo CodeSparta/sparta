@@ -1,0 +1,4 @@
+---
+- name: apply machine config
+  community.kubernetes.k8s:
+    definition: "{{ lookup('template', 'templates/machine_config.j2') | from_yaml }}"
