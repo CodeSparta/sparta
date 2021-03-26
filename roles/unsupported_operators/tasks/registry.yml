@@ -1,0 +1,4 @@
+---
+- name: encode registry.conf
+  set_fact:
+    encoded_registry_conf: "{{ lookup('template', 'templates/registry.conf.j2') | b64encode }}"
