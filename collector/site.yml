@@ -6,15 +6,15 @@
     # download collector dependencies
     - import_role:
         name: sparta.collector.dependencies
+    # run operators artifact collector
+    - import_role:
+        name: sparta.collector.operators
     # run sparta iac artifact collector
     - import_role:
         name: sparta.collector.iac
     # run openshift artifact collector
     - import_role:
         name: sparta.collector.openshift
-    # run operators artifact collector
-    # import_role:
-    #   name: sparta.collector.operators
     # run cloudctl artifact collector
     - import_role:
         name: sparta.collector.cloudctl
