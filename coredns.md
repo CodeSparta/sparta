@@ -3,7 +3,7 @@
 ## Devkit VPC
 1. Clone Sparta Devkit VPC repo
 ```
-git clone --branch devkit-coredns https://github.com/CodeSparta/devkit-vpc.git && cd devkit-vpc
+git clone --branch devkit_coredns https://github.com/CodeSparta/devkit-vpc.git && cd devkit-vpc
 ```
 2. Configure variables
 ```
