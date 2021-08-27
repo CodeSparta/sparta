@@ -40,7 +40,7 @@ curl -o ${HOME}/bundle/coredns.sh https://raw.githubusercontent.com/CodeSparta/s
 podman run -it --rm --pull always \
 --volume ${HOME}/bundle:/root/bundle:z \
 quay.io/cloudctl/koffer:v00.21.0803 bundle \
---config /root/bundle/sparta.yml \
+--config https://codectl.io/docs/config/stable/sparta.yml \
 -v "latest-4.7"
 ```
 7. Paste [Quay.io Image Pull Secret](https://cloud.redhat.com/openshift/install/metal/user-provisioned) when prompted

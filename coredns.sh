@@ -95,10 +95,15 @@ cat <<EOF > /root/platform/iac/sparta/ingress.yml
       - ingress_status_out.resources[0].status.loadBalancer.ingress[0].hostname is defined
       retries: 120
       delay: 10
-
+      
     - name: Set ingress_hostname fact
       set_fact:
         elb_name: "{{ ingress_status_out.resources[0].status.loadBalancer.ingress[0].hostname }}"
+
+    - name: Add var to cloudctl host
+      add_host:
+        name: "cloudctl"
+        elb_name: "{{ elb_name }}"
 
 - name: '{{ ansible_name }} | coredns.yml' 
   hosts: cloudctl
