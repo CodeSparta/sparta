@@ -107,3 +107,34 @@ watch oc get co
 ```
 oc get svc -n openshift-ingress | awk '/router-default/{print $4}'
 ```
+
+## Cluster & VPC Teardown
+
+1. Exec into container
+```
+ sudo podman exec -it konductor bash
+```
+2. Change dir into Terraform Directory
+```
+ cd /root/platform/iac/shaman
+```
+3. Patch masters to make scheduleable
+```
+oc patch schedulers.config.openshift.io cluster -p '{"spec":{"mastersSchedulable":true}}' --type=merge
+```
+4. Delete machinesets & wait for worker nodes to terminate
+```
+for i in $(oc get machinesets -A | awk '/machine-api/{print $2}'); do oc delete machineset $i -n openshift-machine-api; echo deleted $i; done
+```
+5. Delete service router & wait for it to terminate
+```
+oc delete service router-default -n openshift-ingress &
+```
+6. Modify breakdown.yml
+```
+sed -i '/route53/d' breakdown.yml
+```
+7. Exec control plane breakdown playbook
+```
+ chmod +x ./breakdown.yml && ./breakdown.yml
+```
