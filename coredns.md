@@ -29,9 +29,13 @@ sudo dnf install -y podman
 ```
 4. Create Platform Artifacts Staging Directory
 ```
-mkdir -p $(pwd)/bundle
+mkdir -p ${HOME}/bundle
 ```
-5. Build Koffer Bundles for CloudCtl, OCP Platform Infra, and Sparta IaC
+5. curl coredns.sh
+```
+curl -o ${HOME}/bundle/coredns.sh https://raw.githubusercontent.com/CodeSparta/sparta/coredns/coredns.sh
+```
+6. Build Koffer Bundles for CloudCtl, OCP Platform Infra, and Sparta IaC
 ```
 podman run -it --rm --pull always \
 --volume ${HOME}/bundle:/root/bundle:z \
@@ -39,13 +43,13 @@ quay.io/cloudctl/koffer:v00.21.0803 bundle \
 --config /root/bundle/sparta.yml \
 -v "latest-4.7"
 ```
-6. Paste [Quay.io Image Pull Secret](https://cloud.redhat.com/openshift/install/metal/user-provisioned) when prompted
+7. Paste [Quay.io Image Pull Secret](https://cloud.redhat.com/openshift/install/metal/user-provisioned) when prompted
 
-7. Set Permissions on bundle(s)
+8. Set Permissions on bundle(s)
 ```
 sudo chown -R $USER $(pwd)/bundle
 ```
-8. Review your artifacts
+9. Review your artifacts
 ```
 du -sh $(pwd)/bundle/*
 ```
@@ -61,6 +65,10 @@ ssh -i ~/.ssh/${keyname} core@${rhcos_private_registry_node_ip}
 3. Extract bundles
 ```
 sudo tar xvf ${HOME}/bundle/koffer-bundle.sparta-*-*.tar -C /root
+```
+4. Copy coredns.sh to /root/platform/iac/sparta
+```
+sudo cp ${HOME}/bundle/coredns.sh /root/platform/iac/sparta/coredns.sh
 ```
 ## High-Side Deployment
 1. Acquire root
@@ -87,12 +95,15 @@ vim /root/platform/iac/cluster-vars.yml
 ```
 cd /root/platform/iac/sparta
 ```
-6. 
+6. Run coredns.sh
+```
+chmod +x coredns.sh; ./coredns.sh
+```
 7. Watch Cluster Operators come online (may take 30-60 minutes)
 ```
 watch oc get co
 ```
-8. Also watch for & add Apps ELB Route53 DNS CNAME `*.apps.cluster.domain.com` wildcard [DNS Entry](https://console.amazonaws-us-gov.com/route53/home?#resource-record-sets)
+8. Also watch for & add Apps ELB DNS CNAME `*.apps.cluster.domain.com` wildcard [DNS Entry](https://console.amazonaws-us-gov.com/route53/home?#resource-record-sets)
 ```
- oc get svc -n openshift-ingress | awk '/router-default/{print $4}'
+oc get svc -n openshift-ingress | awk '/router-default/{print $4}'
 ```

@@ -72,6 +72,67 @@ cat <<EOF > /root/platform/iac/sparta/roles/coredns/tasks/aws.yml
   delegate_to: konductor
 EOF
 
+cat <<EOF > /root/platform/iac/sparta/ingress.yml
+#!/usr/local/bin/ansible-playbook
+
+- name: 'Ingress'
+  hosts: konductor
+  vars_files:
+  - '../cluster-vars.yml'
+  - 'vars/global.yml'
+  - 'vars/{{ target_environment }}.yml'
+  tasks:
+    - name: Waiting for default ingress to be defined...
+      k8s_info:
+        api_version: v1
+        kind: Service
+        name: router-default
+        namespace: openshift-ingress
+      register: ingress_status_out
+      until:
+      - ingress_status_out is defined
+      - ingress_status_out.resources[0] is defined
+      - ingress_status_out.resources[0].status.loadBalancer.ingress[0].hostname is defined
+      retries: 120
+      delay: 10
+
+    - name: Set ingress_hostname fact
+      set_fact:
+        elb_name: "{{ ingress_status_out.resources[0].status.loadBalancer.ingress[0].hostname }}"
+
+- name: '{{ ansible_name }} | coredns.yml' 
+  hosts: cloudctl
+  vars_files:
+    - 'vars/global.yml'
+    - 'vars/run.yml'
+    - '../cluster-vars.yml'
+  vars:
+    module: "coredns"
+    ansible_name_module: "{{ ansible_name }} | {{ module }}"
+    listen_address: "{{ lookup('env', 'PUBLISH_ADDRESS') | default(ansible_default_ipv4.address, true) }}"
+  tasks:
+    - name: '{{ ansible_name_module }} | template | Build CoreDNS config.yml' 
+      template:
+        src: '{{ item.src }}'
+        dest: '{{ item.dest }}'
+        mode: '{{ item.mode }}'
+      loop: 
+      - { mode: '0655', src: "coredns/config.json.j2", dest: "{{ dir_platform }}/coredns/config.json"}
+      - { mode: '0655', src: "coredns/core.db.j2", dest: "{{ dir_platform }}/coredns/core.db"}
+
+    - name: '{{ ansible_name_module }} | cmd:podman_container | Podman create {{ module }}' 
+      containers.podman.podman_container:
+        detach: yes
+        name: "coredns"
+        pod: "cloudctl"
+        state: "started"
+        recreate: "true"
+        image: "{{ upstream_registry }}/cloudctl/coredns"
+        volume:
+          - "{{ dir_platform }}/coredns/config.json:/CoreFile:z"
+          - "{{ dir_platform }}/coredns/core.db:/core.db:z"
+EOF
+
 cat <<EOF > /root/platform/iac/sparta/site.yml
 #!/usr/local/bin/ansible-playbook
 - name: 'RedHat | Konductor | site.yml'
@@ -87,6 +148,7 @@ cat <<EOF > /root/platform/iac/sparta/site.yml
 - import_playbook: ignition.yml    # Build RH CoreOS ignition files from manifests
 - import_playbook: shaman.yml      # Build the ELB and OCP Control plane via Terraform
 - import_playbook: dns.yml         # Configure CoreDNS "BYO DNS" Deploy time NS
+- import_playbook: ingress.yml     # Adds DNS entry for ingress
 EOF
 
 sed -i 's/{{ elb_name | default(null) }}/{{ elb_name if elb_name is defined }}/g' /root/platform/iac/sparta/templates/coredns/core.db.j2
