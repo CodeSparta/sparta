@@ -95,15 +95,25 @@ vim /root/platform/iac/cluster-vars.yml
 ```
 cd /root/platform/iac/sparta
 ```
-6. Run coredns.sh
+6. Need to update the endpoints.json on the konductor container prior to kicking off coredns.sh (sed -i 's/gov-west/gov-east/g' /usr/local/lib/python3.6/site-packages/boto/endpoints.json)
+7. Need to update the dns resolver on the registry node (volume mounted to the container):
+   - /root/platform/iac/sparta/vars/global.yml:dns_forward_ipv4: "{{ dns_forwarder | default('yourResolverIP') }}"
+   - /root/cloudctl/vars/global.yml:dns_forwarder: "{{ dns_forward_ipv4 | default('yourResolverIP') }}"
+8. Run coredns.sh
 ```
 chmod +x coredns.sh; ./coredns.sh
 ```
-7. Watch Cluster Operators come online (may take 30-60 minutes)
+9. Waiting for ingress-router will eventually fail.  Need to add the proper search domain and IP of the registry bastion to the konductor /etc/resolv.conf
+10. Once the internal ELB fqdn is obtained (from the konductor container: oc get svc -n openshift-ingress | awk '/router-default/{print $4}'), add the value to the core.db on the registry bastion
+   /root/platform/coredns/core.db and restart the coredns pod
+```
+podman restart coredns
+```
+11. Watch Cluster Operators come online (may take 30-60 minutes)
 ```
 watch oc get co
 ```
-8. Also watch for & add Apps ELB DNS CNAME `*.apps.cluster.domain.com` wildcard [DNS Entry](https://console.amazonaws-us-gov.com/route53/home?#resource-record-sets)
+12. Also watch for & add Apps ELB DNS CNAME `*.apps.cluster.domain.com` wildcard [DNS Entry](https://console.amazonaws-us-gov.com/route53/home?#resource-record-sets)
 ```
 oc get svc -n openshift-ingress | awk '/router-default/{print $4}'
 ```
